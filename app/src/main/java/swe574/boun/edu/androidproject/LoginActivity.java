@@ -96,8 +96,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         ForgottenPasswordButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent forgotIntent = new Intent(LoginActivity.this, ForgottenPasswordActivity.class);
-                startActivity(forgotIntent);
+                // TODO Recreate after implementing ForgettonPasswordActivity
+
             }
         });
 

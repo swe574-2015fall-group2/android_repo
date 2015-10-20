@@ -3,7 +3,6 @@ package swe574.boun.edu.androidproject;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -20,15 +19,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,50 +32,44 @@ import java.util.List;
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
- * A register screen that offers user to register.
+ * A login screen that offers login via email/password.
  */
-public class RegisterActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>{
+public class ForgottenPasswordActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
     /**
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
-    /**
-     * Keep track of the register task to ensure we can cancel it if requested.
-     */
-    private UserRegisterTask mRegisterTask = null;
 
-    //UI References
+    /**
+     * Keep track of the forgotten password task to ensure we can cancel it if requested.
+     */
+    private UserForgotPasswordTask mAuthTask = null;
+
+    // UI references.
     private AutoCompleteTextView mEmailView;
-    private EditText mNameView;
-    private EditText mLastnameView;
-    private EditText mPasswordView;
     private View mProgressView;
-    private View mRegisterFormView;
+    private View mLoginFormView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
-        // Set up the register form.
+        setContentView(R.layout.activity_forgotten_password);
+        // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
-        mNameView = (EditText) findViewById(R.id.name);
-        mLastnameView = (EditText) findViewById(R.id.lastname);
-        mPasswordView = (EditText) findViewById(R.id.password);
-
-        Button mRegisterButton = (Button) findViewById(R.id.register_button);
-        mRegisterButton.setOnClickListener(new OnClickListener() {
+        Button mEmailSignInButton = (Button) findViewById(R.id.send_password_button);
+        mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v) {
-                attemptRegister();
+            public void onClick(View view) {
+                attemptSending();
             }
         });
 
+        mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-        mRegisterFormView = findViewById(R.id.register_form);
     }
 
     private void populateAutoComplete() {
@@ -126,36 +116,23 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     }
 
     /**
-     * Attempts to register the account specified by the register form.
+     * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    private void attemptRegister() {
-        if (mRegisterTask != null) {
+    private void attemptSending() {
+        if (mAuthTask != null) {
             return;
         }
 
         // Reset errors.
-        mNameView.setError(null);
-        mLastnameView.setError(null);
         mEmailView.setError(null);
-        mPasswordView.setError(null);
 
-        // Store values at the time of the register attempt.
-        String name = mNameView.getText().toString();
-        String lastname = mLastnameView.getText().toString();
+        // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
-
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
@@ -168,28 +145,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             cancel = true;
         }
 
-        // Check for a valid lastname.
-        if (TextUtils.isEmpty(lastname)) {
-            mLastnameView.setError(getString(R.string.error_field_required));
-            focusView = mLastnameView;
-            cancel = true;
-        } else if (!isLastnameValid(lastname)) {
-            mLastnameView.setError(getString(R.string.error_invalid_lastname));
-            focusView = mLastnameView;
-            cancel = true;
-        }
-
-        // Check for a valid name.
-        if (TextUtils.isEmpty(name)) {
-            mNameView.setError(getString(R.string.error_field_required));
-            focusView = mNameView;
-            cancel = true;
-        } else if (!isNameValid(name)) {
-            mNameView.setError(getString(R.string.error_invalid_name));
-            focusView = mNameView;
-            cancel = true;
-        }
-
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -198,29 +153,14 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mRegisterTask = new UserRegisterTask(name, lastname, email, password);
-            mRegisterTask.execute((Void) null);
+            mAuthTask = new UserForgotPasswordTask(email);
+            mAuthTask.execute((Void) null);
         }
     }
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
         return email.contains("@");
-    }
-
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
-    }
-
-    private boolean isLastnameValid(String lastname){
-        //TODO: Replace this with your own logic
-        return lastname.length() > 3;
-    }
-
-    private boolean isNameValid(String name){
-        //TODO: Replace this with your own logic
-        return name.length() > 3;
     }
 
     /**
@@ -234,12 +174,12 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mRegisterFormView.animate().setDuration(shortAnimTime).alpha(
+            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
                     show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
                 }
             });
 
@@ -255,7 +195,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 
@@ -303,32 +243,26 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         int IS_PRIMARY = 1;
     }
 
+
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(RegisterActivity.this,
+                new ArrayAdapter<>(ForgottenPasswordActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mEmailView.setAdapter(adapter);
     }
 
     /**
-     * Represents an asynchronous registration task used to authenticate
+     * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
+    public class UserForgotPasswordTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String mName;
-        private final String mLastname;
         private final String mEmail;
-        private final String mPassword;
-        // TODO Add more necessary fields as they are designed
 
-        UserRegisterTask(String name, String lastname, String email, String password) {
-            mName = name;
-            mLastname = lastname;
+        UserForgotPasswordTask(String email) {
             mEmail = email;
-            mPassword = password;
         }
 
         @Override
@@ -348,23 +282,23 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
         @Override
         protected void onPostExecute(final Boolean success) {
-            mRegisterTask = null;
+            mAuthTask = null;
             showProgress(false);
 
             if (success) {
-                Intent resultIntent = new Intent();
-                resultIntent.putExtra("LoginForm", new String[] {mEmail, mPassword});
-                setResult(RESULT_OK, resultIntent);
+                Toast.makeText(ForgottenPasswordActivity.this, "Your password sent to your E-Mail.", Toast.LENGTH_LONG).show();
                 finish();
             } else {
-                // TODO Mark fields that failed validations.
+                mEmailView.setError(getString(R.string.error_incorrect_email));
+                mEmailView.requestFocus();
             }
         }
 
         @Override
         protected void onCancelled() {
-            mRegisterTask = null;
+            mAuthTask = null;
             showProgress(false);
         }
     }
 }
+

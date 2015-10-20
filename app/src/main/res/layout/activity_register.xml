@@ -21,18 +21,18 @@
             <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <AutoCompleteTextView android:id="@+id/name" android:layout_width="match_parent"
+            <EditText android:id="@+id/name" android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:hint="@string/prompt_name"
-                android:inputType="textPersonName" android:maxLines="1"
+                android:maxLines="1"
                 android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <AutoCompleteTextView android:id="@+id/lastname" android:layout_width="match_parent"
+                <EditText android:id="@+id/lastname" android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:hint="@string/prompt_lastname"
-                    android:inputType="textPersonName" android:maxLines="1"
+                    android:maxLines="1"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
@@ -41,16 +41,16 @@
 
                 <AutoCompleteTextView android:id="@+id/mail" android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:hint="@string/prompt_email"
-                    android:inputType="textPersonName" android:maxLines="1"
+                    android:inputType="textEmailAddress" android:maxLines="1"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <AutoCompleteTextView android:id="@+id/password" android:layout_width="match_parent"
+                <EditText android:id="@+id/password" android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:hint="@string/prompt_password"
-                    android:inputType="textPersonName" android:maxLines="1"
+                    android:inputType="textPassword" android:maxLines="1"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 

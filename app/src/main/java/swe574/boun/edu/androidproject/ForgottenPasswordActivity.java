@@ -26,6 +26,20 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -267,17 +281,109 @@ public class ForgottenPasswordActivity extends AppCompatActivity implements Load
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
+            // Create a new UrlConnection
+            URL postUrl = null;
+            try {
+                postUrl = new URL("http://46.101.225.73:9000/v1/user/resetPassword");
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            // Open the created connection to server.
+            HttpURLConnection httpURLConnection = null;
+            try {
+                httpURLConnection = (HttpURLConnection) postUrl.openConnection();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+            // Set up the post parameters
+            httpURLConnection.setReadTimeout(10000);
+            httpURLConnection.setConnectTimeout(15000);
 
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
+                httpURLConnection.setRequestMethod("POST");
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+                // Server Error
                 return false;
             }
 
-            // TODO: register the new account here.
-            return true;
+            httpURLConnection.setDoInput(true);
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setRequestProperty("Content-Type", "application/json");
+            // Create JSON String
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.accumulate("username", mEmail);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            String json = jsonObject.toString();
+            // Create request output stream.
+            OutputStream outputStream = null;
+
+            try {
+                outputStream = httpURLConnection.getOutputStream();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+            // Create a writer to write on the output stream.
+            BufferedWriter writer = null;
+            try {
+                writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                return false;
+            }
+            // Send the post request
+            try {
+                writer.write(json);
+                writer.flush();
+                writer.close();
+                outputStream.close();
+                httpURLConnection.connect();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+            // Get response code
+            int response = 0;
+
+            try {
+                response  = httpURLConnection.getResponseCode();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            // Get the Response
+            String responseJson = "";
+            if(response == HttpURLConnection.HTTP_OK){//Response is okay
+                String line = "";
+                try {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+                    while ((line=reader.readLine()) != null) {
+                        responseJson += line;
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            else{
+                // Server is down or webserver is changed.
+                return false;
+            }
+            try {
+                JSONObject object = new JSONObject(responseJson);
+                boolean success = object.getBoolean("ack");
+                if(success){
+                    return true;
+                }
+                return false;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return false;
+            }
         }
 
         @Override

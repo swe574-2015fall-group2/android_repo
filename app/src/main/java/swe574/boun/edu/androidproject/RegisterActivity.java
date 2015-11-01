@@ -449,7 +449,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             }
             try {
                 JSONObject object = new JSONObject(responseJson);
-                boolean success = true;
+                boolean success = object.getBoolean("ack");
                 if(success){
                     return true;
                 }

@@ -69,8 +69,11 @@ https://imgur.com/a/gf7G0
 - Press adb devices again, now it shuold show your device with a serial number.
 
 - Second way is using AVD (Android Virtual Device). To create AVD open Android Studio.
-- Our Git-Hub project should have appered at the left side of the menu screen now, below of the recent projects. Select that.
-- 
+- Our Git-Hub project should have appered at the left side of the menu screen now, below of the recent projects. Select that. If not press open an exisiting Android Studio project then navigate to the repo folder. First run might take a while due to gradle integration.
+- Press AVD Manager icon from right side of the run buttons. (Looks like tablet with android).
+- Remove the default API 23 device.Then press Create Virtual Device.
+- Select Nexus 4 from the list, then select kitkat with Google Inc.Press next then finish.
+
 
 
 

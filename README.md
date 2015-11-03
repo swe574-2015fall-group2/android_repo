@@ -39,13 +39,40 @@ https://imgur.com/a/bicIj
 
 - Go to Extras and select Android Support Library (Optional), Google USB Driver. If your pc supports virtualization also install Intel x86 Emulator Accelerator.
 
--Press install, accept all of the licenses and press install again. After it is done close the SDK Manager and Android Studio.
+- Press install, accept all of the licenses and press install again. After it is done close the SDK Manager and Android Studio.
 
 ### Adding GitHub repo into Android Studio
 
-- If you are using command line to use git, you should go to "C:\Users\<User Name>\AndroidStudioProjects", run cmd/shell there and enter this command "git clone https://github.com/swe574-2015fall-group2/android_repo.git tmp && mv tmp/.git . && rm -rf tmp && git reset --hard".
+- If you are using command line to use git, you should go to "C:\Users\<User Name>\AndroidStudioProjects", run cmd/shell there and enter this command for linux "git clone https://github.com/swe574-2015fall-group2/android_repo.git tmp && mv tmp/.git . && rm -rf tmp && git reset --hard" or this command for windows "git clone https://github.com/swe574-2015fall-group2/android_repo.git tmp && move tmp/.git . && del -rf tmp && git reset --hard".
 
--For GitHub Client, open the gui, press the + icon, press clone tab, select swe574-2015fall-group2, select android_repo. When Browse for folder appears, go to "C:\Users\<User Name>\AndroidStudioProjects" and press OK.
+- For GitHub Client, open the gui, press the + icon, press clone tab, select swe574-2015fall-group2, select android_repo. When Browse for folder appears, go to "C:\Users\<User Name>\AndroidStudioProjects" and press OK.
+
+### Setting up platform-tools
+
+- First of all locate where the platform tools are installed. By default they are located at "C:\Users\<User Name>\AppData\Local\Android\sdk\platform-tools".
+
+- To debug applications platform tools must be added to the path. To do this right click on "My Computer" then "Advanced System Settings". From new window press "Advanced" then "Enviroment Variables". At "System Variables" menu, go down until you found PATH variable. Press Edit button, From the new menu, go to end of the item Variable Value. Put a ";" of the end of it, if it doesn't exist then put the path of android platform tools as such given below. (Note that paths doesn't need to be same)
+
+https://imgur.com/a/gf7G0
+
+- Press OK to the all menus until we are back to desktop. Close any instance of cmd, if it is open.
+
+- To check if it is correctly installed, open new instance of cmd then enter this command "adb devices". If it says "List of Attechted Devices" then it is installed correctly.
+
+### Setting up debug devices
+
+- There are two ways to debug Android Applications. First is using actual device (reccomended).
+- Open your device and go to "Settings" app. From there go to "About Phone" list item. Find the item called "Build Number". Now press on it 5 times, the phone will say "You become a developer now".
+- Go back to settings app and press developer options, Press ON if it is required then make sure "USB debugging" is on.
+- Connect your phone to your pc. Now enter "adb kill-server" then "adb devices" into cmd. Make sure your phone's screen is on.
+- The phone will be promt authentication, press okay and make sure you check the box says always trust this pc.
+- Press adb devices again, now it shuold show your device with a serial number.
+
+- Second way is using AVD (Android Virtual Device). To create AVD open Android Studio.
+- Our Git-Hub project should have appered at the left side of the menu screen now, below of the recent projects. Select that.
+- 
+
+
 
 
  

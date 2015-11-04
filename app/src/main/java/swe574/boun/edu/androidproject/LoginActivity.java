@@ -474,12 +474,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                Toast.makeText(LoginActivity.this, mAuth, Toast.LENGTH_LONG).show();
                 SharedPreferences preferences = getSharedPreferences("user" , MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("token" , mAuth);
+                editor.putString("token", mAuth);
                 editor.apply();
-                // TODO Connect into main activity
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
             } else {
                 Toast.makeText(LoginActivity.this, "Your username and/or password is incorrect", Toast.LENGTH_SHORT).show();
             }

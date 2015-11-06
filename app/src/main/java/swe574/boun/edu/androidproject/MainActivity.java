@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_profile) {
             selectedFragment = ProfileFragment.class;
         }
-        else if (id == R.id.nav_message){
+        else if (id == R.id.nav_messages){
             selectedFragment = MessageFragment.class;
         }
 

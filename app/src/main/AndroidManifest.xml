@@ -37,6 +37,8 @@
         </activity>
         <activity android:name=".MessageActivity" >
         </activity>
+        <activity android:name=".ResourcesActivity" >
+        </activity>
     </application>
 
 </manifest>

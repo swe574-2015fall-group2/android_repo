@@ -190,13 +190,6 @@ tools:context="swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.fra
             <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:text="Export All Data"
-                android:id="@+id/buttonExportData"
-                android:layout_weight="1" />
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
                 android:text="Remove Account"
                 android:id="@+id/buttonRemoveAccount"
                 android:layout_weight="1" />

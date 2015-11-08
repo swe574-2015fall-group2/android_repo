@@ -2,17 +2,22 @@ package swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 
+import swe574.boun.edu.androidproject.LoginActivity;
 import swe574.boun.edu.androidproject.R;
 
 /**
@@ -65,6 +70,32 @@ public class ProfileFragment extends Fragment {
         FrameLayout frameLayout = (FrameLayout) viewGroup.findViewById(R.id.profilePicture);
         ViewGroup profilePicture = (ViewGroup) inflater.inflate(R.layout.profilepicture, null, false);
         frameLayout.addView(profilePicture);
+
+        Button mDeleteAccount = (Button) viewGroup.findViewById(R.id.buttonRemoveAccount);
+        mDeleteAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Remove Account");
+                builder.setMessage("Are you sure to remove your account?\n\nAs our terms of usage, our company holds all of the rights of the content" +
+                        " that is posted, used, shared and uploaded content in our website in whatever form of content it has been used. The content owned by our company will be only used for display purposes only." +
+                        " Pressing 'Yes' " +
+                        "means that you agree on our terms of account removal.");
+                builder.setPositiveButton("Yes, I agree", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // TODO Call the backup service
+                        Intent intent = new Intent(getActivity(), LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        startActivity(intent);
+                        getActivity().finish();
+                    }
+                });
+                builder.setCancelable(true);
+                builder.show();
+            }
+        });
         return viewGroup;
     }
 

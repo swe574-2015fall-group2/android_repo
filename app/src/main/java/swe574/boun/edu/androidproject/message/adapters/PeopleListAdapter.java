@@ -1,7 +1,6 @@
-package swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.message.adapters;
+package swe574.boun.edu.androidproject.message.adapters;
 
 import android.content.Context;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import swe574.boun.edu.androidproject.R;
-import swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.message.model.Person;
+import swe574.boun.edu.androidproject.message.model.Person;
 
 public class PeopleListAdapter extends BaseAdapter{
 

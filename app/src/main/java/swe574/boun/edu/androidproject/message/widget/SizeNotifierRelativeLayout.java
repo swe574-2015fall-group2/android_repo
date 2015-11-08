@@ -1,11 +1,11 @@
-package swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.message.widget;
+package swe574.boun.edu.androidproject.message.widget;
 
 import android.content.Context;
 import android.graphics.Rect;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.tools.AndroidUtilities;
+import swe574.boun.edu.androidproject.tools.AndroidUtilities;
 
 public class SizeNotifierRelativeLayout extends RelativeLayout {
 

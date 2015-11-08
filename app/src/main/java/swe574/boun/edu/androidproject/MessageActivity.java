@@ -23,16 +23,16 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.message.App;
-import swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.message.adapters.ChatListAdapter;
-import swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.message.model.ChatMessage;
-import swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.message.model.Status;
-import swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.message.model.UserType;
-import swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.message.widget.Emoji;
-import swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.message.widget.EmojiView;
-import swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.message.widget.SizeNotifierRelativeLayout;
-import swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.tools.AndroidUtilities;
-import swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.tools.NotificationCenter;
+import swe574.boun.edu.androidproject.message.App;
+import swe574.boun.edu.androidproject.message.adapters.ChatListAdapter;
+import swe574.boun.edu.androidproject.message.model.ChatMessage;
+import swe574.boun.edu.androidproject.message.model.Status;
+import swe574.boun.edu.androidproject.message.model.UserType;
+import swe574.boun.edu.androidproject.message.widget.Emoji;
+import swe574.boun.edu.androidproject.message.widget.EmojiView;
+import swe574.boun.edu.androidproject.message.widget.SizeNotifierRelativeLayout;
+import swe574.boun.edu.androidproject.tools.AndroidUtilities;
+import swe574.boun.edu.androidproject.tools.NotificationCenter;
 
 public class MessageActivity extends ActionBarActivity implements SizeNotifierRelativeLayout.SizeNotifierRelativeLayoutDelegate, NotificationCenter.NotificationCenterDelegate {
 

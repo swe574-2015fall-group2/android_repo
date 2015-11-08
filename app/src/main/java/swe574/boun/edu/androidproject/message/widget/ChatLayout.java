@@ -1,4 +1,4 @@
-package swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.message.widget;
+package swe574.boun.edu.androidproject.message.widget;
 
 import android.content.Context;
 import android.content.res.Resources;

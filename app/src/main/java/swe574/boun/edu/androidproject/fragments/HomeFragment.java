@@ -1,26 +1,22 @@
-package swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.fragments;
+package swe574.boun.edu.androidproject.fragments;
 
-import android.app.Activity;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import swe574.boun.edu.androidproject.R;
-import swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.message.adapters.PeopleListAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * to handle interaction events.
- * Use the {@link MessageFragment#newInstance} factory method to
+ * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MessageFragment extends Fragment {
+public class HomeFragment extends Fragment {
     // Fragment parameters.
     private final static String USER_TOKEN = "user";
     private String USER_ID;
@@ -30,18 +26,18 @@ public class MessageFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param user_id ID Of the user.
-     * @return A new instance of fragment MessageFragment.
+     * @return A new instance of fragment HomeFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static MessageFragment newInstance(String user_id) {
-        MessageFragment fragment = new MessageFragment();
+    public static HomeFragment newInstance(String user_id) {
+        HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
         args.putString(USER_TOKEN, user_id);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public MessageFragment() {
+    public HomeFragment() {
         // Required empty public constructor
     }
 
@@ -57,17 +53,13 @@ public class MessageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_message, container, false);
-        ListView peopleList = (ListView) rootView.findViewById(R.id.listViewPeople);
-        // TODO Implement this after service
-        //peopleList.setAdapter(new PeopleListAdapter(list));
-        return rootView;
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        getActivity().setTitle("Messaging");
+        getActivity().setTitle("Home");
     }
 
     @Override

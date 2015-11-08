@@ -1,10 +1,9 @@
-package swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.message.widget;
+package swe574.boun.edu.androidproject.message.widget;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Paint.Style;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Parcel;

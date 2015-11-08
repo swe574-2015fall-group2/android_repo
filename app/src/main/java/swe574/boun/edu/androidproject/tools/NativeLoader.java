@@ -1,4 +1,4 @@
-package swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.tools;
+package swe574.boun.edu.androidproject.tools;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;

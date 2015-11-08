@@ -1,4 +1,4 @@
-package swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.message.widget;
+package swe574.boun.edu.androidproject.message.widget;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,9 +20,9 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Locale;
 
-import swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.message.App;
-import swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.tools.AndroidUtilities;
-import swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.tools.NotificationCenter;
+import swe574.boun.edu.androidproject.message.App;
+import swe574.boun.edu.androidproject.tools.AndroidUtilities;
+import swe574.boun.edu.androidproject.tools.NotificationCenter;
 
 public class Emoji {
     private static HashMap<Long, DrawableInfo> rects = new HashMap<Long, DrawableInfo>();

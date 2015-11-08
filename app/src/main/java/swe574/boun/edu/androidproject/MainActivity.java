@@ -12,10 +12,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.fragments.GroupsFragment;
-import swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.fragments.HomeFragment;
-import swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.fragments.MessageFragment;
-import swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.fragments.ProfileFragment;
+import swe574.boun.edu.androidproject.fragments.GroupsFragment;
+import swe574.boun.edu.androidproject.fragments.HomeFragment;
+import swe574.boun.edu.androidproject.fragments.MessageFragment;
+import swe574.boun.edu.androidproject.fragments.ProfileFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {

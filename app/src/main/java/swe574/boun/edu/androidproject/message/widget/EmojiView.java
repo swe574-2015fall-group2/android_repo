@@ -1,4 +1,4 @@
-package swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.message.widget;
+package swe574.boun.edu.androidproject.message.widget;
 
 import android.content.Context;
 import android.database.DataSetObserver;
@@ -19,7 +19,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import swe574.boun.edu.androidproject.R;
-import swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.tools.AndroidUtilities;
+import swe574.boun.edu.androidproject.tools.AndroidUtilities;
 
 public class EmojiView extends LinearLayout {
     private ArrayList<EmojiGridAdapter> adapters = new ArrayList<EmojiGridAdapter>();

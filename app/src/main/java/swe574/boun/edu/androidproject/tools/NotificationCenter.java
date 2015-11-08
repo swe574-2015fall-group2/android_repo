@@ -1,4 +1,4 @@
-package swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.tools;
+package swe574.boun.edu.androidproject.tools;
 
 import java.util.ArrayList;
 import java.util.HashMap;

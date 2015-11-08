@@ -1,9 +1,9 @@
-package swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.message;
+package swe574.boun.edu.androidproject.message;
 
 import android.app.Application;
 import android.os.Handler;
 
-import swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.tools.NativeLoader;
+import swe574.boun.edu.androidproject.tools.NativeLoader;
 
 public class App extends Application {
 

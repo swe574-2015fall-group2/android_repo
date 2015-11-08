@@ -1,4 +1,4 @@
-package swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.message.adapters;
+package swe574.boun.edu.androidproject.message.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,11 +12,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import swe574.boun.edu.androidproject.R;
-import swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.message.model.ChatMessage;
-import swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.message.model.Status;
-import swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.message.model.UserType;
-import swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.message.widget.Emoji;
-import swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.tools.AndroidUtilities;
+import swe574.boun.edu.androidproject.message.model.ChatMessage;
+import swe574.boun.edu.androidproject.message.model.Status;
+import swe574.boun.edu.androidproject.message.model.UserType;
+import swe574.boun.edu.androidproject.message.widget.Emoji;
+import swe574.boun.edu.androidproject.tools.AndroidUtilities;
 
 public class ChatListAdapter extends BaseAdapter {
 

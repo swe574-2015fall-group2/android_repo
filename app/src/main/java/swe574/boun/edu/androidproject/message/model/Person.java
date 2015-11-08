@@ -1,4 +1,4 @@
-package swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.message.model;
+package swe574.boun.edu.androidproject.message.model;
 
 
 import android.graphics.Bitmap;

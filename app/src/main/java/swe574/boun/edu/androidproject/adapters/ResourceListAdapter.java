@@ -1,0 +1,55 @@
+package swe574.boun.edu.androidproject.adapters;
+
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.TextView;
+
+import java.util.List;
+import java.util.zip.Inflater;
+
+import swe574.boun.edu.androidproject.R;
+import swe574.boun.edu.androidproject.beans.Resource;
+
+public class ResourceListAdapter extends BaseAdapter{
+    private Context mContext;
+    private List<Resource> mResources;
+
+    public ResourceListAdapter(Context mContext, List<Resource> mResources) {
+        this.mContext = mContext;
+        this.mResources = mResources;
+    }
+
+    @Override
+    public int getCount() {
+        return mResources.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return mResources.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.resourcelistitem,null,true);
+
+        CheckBox mCheckBox = (CheckBox) viewGroup.findViewById(R.id.checkBox);
+        TextView mSize = (TextView) viewGroup.findViewById(R.id.textViewSize);
+        TextView mFormat = (TextView) viewGroup.findViewById(R.id.textViewFormat);
+
+
+
+        return viewGroup;
+    }
+}

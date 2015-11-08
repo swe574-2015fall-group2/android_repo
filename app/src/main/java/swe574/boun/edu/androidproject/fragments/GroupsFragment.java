@@ -1,4 +1,4 @@
-package swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.fragments;
+package swe574.boun.edu.androidproject.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -13,10 +13,10 @@ import swe574.boun.edu.androidproject.R;
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * to handle interaction events.
- * Use the {@link HomeFragment#newInstance} factory method to
+ * Use the {@link GroupsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment {
+public class GroupsFragment extends Fragment {
     // Fragment parameters.
     private final static String USER_TOKEN = "user";
     private String USER_ID;
@@ -26,18 +26,18 @@ public class HomeFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param user_id ID Of the user.
-     * @return A new instance of fragment HomeFragment.
+     * @return A new instance of fragment GroupsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String user_id) {
-        HomeFragment fragment = new HomeFragment();
+    public static GroupsFragment newInstance(String user_id) {
+        GroupsFragment fragment = new GroupsFragment();
         Bundle args = new Bundle();
         args.putString(USER_TOKEN, user_id);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public HomeFragment() {
+    public GroupsFragment() {
         // Required empty public constructor
     }
 
@@ -53,13 +53,13 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return inflater.inflate(R.layout.fragment_groups, container, false);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        getActivity().setTitle("Home");
+        getActivity().setTitle("Groups");
     }
 
     @Override

@@ -1,4 +1,4 @@
-package swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.tools;
+package swe574.boun.edu.androidproject.tools;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -21,7 +21,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.channels.FileChannel;
 
-import swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.message.App;
+import swe574.boun.edu.androidproject.message.App;
 
 public class AndroidUtilities {
 

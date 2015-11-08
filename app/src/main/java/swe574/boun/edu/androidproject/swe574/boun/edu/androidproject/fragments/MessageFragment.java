@@ -8,8 +8,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import swe574.boun.edu.androidproject.R;
+import swe574.boun.edu.androidproject.swe574.boun.edu.androidproject.message.adapters.PeopleListAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,7 +57,11 @@ public class MessageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_message, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_message, container, false);
+        ListView peopleList = (ListView) rootView.findViewById(R.id.listViewPeople);
+        // TODO Implement this after service
+        //peopleList.setAdapter(new PeopleListAdapter(list));
+        return rootView;
     }
 
     @Override

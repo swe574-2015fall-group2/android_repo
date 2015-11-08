@@ -6,6 +6,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -23,6 +26,7 @@ public class ProfileFragment extends Fragment {
     // Fragment parameters.
     private final static String USER_TOKEN = "user";
     private String USER_ID;
+    private int EDIT_MENU_ID;
 
     /**
      * Use this factory method to create a new instance of
@@ -50,6 +54,7 @@ public class ProfileFragment extends Fragment {
         if (getArguments() != null) {
             USER_ID = (String) getArguments().get(USER_TOKEN);
         }
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -61,6 +66,13 @@ public class ProfileFragment extends Fragment {
         ViewGroup profilePicture = (ViewGroup) inflater.inflate(R.layout.profilepicture, null, false);
         frameLayout.addView(profilePicture);
         return viewGroup;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        EDIT_MENU_ID = menu.FIRST + 1;
+        menu.add(1, EDIT_MENU_ID, 1, "Edit Profile");
     }
 
     @Override

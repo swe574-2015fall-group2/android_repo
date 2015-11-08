@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_groups) {
             selectedFragment = GroupsFragment.class;
         } else if (id == R.id.nav_profile) {
+
             selectedFragment = ProfileFragment.class;
         }
         else if (id == R.id.nav_messages){

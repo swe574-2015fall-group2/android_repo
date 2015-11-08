@@ -58,8 +58,9 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_profile, container, false);
         FrameLayout frameLayout = (FrameLayout) viewGroup.findViewById(R.id.profilePicture);
-        ViewGroup profilePicture;
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        ViewGroup profilePicture = (ViewGroup) inflater.inflate(R.layout.profilepicture, null, false);
+        frameLayout.addView(profilePicture);
+        return viewGroup;
     }
 
     @Override

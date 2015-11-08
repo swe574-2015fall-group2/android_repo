@@ -67,6 +67,7 @@ public class MessageFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        getActivity().setTitle("Messaging");
     }
 
     @Override

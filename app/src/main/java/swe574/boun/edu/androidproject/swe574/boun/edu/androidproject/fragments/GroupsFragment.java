@@ -61,6 +61,7 @@ public class GroupsFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        getActivity().setTitle("Groups");
     }
 
     @Override

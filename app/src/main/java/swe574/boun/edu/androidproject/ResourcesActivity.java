@@ -11,5 +11,4 @@ public class ResourcesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_resources);
     }
 
-
 }

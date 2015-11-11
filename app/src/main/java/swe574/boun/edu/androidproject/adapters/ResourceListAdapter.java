@@ -44,11 +44,18 @@ public class ResourceListAdapter extends BaseAdapter{
         LayoutInflater inflater = LayoutInflater.from(mContext);
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.resourcelistitem,null,true);
 
-        CheckBox mCheckBox = (CheckBox) viewGroup.findViewById(R.id.checkBox);
         TextView mSize = (TextView) viewGroup.findViewById(R.id.textViewSize);
         TextView mFormat = (TextView) viewGroup.findViewById(R.id.textViewFormat);
 
+        Resource resource = mResources.get(position);
 
+        if(mSize != null){
+            mSize.setText(resource.getmSize());
+        }
+
+        if(mFormat != null){
+            mFormat.setText(resource.getmFormat());
+        }
 
         return viewGroup;
     }

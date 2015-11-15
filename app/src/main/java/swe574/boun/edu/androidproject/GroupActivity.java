@@ -11,11 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import swe574.boun.edu.androidproject.fragments.GroupHomeFragment;
-
 public class GroupActivity extends AppCompatActivity {
 
     /**
@@ -32,7 +27,6 @@ public class GroupActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-    private List<Fragment> mFragments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +37,7 @@ public class GroupActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mFragments = new ArrayList<>();
-        mFragments.add(new GroupHomeFragment());
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), mFragments);
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -84,29 +76,26 @@ public class GroupActivity extends AppCompatActivity {
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
-        private List<Fragment> mFragments;
 
-        public SectionsPagerAdapter(FragmentManager fm, List<Fragment> mFragments) {
+        public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
-            this.mFragments = mFragments;
         }
 
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return mFragments.get(position);
+            return null;
         }
 
         @Override
         public int getCount() {
-            return mFragments.size();
+            return 1;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            Fragment fragment = mFragments.get(position);
-            return ((AppCompatActivity) fragment.getActivity()).getSupportActionBar().getTitle();
+            return "a";
         }
     }
 }

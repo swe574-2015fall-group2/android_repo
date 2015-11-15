@@ -12,9 +12,27 @@ import android.view.ViewGroup;
 import swe574.boun.edu.androidproject.R;
 
 public class GroupHomeFragment extends Fragment {
+    private final static String GRUP_NAME_TOKEN = "name";
+    private String GROUP_NAME;
+
+    public GroupHomeFragment() {
+        // Required empty public constructor
+    }
+
+    public static GroupHomeFragment newInstance(String GROUP_NAME) {
+        GroupHomeFragment fragment = new GroupHomeFragment();
+        Bundle args = new Bundle();
+        args.putString(GRUP_NAME_TOKEN, GROUP_NAME);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            GROUP_NAME = (String) getArguments().get(GRUP_NAME_TOKEN);
+        }
     }
 
     @Nullable
@@ -26,6 +44,7 @@ public class GroupHomeFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        getActivity().setTitle(GROUP_NAME);
     }
 
     @Override

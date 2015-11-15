@@ -43,7 +43,6 @@ public class DiscussionFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        getActivity().setTitle("Discussions");
     }
 
     @Override
@@ -51,4 +50,14 @@ public class DiscussionFragment extends Fragment {
         super.onDetach();
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if(this.isVisible()){
+            if(isVisibleToUser){
+                getActivity().setTitle("Discussions");
+            }
+        }
+    }
 }

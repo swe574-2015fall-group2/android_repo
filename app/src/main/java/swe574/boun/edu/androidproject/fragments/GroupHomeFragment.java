@@ -44,12 +44,22 @@ public class GroupHomeFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        getActivity().setTitle(GROUP_NAME);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if(this.isVisible()){
+            if(isVisibleToUser){
+                getActivity().setTitle("Home");
+            }
+        }
     }
 
 }

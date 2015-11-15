@@ -1,6 +1,7 @@
 package swe574.boun.edu.androidproject.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import swe574.boun.edu.androidproject.NewGroupActivity;
 import swe574.boun.edu.androidproject.R;
 
 /**
@@ -72,7 +74,8 @@ public class GroupsFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == ADD_GROUP_ID) {
-
+            Intent intent = new Intent(getActivity(), NewGroupActivity.class);
+            startActivity(intent);
         }
         return true;
     }

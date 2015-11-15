@@ -4,6 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -20,6 +23,11 @@ public class GroupsFragment extends Fragment {
     // Fragment parameters.
     private final static String USER_TOKEN = "user";
     private String USER_ID;
+    private int ADD_GROUP_ID;
+
+    public GroupsFragment() {
+        // Required empty public constructor
+    }
 
     /**
      * Use this factory method to create a new instance of
@@ -37,16 +45,13 @@ public class GroupsFragment extends Fragment {
         return fragment;
     }
 
-    public GroupsFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             USER_ID = (String) getArguments().get(USER_TOKEN);
         }
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -54,6 +59,22 @@ public class GroupsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_groups, container, false);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        ADD_GROUP_ID = menu.FIRST + 1;
+        menu.add(1, ADD_GROUP_ID, 1, "Create Group");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == ADD_GROUP_ID) {
+
+        }
+        return true;
     }
 
     @Override

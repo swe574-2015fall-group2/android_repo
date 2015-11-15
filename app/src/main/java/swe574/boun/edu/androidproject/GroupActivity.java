@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
+import swe574.boun.edu.androidproject.fragments.GroupHomeFragment;
+
 public class GroupActivity extends AppCompatActivity {
 
     /**
@@ -42,7 +44,7 @@ public class GroupActivity extends AppCompatActivity {
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mFragments = new ArrayList<>();
-        //mFragments.add();
+        mFragments.add(new GroupHomeFragment());
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), mFragments);
 
         // Set up the ViewPager with the sections adapter.

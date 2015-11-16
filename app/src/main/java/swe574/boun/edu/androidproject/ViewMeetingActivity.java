@@ -47,7 +47,7 @@ public class ViewMeetingActivity extends AppCompatActivity {
             mMeetingLocation = (TextView) findViewById(R.id.MeetingLocation);
             mMeetingMonth = (TextView) findViewById(R.id.MeetingMonth);
             mMeetingTags = (TextView) findViewById(R.id.meetingTags);
-            mMeetingToDo = (TextView) findViewById(R.id.meetingTags);
+            mMeetingToDo = (TextView) findViewById(R.id.meetingToDo);
             mMeetingYear = (TextView) findViewById(R.id.MeetingYear);
         }
 

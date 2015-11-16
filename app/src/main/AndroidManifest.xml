@@ -54,7 +54,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ViewMeetingActivity">
+        <activity android:name=".ViewMeetingActivity"></activity>
+        <activity android:name=".MeetingPeopleActivity">
         </activity>
     </application>
 

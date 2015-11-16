@@ -9,11 +9,10 @@
         android:layout_height="match_parent">
 
         <ListView
-            android:id="@+id/listDiscussions"
+            android:id="@+id/listMeetings"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1" />
-
     </LinearLayout>
 
 </ScrollView>

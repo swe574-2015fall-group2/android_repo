@@ -17,7 +17,7 @@ import java.util.List;
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.fragments.GroupHomeFragment;
 
-public class NoteActivity extends AppCompatActivity {
+public class ViewNoteActivity extends AppCompatActivity {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide

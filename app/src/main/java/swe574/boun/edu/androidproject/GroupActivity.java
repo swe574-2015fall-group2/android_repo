@@ -1,5 +1,6 @@
 package swe574.boun.edu.androidproject;
 
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -8,13 +9,17 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import swe574.boun.edu.androidproject.fragments.GroupHomeFragment;
+import swe574.boun.edu.androidproject.adapters.GroupTabLayout;
+import swe574.boun.edu.androidproject.adapters.GroupTabPagerAdapter;
 
 public class GroupActivity extends AppCompatActivity {
 
@@ -26,13 +31,13 @@ public class GroupActivity extends AppCompatActivity {
      * may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private GroupTabPagerAdapter mSectionsPagerAdapter;
 
     /**
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-    private List<Fragment> mFragments;
+    private List<String> mTitles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,17 +48,18 @@ public class GroupActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mFragments = new ArrayList<>();
-        mFragments.add(new GroupHomeFragment());
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), mFragments);
+        mTitles = new ArrayList<>();
+        mTitles.addAll(Arrays.asList(new String[]{"Home" , "Meetings" , "Discussions" , "Notes"}));
+        mSectionsPagerAdapter = new GroupTabPagerAdapter(getSupportFragmentManager(), mTitles, 4);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        GroupTabLayout tabLayout = (GroupTabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
     }
 
 
@@ -79,34 +85,4 @@ public class GroupActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-        private List<Fragment> mFragments;
-
-        public SectionsPagerAdapter(FragmentManager fm, List<Fragment> mFragments) {
-            super(fm);
-            this.mFragments = mFragments;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return mFragments.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragments.size();
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            Fragment fragment = mFragments.get(position);
-            return ((AppCompatActivity) fragment.getActivity()).getSupportActionBar().getTitle();
-        }
-    }
 }

@@ -45,7 +45,7 @@ public class GroupActivity extends AppCompatActivity {
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mTitles = new ArrayList<>();
-        mTitles.addAll(Arrays.asList(new String[]{"Home" , "Meeting" , "Discuss..." , "Note"}));
+        mTitles.addAll(Arrays.asList(new String[]{"Home" , "Meetings" , "Discussions" , "Notes"}));
         mSectionsPagerAdapter = new GroupTabPagerAdapter(getSupportFragmentManager(), mTitles, 4);
 
         // Set up the ViewPager with the sections adapter.
@@ -54,7 +54,7 @@ public class GroupActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
 
     }

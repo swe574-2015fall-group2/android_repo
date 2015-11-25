@@ -38,7 +38,6 @@ public class GroupsFragment extends Fragment {
      * @param USER_AUTH ID Of the user.
      * @return A new instance of fragment GroupsFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static GroupsFragment newInstance(String USER_AUTH) {
         GroupsFragment fragment = new GroupsFragment();
         Bundle args = new Bundle();
@@ -60,7 +59,8 @@ public class GroupsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_groups, container, false);
+        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_groups, container, false);
+        return view;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package swe574.boun.edu.androidproject;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -73,12 +74,12 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         Fragment fragment = null;
+        SharedPreferences preferences = getSharedPreferences("user", MODE_PRIVATE);
         Class selectedFragment = null;
 
         if (id == R.id.nav_home) {
@@ -94,7 +95,12 @@ public class MainActivity extends AppCompatActivity
         }
 
         try {
-            fragment = (Fragment) selectedFragment.newInstance();
+            if(selectedFragment == GroupsFragment.class){
+                fragment = GroupsFragment.newInstance(preferences.getString("token",""));
+            }
+            else{
+                fragment = (Fragment) selectedFragment.newInstance();
+            }
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {

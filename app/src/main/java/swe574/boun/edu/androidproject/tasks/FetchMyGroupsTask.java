@@ -3,10 +3,13 @@ package swe574.boun.edu.androidproject.tasks;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.MalformedJsonException;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,23 +24,25 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import swe574.boun.edu.androidproject.R;
+import swe574.boun.edu.androidproject.adapters.ListGroupAdapter;
+import swe574.boun.edu.androidproject.model.Group;
 
 /**
  * < Parametre Tipi, Progress Tipi, Return Tipi
  */
-public class FetchMyGroupsTask extends AsyncTask<Void, Void, Boolean> {
-    private Activity mActivity;
+public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
+    private ViewGroup mView;
     private String mAuthToken;
     private View mGroupForm;
     private GridView mMyGroup;
-    private GridView mRecGroup;
-    //TODO mAllGroups
     private View mProgress;
+    private Boolean mResult;
 
-    public FetchMyGroupsTask(Activity mActivity, String mAuthToken) {
-        this.mActivity = mActivity;
+    public FetchMyGroupsTask(ViewGroup mView, String mAuthToken) {
+        this.mView = mView;
         this.mAuthToken = mAuthToken;
     }
 
@@ -46,17 +51,16 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, Boolean> {
      */
     @Override
     protected void onPreExecute() {
-        mMyGroup = (GridView) mActivity.findViewById(R.id.gridViewMyGroups);
-        mRecGroup = (GridView) mActivity.findViewById(R.id.gridViewReccomendedGroups);
-        //TODO gridViewAllGroups
-        mGroupForm = mActivity.findViewById(R.id.group_form);
-        mProgress = mActivity.findViewById(R.id.group_progress);
+        mMyGroup = (GridView) mView.findViewById(R.id.gridViewMyGroups);
+        mGroupForm = mView.findViewById(R.id.group_form);
+        mProgress = mView.findViewById(R.id.group_progress);
         mGroupForm.setVisibility(View.GONE);
         mProgress.setVisibility(View.VISIBLE);
     }
 
     @Override
-    protected Boolean doInBackground(Void... params) {
+    protected ArrayList<Group> doInBackground(Void... params) {
+        mResult = false;
         try{
             // Create a new UrlConnection
             URL postUrl = new URL("http://162.243.215.160:9000/v1/group/listMyGroups");
@@ -97,13 +101,24 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, Boolean> {
             }
             else{
                 // Server is down or webserver is changed.
-                return false;
+                throw new IllegalStateException("Response code is not valid");
             }
+            //TODO RECHECK WITH DATA
             JSONObject object = new JSONObject(responseJson);
-            if(object != null){
-                // DO SOMETHING WITH RESULTS
+            if(object.getString("status").equals("success")){
+                ArrayList<Group> groups = new ArrayList<>();
+                JSONArray array = object.getJSONObject("result").getJSONArray("groupList");
+                for(int i = 0 ; i < array.length() ; i++){
+                    JSONObject o = array.getJSONObject(i);
+                    Group g = new Group(o.getString("name"), o.getString("description"), o.getString("id"), null);
+                    groups.add(g);
+                }
+                mResult = true;
+                return groups;
             }
-            return false;
+            else{
+                throw new MalformedJsonException("Returned JSON String isn't fit the format.");
+            }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -111,16 +126,17 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, Boolean> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return false;
+        return null;
     }
 
     @Override
-    protected void onPostExecute(Boolean result) {
+    protected void onPostExecute(ArrayList<Group> result) {
         mGroupForm.setVisibility(View.VISIBLE);
         mProgress.setVisibility(View.GONE);
 
-        if(result){
-
+        if(mResult){
+            ListGroupAdapter adapter = new ListGroupAdapter(result);
+            mMyGroup.setAdapter(adapter);
         }
     }
 

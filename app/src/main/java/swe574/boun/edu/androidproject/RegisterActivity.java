@@ -29,6 +29,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -218,22 +219,18 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
         return email.contains("@");
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() > 4;
     }
 
     private boolean isLastnameValid(String lastname){
-        //TODO: Replace this with your own logic
         return lastname.length() > 3;
     }
 
     private boolean isNameValid(String name){
-        //TODO: Replace this with your own logic
         return name.length() > 3;
     }
 
@@ -336,7 +333,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         private final String mLastname;
         private final String mEmail;
         private final String mPassword;
-        // TODO Add more necessary fields as they are designed
 
         UserRegisterTask(String name, String lastname, String email, String password) {
             mName = name;
@@ -380,15 +376,10 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             // Create JSON String
             JSONObject jsonObject = new JSONObject();
             try {
-                JSONObject userObject = new JSONObject();
-                userObject.accumulate("username", mEmail);
-                userObject.accumulate("password", mPassword);
-                userObject.accumulate("firstname" , mName);
-                userObject.accumulate("lastname", mLastname);
-                userObject.accumulate("status" , 0);
-                JSONObject detailObject = new JSONObject();
-                userObject.accumulate("userDetail" , detailObject);
-                jsonObject.accumulate("user", userObject);
+                jsonObject.accumulate("username", mEmail);
+                jsonObject.accumulate("password", mPassword);
+                jsonObject.accumulate("firstname" , mName);
+                jsonObject.accumulate("lastname", mLastname);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -449,7 +440,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             }
             try {
                 JSONObject object = new JSONObject(responseJson);
-                boolean success = object.getBoolean("ack");
+                boolean success = object.getString("status").equals("success");
                 if(success){
                     return true;
                 }
@@ -471,7 +462,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                 setResult(RESULT_OK, resultIntent);
                 finish();
             } else {
-                // TODO Mark fields that failed validations.
+                Toast.makeText(RegisterActivity.this, "One of the fields you entered are invalid.", Toast.LENGTH_LONG);
             }
         }
 

@@ -33,6 +33,7 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, Boolean> {
     private View mGroupForm;
     private GridView mMyGroup;
     private GridView mRecGroup;
+    //TODO mAllGroups
     private View mProgress;
 
     public FetchMyGroupsTask(Activity mActivity, String mAuthToken) {
@@ -47,6 +48,7 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, Boolean> {
     protected void onPreExecute() {
         mMyGroup = (GridView) mActivity.findViewById(R.id.gridViewMyGroups);
         mRecGroup = (GridView) mActivity.findViewById(R.id.gridViewReccomendedGroups);
+        //TODO gridViewAllGroups
         mGroupForm = mActivity.findViewById(R.id.group_form);
         mProgress = mActivity.findViewById(R.id.group_progress);
         mGroupForm.setVisibility(View.GONE);

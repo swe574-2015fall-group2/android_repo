@@ -284,7 +284,7 @@ public class ForgottenPasswordActivity extends AppCompatActivity implements Load
             // Create a new UrlConnection
             URL postUrl = null;
             try {
-                postUrl = new URL("http://46.101.225.73:9000/v1/user/resetPassword");
+                postUrl = new URL("http://162.243.215.160:9000/v1/user/resetPassword");
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }

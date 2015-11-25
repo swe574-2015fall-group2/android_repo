@@ -363,7 +363,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Create a new UrlConnection
             URL postUrl = null;
             try {
-                postUrl = new URL("http://46.101.225.73:9000/v1/user/login");
+                postUrl = new URL("http://162.243.215.160:9000/v1/user/login");
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }

@@ -1,7 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
 android:layout_height="match_parent" android:orientation="vertical"
-tools:context="swe574.boun.edu.androidproject.fragments.ProfileFragment">
+tools:context="swe574.boun.edu.androidproject.fragments.ProfileFragment"
+    android:background="@drawable/background_login">
 <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="0dp"
@@ -10,7 +11,8 @@ tools:context="swe574.boun.edu.androidproject.fragments.ProfileFragment">
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     android:layout_marginTop="16dp"
-    android:layout_marginBottom="16dp" />
+    android:layout_marginBottom="16dp"
+    android:background="@drawable/background_form"/>
 
     <TableLayout
         android:layout_width="match_parent"
@@ -23,7 +25,8 @@ tools:context="swe574.boun.edu.androidproject.fragments.ProfileFragment">
         android:orientation="vertical"
         android:scrollIndicators="none"
         android:stretchColumns="true"
-        android:shrinkColumns="true">
+        android:shrinkColumns="true"
+        android:background="@drawable/background_form">
 
         <TableRow
             android:layout_width="0dp"
@@ -155,12 +158,13 @@ tools:context="swe574.boun.edu.androidproject.fragments.ProfileFragment">
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_weight="4.5"
         android:layout_margin="16dp"
         android:measureWithLargestChild="true"
         android:orientation="vertical"
         android:shrinkColumns="true"
-        android:stretchColumns="true">
+        android:stretchColumns="true"
+        android:background="@drawable/background_form">
 
         <TableRow
             android:layout_width="match_parent"
@@ -172,14 +176,20 @@ tools:context="swe574.boun.edu.androidproject.fragments.ProfileFragment">
                 android:layout_height="match_parent"
                 android:text="Privacy Settings"
                 android:id="@+id/buttonPrivacy"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:background="@drawable/button_style"
+                android:textColor="@color/white"
+                android:layout_margin="16dp"/>
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="Manage Resources"
                 android:id="@+id/buttonResources"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:layout_margin="16dp"
+                android:background="@drawable/button_style"
+                android:textColor="@color/white"/>
         </TableRow>
 
         <TableRow
@@ -192,7 +202,11 @@ tools:context="swe574.boun.edu.androidproject.fragments.ProfileFragment">
                 android:layout_height="match_parent"
                 android:text="Remove Account"
                 android:id="@+id/buttonRemoveAccount"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:layout_margin="16dp"
+                android:background="@drawable/button_style"
+                android:textColor="@color/white"
+                />
         </TableRow>
     </TableLayout>
 </LinearLayout>

@@ -63,14 +63,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
     private static final int REGISTER_REQUEST = 1;
+    private static final int FORGOT_REQUEST = 2;
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -106,8 +100,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                //attemptLogin();
-                startActivity(new Intent(getBaseContext(), MainActivity.class));
+                attemptLogin();
             }
         });
 
@@ -116,7 +109,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             @Override
             public void onClick(View v) {
                 Intent forgotIntent = new Intent(LoginActivity.this, ForgottenPasswordActivity.class);
-                startActivity(forgotIntent);
+                startActivityForResult(forgotIntent, FORGOT_REQUEST);
             }
         });
 
@@ -226,7 +219,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else if (!isEmailValid(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
-            //cancel = true;
+            cancel = true;
         }
 
         if (cancel) {
@@ -243,12 +236,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
         return email.contains("@");
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() > 4;
     }
 
@@ -460,7 +451,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     mAuth = object.getString("token");
                     return true;
                 }
-                mAuth = object.getString("message");
                 return false;
             } catch (JSONException e) {
                 e.printStackTrace();

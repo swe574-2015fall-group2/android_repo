@@ -10,9 +10,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.GridView;
 
+import swe574.boun.edu.androidproject.AllGroupsActivity;
 import swe574.boun.edu.androidproject.NewGroupActivity;
 import swe574.boun.edu.androidproject.R;
+import swe574.boun.edu.androidproject.tasks.FetchMyGroupsTask;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +30,11 @@ public class GroupsFragment extends Fragment {
     private final static String USER_TOKEN = "user";
     private String USER_AUTH;
     private int ADD_GROUP_ID;
+    FetchMyGroupsTask mTask;
+    //UI parameters
+    private Button mViewAllGroups;
+    private GridView mMyGroupView;
+    private GridView mRecGroupView;
 
     public GroupsFragment() {
         // Required empty public constructor
@@ -60,6 +69,19 @@ public class GroupsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_groups, container, false);
+
+        mViewAllGroups = (Button) view.findViewById(R.id.buttonViewAllGroups);
+        mViewAllGroups.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(),AllGroupsActivity.class);
+                startActivity(i);
+            }
+        });
+
+        mMyGroupView = (GridView) view.findViewById(R.id.gridViewMyGroups);
+        mTask = new FetchMyGroupsTask(view, USER_AUTH);
+        mTask.execute();
         return view;
     }
 

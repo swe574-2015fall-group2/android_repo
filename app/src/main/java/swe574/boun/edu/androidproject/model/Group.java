@@ -1,5 +1,6 @@
 package swe574.boun.edu.androidproject.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class Group {
@@ -24,7 +25,7 @@ public final class Group {
     }
 
     public List<String> getmTags() {
-        return mTags;
+        return new ArrayList<>(mTags);
     }
 
     public String getmID() {

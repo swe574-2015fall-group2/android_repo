@@ -5,11 +5,13 @@ import java.util.List;
 public final class Group {
     private final String mName;
     private final String mDescription;
+    private final String mID;
     private final List<String> mTags;
 
-    public Group(String mName, String mDescription, List<String> mTags) {
+    public Group(String mName, String mDescription,String mID, List<String> mTags) {
         this.mName = mName;
         this.mDescription = mDescription;
+        this.mID = mID;
         this.mTags = mTags;
     }
 
@@ -23,5 +25,9 @@ public final class Group {
 
     public List<String> getmTags() {
         return mTags;
+    }
+
+    public String getmID() {
+        return mID;
     }
 }

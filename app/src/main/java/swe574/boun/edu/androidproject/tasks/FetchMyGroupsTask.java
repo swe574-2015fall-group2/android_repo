@@ -118,7 +118,7 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, Boolean> {
         mProgress.setVisibility(View.GONE);
 
         if(result){
-
+            //mMyGroup.setAdapter();
         }
     }
 

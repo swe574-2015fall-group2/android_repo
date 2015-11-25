@@ -24,7 +24,7 @@ import swe574.boun.edu.androidproject.R;
 public class GroupsFragment extends Fragment {
     // Fragment parameters.
     private final static String USER_TOKEN = "user";
-    private String USER_ID;
+    private String USER_AUTH;
     private int ADD_GROUP_ID;
 
     public GroupsFragment() {
@@ -35,14 +35,14 @@ public class GroupsFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param user_id ID Of the user.
+     * @param USER_AUTH ID Of the user.
      * @return A new instance of fragment GroupsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static GroupsFragment newInstance(String user_id) {
+    public static GroupsFragment newInstance(String USER_AUTH) {
         GroupsFragment fragment = new GroupsFragment();
         Bundle args = new Bundle();
-        args.putString(USER_TOKEN, user_id);
+        args.putString(USER_TOKEN, USER_AUTH);
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,7 +51,7 @@ public class GroupsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            USER_ID = (String) getArguments().get(USER_TOKEN);
+            USER_AUTH = (String) getArguments().get(USER_TOKEN);
         }
         setHasOptionsMenu(true);
     }

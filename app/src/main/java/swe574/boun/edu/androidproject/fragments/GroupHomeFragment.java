@@ -13,16 +13,19 @@ import swe574.boun.edu.androidproject.R;
 
 public class GroupHomeFragment extends Fragment {
     private final static String GRUP_NAME_TOKEN = "name";
+    private final static String USER_TOKEN = "user";
     private String GROUP_NAME;
+    private String USER_AUTH;
 
     public GroupHomeFragment() {
         // Required empty public constructor
     }
 
-    public static GroupHomeFragment newInstance(String GROUP_NAME) {
+    public static GroupHomeFragment newInstance(String GROUP_NAME, String USER_AUTH) {
         GroupHomeFragment fragment = new GroupHomeFragment();
         Bundle args = new Bundle();
         args.putString(GRUP_NAME_TOKEN, GROUP_NAME);
+        args.putString(USER_TOKEN, USER_AUTH);
         fragment.setArguments(args);
         return fragment;
     }

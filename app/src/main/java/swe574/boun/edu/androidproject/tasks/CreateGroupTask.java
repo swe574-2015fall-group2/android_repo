@@ -1,6 +1,7 @@
 package swe574.boun.edu.androidproject.tasks;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.MalformedJsonException;
@@ -25,19 +26,19 @@ import java.net.URL;
 import swe574.boun.edu.androidproject.R;
 
 public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean>{
+    private final Activity mActivity;
     private final Context mContext;
     private final String mAuth;
     private final String mName;
     private final String mDescription;
-    private final ViewGroup mParent;
     private final View mProgressView;
     private final View mFormView;
 
-    public CreateGroupTask(Context mContext, String mAuth, ViewGroup mParent) {
+    public CreateGroupTask(Activity mActivity , Context mContext, String mAuth, ViewGroup mParent) {
         super();
+        this.mActivity = mActivity;
         this.mContext = mContext;
         this.mAuth = mAuth;
-        this.mParent = mParent;
         this.mName = ((EditText) mParent.findViewById(R.id.groupName)).getText().toString();
         this.mDescription = ((EditText) mParent.findViewById(R.id.groupDesc)).getText().toString();
         this.mProgressView = mParent.findViewById(R.id.group_progress);
@@ -132,5 +133,7 @@ public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean>{
             message ="Group creation failed, please check your parameters. " + mName;
         }
         Toast.makeText(mContext, message , Toast.LENGTH_LONG).show();
+        if(result) mActivity.finish();
     }
+
 }

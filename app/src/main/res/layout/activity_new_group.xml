@@ -1,58 +1,70 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:gravity="center_horizontal"
-    android:orientation="vertical" android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical" android:background="@drawable/background_login"
     tools:context="swe574.boun.edu.androidproject.NewGroupActivity">
 
-    <ProgressBar android:id="@+id/login_progress" style="?android:attr/progressBarStyleLarge"
+    <ProgressBar android:id="@+id/group_progress" style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp" android:visibility="gone" />
+        android:layout_marginBottom="8dp" android:visibility="gone" android:layout_gravity="center"
+        android:background="@drawable/background_form"/>
 
-    <LinearLayout
-        android:id="@+id/create_form"
+    <ScrollView
+        android:id="@+id/group_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
-            android:layout_height="0dp" android:layout_weight="1">
-
-            <EditText android:id="@+id/groupName" android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:hint="Group Name"
-                android:inputType="text"
-                android:maxLines="1" android:singleLine="true" />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
-            android:layout_height="0dp" android:layout_weight="1">
-
-            <EditText android:id="@+id/groupTags" android:layout_width="match_parent"
-                android:layout_height="match_parent" android:hint="Tags"
-                android:inputType="text"
-                android:maxLines="1" android:singleLine="true" />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
-            android:layout_height="0dp" android:layout_weight="2">
-
-            <EditText android:id="@+id/groupDesc" android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:hint="Group Description"
-                android:inputType="textMultiLine" android:gravity="top|left"
-                android:maxLines="5"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-        <Button
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:text="Create Group"
-            android:id="@+id/create_group"
-            android:layout_weight="0.5" />
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/background_form"
+            android:orientation="vertical" android:layout_margin="20dp">
+
+            <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <EditText android:id="@+id/groupName" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:hint="Group Name"
+                    android:inputType="text"
+                    android:maxLines="1" android:singleLine="true"
+                    android:background="@drawable/edittextstyle" android:layout_margin="16dp"
+                    android:drawableLeft="@drawable/ic_icon_groupname"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText android:id="@+id/groupTags" android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:hint="Tags"
+                    android:inputType="text" android:layout_margin="16dp"
+                    android:drawableLeft="@drawable/ic_icon_hashtag" android:background="@drawable/edittextstyle"
+                    android:maxLines="1" android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText android:id="@+id/groupDesc" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:hint="Group Description"
+                    android:inputType="textMultiLine" android:gravity="top|left"
+                    android:maxLines="5" android:layout_margin="16dp" android:background="@drawable/edittextstyle"
+                    android:drawableLeft="@drawable/ic_icon_description"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Create Group"
+                android:id="@+id/create_group"
+                android:background="@drawable/button_style"
+                android:layout_margin="16dp"/>
+        </LinearLayout>
+    </ScrollView>
+
+
 
 </LinearLayout>

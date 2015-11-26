@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 
@@ -44,10 +45,14 @@ public class ListMeetingByGroupTask extends AsyncTask<Void, Void, Boolean> {
     private String mMeetingInvitedUserSet;
     private String mMeetingAttendedUserSet;
     private View mMeetingForm;
+    private View mProgress;
 
-    public ListMeetingByGroupTask(Activity mActivity, String mAuthToken) {
+    public ListMeetingByGroupTask(Activity mActivity, String mAuthToken, ViewGroup mParent) {
+        super();
         this.mActivity = mActivity;
         this.mAuthToken = mAuthToken;
+        this.mProgress = mParent.findViewById(R.id.meeting_progress);
+        this.mMeetingForm = mParent.findViewById(R.id.meeting_form);
     }
 
     /**
@@ -57,6 +62,7 @@ public class ListMeetingByGroupTask extends AsyncTask<Void, Void, Boolean> {
     protected void onPreExecute() {
         mMeetingForm = mActivity.findViewById(R.id.listMeetings);
         mMeetingForm.setVisibility(View.GONE);
+        mProgress.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -76,6 +82,7 @@ public class ListMeetingByGroupTask extends AsyncTask<Void, Void, Boolean> {
             // Create JSON String
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("authToken", mAuthToken);
+            jsonObject.accumulate("Id", mMeetingId);
             String json = jsonObject.toString();
             // Create request output stream.
             OutputStream outputStream = httpURLConnection.getOutputStream();
@@ -121,6 +128,7 @@ public class ListMeetingByGroupTask extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean result) {
         mMeetingForm.setVisibility(View.VISIBLE);
+        mProgress.setVisibility(View.GONE);
 
         if(result){
 
@@ -129,6 +137,8 @@ public class ListMeetingByGroupTask extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected void onCancelled() {
+
         mMeetingForm.setVisibility(View.VISIBLE);
+        mProgress.setVisibility(View.GONE);
     }
 }

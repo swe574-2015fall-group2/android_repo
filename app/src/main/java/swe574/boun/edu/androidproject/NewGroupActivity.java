@@ -25,7 +25,7 @@ public class NewGroupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_group);
-        mAuth = savedInstanceState.getString("user");
+        mAuth = getIntent().getStringExtra("user");
 
         mGroupNameView = (EditText) findViewById(R.id.groupName);
         mGroupDescriptionView = (EditText) findViewById(R.id.groupDesc);
@@ -57,7 +57,7 @@ public class NewGroupActivity extends AppCompatActivity {
         }
 
         if(!cancel){
-            mTask = new CreateGroupTask(this, mAuth, (ViewGroup) ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0));
+            mTask = new CreateGroupTask(this, this, mAuth, (ViewGroup) ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0));
             mTask.execute((Void) null);
         }
         else {

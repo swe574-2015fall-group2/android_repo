@@ -1,10 +1,14 @@
 package swe574.boun.edu.androidproject.tasks;
 
+
+import android.app.Activity;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.MalformedJsonException;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,47 +22,42 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 
 import swe574.boun.edu.androidproject.R;
-import swe574.boun.edu.androidproject.adapters.GridGroupAdapter;
-import swe574.boun.edu.androidproject.model.Group;
 
-/**
- * < Parametre Tipi, Progress Tipi, Return Tipi
- */
-public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
-    private ViewGroup mView;
-    private String mAuthToken;
-    private View mGroupForm;
-    private GridView mMyGroup;
-    private View mProgress;
-    private Boolean mResult;
+public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean>{
+    private final Activity mActivity;
+    private final Context mContext;
+    private final String mAuth;
+    private final String mName;
+    private final String mDescription;
+    private final View mProgressView;
+    private final View mFormView;
 
-    public FetchMyGroupsTask(ViewGroup mView, String mAuthToken) {
-        this.mView = mView;
-        this.mAuthToken = mAuthToken;
+    public CreateGroupTask(Activity mActivity , Context mContext, String mAuth, ViewGroup mParent) {
+        super();
+        this.mActivity = mActivity;
+        this.mContext = mContext;
+        this.mAuth = mAuth;
+        this.mName = ((EditText) mParent.findViewById(R.id.groupName)).getText().toString();
+        this.mDescription = ((EditText) mParent.findViewById(R.id.groupDesc)).getText().toString();
+        this.mProgressView = mParent.findViewById(R.id.group_progress);
+        this.mFormView = mParent.findViewById(R.id.group_form);
     }
 
-    /**
-     * Runs on main thread. Fetch UI elements here.
-     */
     @Override
     protected void onPreExecute() {
-        mMyGroup = (GridView) mView.findViewById(R.id.gridViewMyGroups);
-        mGroupForm = mView.findViewById(R.id.group_form);
-        mProgress = mView.findViewById(R.id.group_progress);
-        mGroupForm.setVisibility(View.GONE);
-        mProgress.setVisibility(View.VISIBLE);
+        mProgressView.setVisibility(View.VISIBLE);
+        mFormView.setVisibility(View.GONE);
     }
 
     @Override
-    protected ArrayList<Group> doInBackground(Void... params) {
-        mResult = false;
+    protected Boolean doInBackground(Void... params) {
+        boolean result = false;
         HttpURLConnection httpURLConnection = null;
         try{
             // Create a new UrlConnection
-            URL postUrl = new URL("http://162.243.215.160:9000/v1/group/listMyGroups");
+            URL postUrl = new URL("http://162.243.215.160:9000/v1/group/create");
             // Open the created connection to server.
             httpURLConnection = (HttpURLConnection) postUrl.openConnection();
             // Set up the post parameters
@@ -70,7 +69,9 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
             httpURLConnection.setRequestProperty("Content-Type", "application/json");
             // Create JSON String
             JSONObject jsonObject = new JSONObject();
-            jsonObject.accumulate("authToken", mAuthToken);
+            jsonObject.accumulate("authToken", mAuth);
+            jsonObject.accumulate("name", mName);
+            jsonObject.accumulate("description", mDescription);
             String json = jsonObject.toString();
             // Create request output stream.
             OutputStream outputStream = httpURLConnection.getOutputStream();
@@ -87,23 +88,22 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
             // Get the Response
             String responseJson = "";
             if(response == HttpURLConnection.HTTP_OK){
-            //Response is okay
+                //Response is okay
                 String line = "";
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-                    while ((line=reader.readLine()) != null) {
-                        responseJson += line;
-                    }
+                BufferedReader reader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+                while ((line=reader.readLine()) != null) {
+                    responseJson += line;
+                }
             }
             else{
                 // Server is down or webserver is changed.
                 throw new IllegalStateException("Response code is not valid");
             }
-            //TODO RECHECK WITH DATA
             JSONObject object = new JSONObject(responseJson);
             if(object.getString("status").equals("success")){
-                mResult = true;
+                result = true;
                 httpURLConnection.disconnect();
-                return null;
+                return result;
             }
             else{
                 throw new MalformedJsonException("Returned JSON String isn't fit the format.");
@@ -118,23 +118,27 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
         finally {
             httpURLConnection.disconnect();
         }
-        return null;
+        return result;
     }
 
     @Override
-    protected void onPostExecute(ArrayList<Group> result) {
-        mGroupForm.setVisibility(View.VISIBLE);
-        mProgress.setVisibility(View.GONE);
-
-        if(mResult){
-            GridGroupAdapter adapter = new GridGroupAdapter(mView.getContext(), result);
-            mMyGroup.setAdapter(adapter);
+    protected void onPostExecute(Boolean result) {
+        mProgressView.setVisibility(View.GONE);
+        mFormView.setVisibility(View.VISIBLE);
+        String message;
+        if(result){
+            message = "You have successfully created group " + mName;
         }
+        else{
+            message ="Group creation failed, please check your parameters. " + mName;
+        }
+        Toast.makeText(mContext, message , Toast.LENGTH_LONG).show();
+        if(result) mActivity.finish();
     }
 
     @Override
     protected void onCancelled() {
-        mGroupForm.setVisibility(View.VISIBLE);
-        mProgress.setVisibility(View.GONE);
+        mProgressView.setVisibility(View.GONE);
+        mFormView.setVisibility(View.VISIBLE);
     }
 }

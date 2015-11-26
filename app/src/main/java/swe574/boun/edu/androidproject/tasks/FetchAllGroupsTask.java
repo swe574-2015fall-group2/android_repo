@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,7 +28,7 @@ import swe574.boun.edu.androidproject.model.Group;
 /**
  * < Parametre Tipi, Progress Tipi, Return Tipi
  */
-public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
+public class FetchAllGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
     private ViewGroup mView;
     private String mAuthToken;
     private View mGroupForm;
@@ -35,7 +36,7 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
     private View mProgress;
     private Boolean mResult;
 
-    public FetchMyGroupsTask(ViewGroup mView, String mAuthToken) {
+    public FetchAllGroupsTask(ViewGroup mView, String mAuthToken) {
         this.mView = mView;
         this.mAuthToken = mAuthToken;
     }
@@ -45,7 +46,7 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
      */
     @Override
     protected void onPreExecute() {
-        mMyGroup = (GridView) mView.findViewById(R.id.gridViewMyGroups);
+        mMyGroup = (GridView) mView.findViewById(R.id.gridViewAllGroups);
         mGroupForm = mView.findViewById(R.id.group_form);
         mProgress = mView.findViewById(R.id.group_progress);
         mGroupForm.setVisibility(View.GONE);
@@ -58,7 +59,7 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
         HttpURLConnection httpURLConnection = null;
         try{
             // Create a new UrlConnection
-            URL postUrl = new URL("http://162.243.215.160:9000/v1/group/listMyGroups");
+            URL postUrl = new URL("http://162.243.215.160:9000/v1/group/listAll");
             // Open the created connection to server.
             httpURLConnection = (HttpURLConnection) postUrl.openConnection();
             // Set up the post parameters
@@ -87,12 +88,12 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
             // Get the Response
             String responseJson = "";
             if(response == HttpURLConnection.HTTP_OK){
-            //Response is okay
+                //Response is okay
                 String line = "";
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-                    while ((line=reader.readLine()) != null) {
-                        responseJson += line;
-                    }
+                BufferedReader reader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+                while ((line=reader.readLine()) != null) {
+                    responseJson += line;
+                }
             }
             else{
                 // Server is down or webserver is changed.
@@ -101,9 +102,15 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
             //TODO RECHECK WITH DATA
             JSONObject object = new JSONObject(responseJson);
             if(object.getString("status").equals("success")){
+                ArrayList<Group> groups = new ArrayList<>();
+                JSONArray array = object.getJSONObject("result").getJSONArray("groupList");
+                for(int i = 0 ; i < array.length() ; i++){
+                    JSONObject o = array.getJSONObject(i);
+                    groups.add(new Group(o.getString("name") , o.getString("description") , o.getString("id") , null));
+                }
                 mResult = true;
                 httpURLConnection.disconnect();
-                return null;
+                return groups;
             }
             else{
                 throw new MalformedJsonException("Returned JSON String isn't fit the format.");

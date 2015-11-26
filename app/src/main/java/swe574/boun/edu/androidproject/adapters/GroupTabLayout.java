@@ -9,8 +9,17 @@ import android.util.AttributeSet;
 import java.lang.reflect.Field;
 
 public class GroupTabLayout extends TabLayout{
+
     public GroupTabLayout(Context context) {
         super(context);
+    }
+
+    public GroupTabLayout(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public GroupTabLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
     }
 
     @Override

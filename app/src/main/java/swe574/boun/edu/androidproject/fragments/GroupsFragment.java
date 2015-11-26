@@ -61,6 +61,7 @@ public class GroupsFragment extends Fragment {
         if (getArguments() != null) {
             USER_AUTH = (String) getArguments().get(USER_TOKEN);
         }
+        getActivity().findViewById(R.id.search_bar_layout).setVisibility(View.GONE);
         setHasOptionsMenu(true);
     }
 
@@ -75,13 +76,14 @@ public class GroupsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(),AllGroupsActivity.class);
+                i.putExtra("user", USER_AUTH);
                 startActivity(i);
             }
         });
 
         mMyGroupView = (GridView) view.findViewById(R.id.gridViewMyGroups);
-        mTask = new FetchMyGroupsTask(view, USER_AUTH);
-        mTask.execute();
+        //mTask = new FetchMyGroupsTask(view, USER_AUTH);
+        //mTask.execute();
         return view;
     }
 
@@ -97,6 +99,7 @@ public class GroupsFragment extends Fragment {
         int id = item.getItemId();
         if (id == ADD_GROUP_ID) {
             Intent intent = new Intent(getActivity(), NewGroupActivity.class);
+            intent.putExtra("user", USER_AUTH);
             startActivity(intent);
         }
         return true;

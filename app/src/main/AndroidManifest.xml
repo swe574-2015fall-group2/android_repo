@@ -55,6 +55,7 @@
         <activity android:name=".ViewMeetingActivity"></activity>
         <activity android:name=".MeetingPeopleActivity">
         </activity>
+        <activity android:name=".AllGroupsActivity" />
     </application>
 
 </manifest>

@@ -76,6 +76,7 @@ public class GroupsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(),AllGroupsActivity.class);
+                i.putExtra("user", USER_AUTH);
                 startActivity(i);
             }
         });

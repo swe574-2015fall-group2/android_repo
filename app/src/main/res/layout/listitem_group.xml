@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content" android:background="@drawable/style_groupitem">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="bold"
         android:text="Placeholder"
-        android:id="@+id/textViewGroupName"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/textViewGroupName" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -22,15 +22,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/secretid"
-            android:visibility="gone" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="Placeholder"
-            android:id="@+id/textViewDescription"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="15dp" />
+            android:layout_marginTop="40dp"
+            android:id="@+id/textViewDescription" android:layout_gravity="center" />
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>

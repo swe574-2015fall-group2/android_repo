@@ -1,15 +1,11 @@
 package swe574.boun.edu.androidproject.tasks;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.MalformedJsonException;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.LinearLayout;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,13 +17,11 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 
 import swe574.boun.edu.androidproject.R;
-import swe574.boun.edu.androidproject.adapters.ListGroupAdapter;
+import swe574.boun.edu.androidproject.adapters.GridGroupAdapter;
 import swe574.boun.edu.androidproject.model.Group;
 
 /**
@@ -133,7 +127,7 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
         mProgress.setVisibility(View.GONE);
 
         if(mResult){
-            ListGroupAdapter adapter = new ListGroupAdapter(result);
+            GridGroupAdapter adapter = new GridGroupAdapter(mView.getContext(), result);
             mMyGroup.setAdapter(adapter);
         }
     }

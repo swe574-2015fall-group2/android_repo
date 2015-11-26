@@ -2,22 +2,26 @@ package swe574.boun.edu.androidproject.adapters;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import swe574.boun.edu.androidproject.GroupActivity;
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.model.Group;
 
-public class ListGroupAdapter extends BaseAdapter{
+public class GridGroupAdapter extends BaseAdapter{
     private Context mContext;
     private final ArrayList<Group> mGroups;
 
-    public ListGroupAdapter(ArrayList<Group> mGroups) {
+    public GridGroupAdapter(Context mContext, ArrayList<Group> mGroups) {
+        this.mContext = mContext;
         this.mGroups = mGroups;
     }
 
@@ -41,10 +45,9 @@ public class ListGroupAdapter extends BaseAdapter{
         LayoutInflater inflater = LayoutInflater.from(mContext);
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.listitem_group, null , false);
 
-        Group g = mGroups.get(position);
+        final Group g = mGroups.get(position);
         TextView mName = (TextView) view.findViewById(R.id.textViewGroupName);
         TextView mDescription = (TextView) view.findViewById(R.id.textViewDescription);
-        TextView mId = (TextView) view.findViewById(R.id.secretid);
 
         String name = g.getmName();
         if(mName != null){
@@ -56,10 +59,17 @@ public class ListGroupAdapter extends BaseAdapter{
             mDescription.setText(description);
         }
 
-        String _ID = g.getmID();
-        if(mId != null){
-            mId.setText(_ID);
-        }
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, GroupActivity.class);
+                intent.putExtra("id", g.getmID());
+                mContext.startActivity(intent);
+            }
+        });
+
+        view.setBackground(mContext.getResources().getDrawable(R.drawable.style_groupitem));
+        view.setLayoutParams(new GridView.LayoutParams(GridView.AUTO_FIT, 400));
 
         return view;
     }

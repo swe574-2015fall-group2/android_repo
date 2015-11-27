@@ -32,7 +32,7 @@ import swe574.boun.edu.androidproject.R;
 public class ListMeetingByGroupTask extends AsyncTask<Void, Void, Boolean> {
     private Activity mActivity;
     private String mAuthToken;
-    private String mMeetingId;
+  /*  private String mMeetingId;
     private Date mMeetingDateTime;
     private String mMeetingAgendaSet;
     private String mMeetingToDoSet;
@@ -43,7 +43,7 @@ public class ListMeetingByGroupTask extends AsyncTask<Void, Void, Boolean> {
     private String mMeetingStatus;
     private String mMeetingType;
     private String mMeetingInvitedUserSet;
-    private String mMeetingAttendedUserSet;
+    private String mMeetingAttendedUserSet; */
     private View mMeetingForm;
     private View mProgress;
 

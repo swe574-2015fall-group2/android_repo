@@ -32,7 +32,8 @@ import swe574.boun.edu.androidproject.R;
 public class ListMeetingByGroupTask extends AsyncTask<Void, Void, Boolean> {
     private Activity mActivity;
     private String mAuthToken;
-  /*  private String mMeetingId;
+    private int mMeetingId;
+    /*
     private Date mMeetingDateTime;
     private String mMeetingAgendaSet;
     private String mMeetingToDoSet;
@@ -47,10 +48,11 @@ public class ListMeetingByGroupTask extends AsyncTask<Void, Void, Boolean> {
     private View mMeetingForm;
     private View mProgress;
 
-    public ListMeetingByGroupTask(Activity mActivity, String mAuthToken, ViewGroup mParent) {
+    public ListMeetingByGroupTask(Activity mActivity, String mAuthToken, int mMeetingId, ViewGroup mParent) {
         super();
         this.mActivity = mActivity;
         this.mAuthToken = mAuthToken;
+        this.mMeetingId = mMeetingId;
         this.mProgress = mParent.findViewById(R.id.meeting_progress);
         this.mMeetingForm = mParent.findViewById(R.id.meeting_form);
     }

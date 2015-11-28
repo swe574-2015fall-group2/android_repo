@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import swe574.boun.edu.androidproject.AllGroupsActivity;
 import swe574.boun.edu.androidproject.NewGroupActivity;
@@ -33,8 +35,8 @@ public class GroupsFragment extends Fragment {
     FetchMyGroupsTask mTask;
     //UI parameters
     private Button mViewAllGroups;
-    private GridView mMyGroupView;
-    private GridView mRecGroupView;
+    private ListView mMyGroupView;
+    private ListView mRecGroupView;
 
     public GroupsFragment() {
         // Required empty public constructor
@@ -81,7 +83,7 @@ public class GroupsFragment extends Fragment {
             }
         });
 
-        mMyGroupView = (GridView) view.findViewById(R.id.gridViewMyGroups);
+        mMyGroupView = (ListView) view.findViewById(R.id.gridViewMyGroups);
         //mTask = new FetchMyGroupsTask(view, USER_AUTH);
         //mTask.execute();
         return view;
@@ -116,4 +118,9 @@ public class GroupsFragment extends Fragment {
         super.onDetach();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle("Groups");
+    }
 }

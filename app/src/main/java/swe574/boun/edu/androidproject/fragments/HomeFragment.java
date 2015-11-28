@@ -28,7 +28,6 @@ public class HomeFragment extends Fragment {
      * @param user_id ID Of the user.
      * @return A new instance of fragment HomeFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static HomeFragment newInstance(String user_id) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
@@ -67,4 +66,9 @@ public class HomeFragment extends Fragment {
         super.onDetach();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle("Home");
+    }
 }

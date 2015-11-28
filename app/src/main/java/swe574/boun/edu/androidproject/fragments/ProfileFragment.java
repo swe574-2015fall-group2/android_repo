@@ -126,4 +126,9 @@ public class ProfileFragment extends Fragment {
         super.onDetach();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle("My Profile");
+    }
 }

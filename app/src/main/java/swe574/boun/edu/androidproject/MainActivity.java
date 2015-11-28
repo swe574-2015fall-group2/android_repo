@@ -10,8 +10,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import swe574.boun.edu.androidproject.fragments.GroupsFragment;
 import swe574.boun.edu.androidproject.fragments.HomeFragment;
@@ -20,6 +22,7 @@ import swe574.boun.edu.androidproject.fragments.ProfileFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    int code = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,11 +109,12 @@ public class MainActivity extends AppCompatActivity
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-        
+
         FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.fragment_container, fragment).commit();
+        manager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack("fragment" + code++).commit();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

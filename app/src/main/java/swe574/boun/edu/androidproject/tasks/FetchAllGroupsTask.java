@@ -5,6 +5,7 @@ import android.util.MalformedJsonException;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ListView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,7 +23,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import swe574.boun.edu.androidproject.R;
-import swe574.boun.edu.androidproject.adapters.GridGroupAdapter;
+import swe574.boun.edu.androidproject.adapters.ListGroupAdapter;
 import swe574.boun.edu.androidproject.model.Group;
 
 /**
@@ -32,7 +33,7 @@ public class FetchAllGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> 
     private ViewGroup mView;
     private String mAuthToken;
     private View mGroupForm;
-    private GridView mMyGroup;
+    private ListView mMyGroup;
     private View mProgress;
     private Boolean mResult;
 
@@ -46,7 +47,7 @@ public class FetchAllGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> 
      */
     @Override
     protected void onPreExecute() {
-        mMyGroup = (GridView) mView.findViewById(R.id.gridViewAllGroups);
+        mMyGroup = (ListView) mView.findViewById(R.id.gridViewAllGroups);
         mGroupForm = mView.findViewById(R.id.group_form);
         mProgress = mView.findViewById(R.id.group_progress);
         mGroupForm.setVisibility(View.GONE);
@@ -106,7 +107,7 @@ public class FetchAllGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> 
                 JSONArray array = object.getJSONObject("result").getJSONArray("groupList");
                 for(int i = 0 ; i < array.length() ; i++){
                     JSONObject o = array.getJSONObject(i);
-                    groups.add(new Group(o.getString("name") , o.getString("description") , o.getString("id") , null));
+                    groups.add(new Group(null, o.getString("name") , o.getString("description") , o.getString("id") , null));
                 }
                 mResult = true;
                 httpURLConnection.disconnect();
@@ -134,7 +135,7 @@ public class FetchAllGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> 
         mProgress.setVisibility(View.GONE);
 
         if(mResult){
-            GridGroupAdapter adapter = new GridGroupAdapter(mView.getContext(), result);
+            ListGroupAdapter adapter = new ListGroupAdapter(mView.getContext(), result);
             mMyGroup.setAdapter(adapter);
         }
     }

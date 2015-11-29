@@ -20,8 +20,8 @@ public class DiscussionTabFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static GroupTabFragment newInstance(String GROUP_NAME, String USER_AUTH) {
-        GroupTabFragment fragment = new GroupTabFragment();
+    public static DiscussionTabFragment newInstance(String GROUP_NAME, String USER_AUTH) {
+        DiscussionTabFragment fragment = new DiscussionTabFragment();
         Bundle args = new Bundle();
         args.putString(GRUP_NAME_TOKEN, GROUP_NAME);
         args.putString(USER_TOKEN, USER_AUTH);

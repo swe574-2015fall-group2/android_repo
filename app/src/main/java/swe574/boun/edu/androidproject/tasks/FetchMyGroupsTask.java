@@ -128,7 +128,7 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
         mProgress.setVisibility(View.GONE);
 
         if(mResult){
-            ListGroupAdapter adapter = new ListGroupAdapter(mView.getContext(), result);
+            ListGroupAdapter adapter = new ListGroupAdapter(mView.getContext(), result, mAuthToken);
             mMyGroup.setAdapter(adapter);
         }
     }

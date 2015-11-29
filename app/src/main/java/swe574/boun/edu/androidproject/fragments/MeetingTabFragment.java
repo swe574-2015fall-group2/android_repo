@@ -20,8 +20,8 @@ public class MeetingTabFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static GroupTabFragment newInstance(String GROUP_NAME, String USER_AUTH) {
-        GroupTabFragment fragment = new GroupTabFragment();
+    public static MeetingTabFragment newInstance(String GROUP_NAME, String USER_AUTH) {
+        MeetingTabFragment fragment = new MeetingTabFragment();
         Bundle args = new Bundle();
         args.putString(GRUP_NAME_TOKEN, GROUP_NAME);
         args.putString(USER_TOKEN, USER_AUTH);

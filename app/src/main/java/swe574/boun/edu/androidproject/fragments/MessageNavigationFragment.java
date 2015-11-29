@@ -64,7 +64,7 @@ public class MessageNavigationFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        getActivity().setTitle("Messaging");
+        getActivity().setTitle("Messages");
     }
 
     @Override
@@ -75,6 +75,6 @@ public class MessageNavigationFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().setTitle("Messaging");
+        getActivity().setTitle("Messages");
     }
 }

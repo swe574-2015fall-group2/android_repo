@@ -1,13 +1,9 @@
 package swe574.boun.edu.androidproject.tasks;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.MalformedJsonException;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,8 +22,6 @@ import java.util.Date;
 import swe574.boun.edu.androidproject.R;
 
 public class CreateMeetingTask extends AsyncTask<Void, Void, Boolean>{
-    private final Activity mActivity;
-    private final Context mContext;
     private final String mAuth;
     private final View mProgressView;
     private final View mFormView;
@@ -44,10 +38,8 @@ public class CreateMeetingTask extends AsyncTask<Void, Void, Boolean>{
  //   private String mMeetingInvitedUserSet;
  //   private String mMeetingAttendedUserSet;
 
-    public CreateMeetingTask(Activity mActivity , Context mContext, String mAuth, ViewGroup mParent) {
+    public CreateMeetingTask(String mAuth, ViewGroup mParent) {
         super();
-        this.mActivity = mActivity;
-        this.mContext = mContext;
         this.mAuth = mAuth;
        /* this.mMeetingId = ((EditText) mParent.findViewById(R.id.meetingId)).getText().toString();
         this.mMeetingDateTime = (Date) mParent.findViewById(R.id.meetingDate);
@@ -158,8 +150,6 @@ public class CreateMeetingTask extends AsyncTask<Void, Void, Boolean>{
         else{
             message ="Meeting creation failed, please check your parameters. " /*+ mMeetingName*/;
         }
-        Toast.makeText(mContext, message , Toast.LENGTH_LONG).show();
-        if(result) mActivity.finish();
     }
 
     @Override

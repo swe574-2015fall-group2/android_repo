@@ -48,7 +48,7 @@ public class ListGroupAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.listitem_group, null , false);
 
@@ -83,7 +83,7 @@ public class ListGroupAdapter extends BaseAdapter{
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, GroupTabbedActivity.class);
                 intent.putExtra("user", mAuth);
-                intent.putExtra("name", g.getmID());
+                intent.putExtra("group", mGroups.get(position));
                 mContext.startActivity(intent);
             }
         });

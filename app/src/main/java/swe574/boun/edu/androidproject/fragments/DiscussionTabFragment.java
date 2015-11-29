@@ -9,21 +9,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import swe574.boun.edu.androidproject.R;
+import swe574.boun.edu.androidproject.model.Group;
 
 public class DiscussionTabFragment extends Fragment {
-    private final static String GRUP_NAME_TOKEN = "name";
+    private final static String GROUP_TOKEN = "group";
     private final static String USER_TOKEN = "user";
-    private String USER_AUTH;
-    private String GROUP_NAME;
+    private Group mGroup;
+    private String mAuth;
 
     public DiscussionTabFragment() {
         // Required empty public constructor
     }
 
-    public static DiscussionTabFragment newInstance(String GROUP_NAME, String USER_AUTH) {
+    public static DiscussionTabFragment newInstance(Group GROUP, String USER_AUTH) {
         DiscussionTabFragment fragment = new DiscussionTabFragment();
         Bundle args = new Bundle();
-        args.putString(GRUP_NAME_TOKEN, GROUP_NAME);
+        args.putParcelable(GROUP_TOKEN, GROUP);
         args.putString(USER_TOKEN, USER_AUTH);
         fragment.setArguments(args);
         return fragment;
@@ -33,8 +34,8 @@ public class DiscussionTabFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            GROUP_NAME = (String) getArguments().get(GRUP_NAME_TOKEN);
-            USER_AUTH = (String) getArguments().get(USER_TOKEN);
+            mAuth = (String) getArguments().getString(USER_TOKEN);
+            mGroup = getArguments().getParcelable(GROUP_TOKEN);
         }
     }
 

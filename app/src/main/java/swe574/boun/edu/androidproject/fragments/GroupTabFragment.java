@@ -10,21 +10,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import swe574.boun.edu.androidproject.R;
+import swe574.boun.edu.androidproject.model.Group;
 
 public class GroupTabFragment extends Fragment {
-    private final static String GRUP_NAME_TOKEN = "name";
+    private final static String GROUP_TOKEN = "group";
     private final static String USER_TOKEN = "user";
-    private String GROUP_NAME;
-    private String USER_AUTH;
+    private Group mGroup;
+    private String mAuth;
 
     public GroupTabFragment() {
         // Required empty public constructor
     }
 
-    public static GroupTabFragment newInstance(String GROUP_NAME, String USER_AUTH) {
+    public static GroupTabFragment newInstance(final Group GROUP, final String USER_AUTH) {
         GroupTabFragment fragment = new GroupTabFragment();
         Bundle args = new Bundle();
-        args.putString(GRUP_NAME_TOKEN, GROUP_NAME);
+        args.putParcelable(GROUP_TOKEN, GROUP);
         args.putString(USER_TOKEN, USER_AUTH);
         fragment.setArguments(args);
         return fragment;
@@ -34,15 +35,17 @@ public class GroupTabFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            USER_AUTH = (String) getArguments().get(USER_TOKEN);
-            GROUP_NAME = (String) getArguments().get(GRUP_NAME_TOKEN);
+            mAuth = (String) getArguments().getString(USER_TOKEN);
+            mGroup = getArguments().getParcelable(GROUP_TOKEN);
         }
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_group_home, null, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_group_home, null, false);
+
+        return rootView;
     }
 
     @Override

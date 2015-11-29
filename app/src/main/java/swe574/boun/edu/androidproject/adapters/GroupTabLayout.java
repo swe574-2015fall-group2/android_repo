@@ -31,7 +31,7 @@ public class GroupTabLayout extends TabLayout{
             }
             Field field = TabLayout.class.getDeclaredField("mTabMinWidth");
             field.setAccessible(true);
-            field.set(this, (int) (getMeasuredWidth() / (float) getTabCount()) * 1);
+            field.set(this, (int) (getMeasuredWidth() / (float) getTabCount()) * 1.5f);
         } catch (Exception e) {
             e.printStackTrace();
         }

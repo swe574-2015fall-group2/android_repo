@@ -12,16 +12,19 @@ import swe574.boun.edu.androidproject.R;
 
 public class MeetingTabFragment extends Fragment {
     private final static String GRUP_NAME_TOKEN = "name";
+    private final static String USER_TOKEN = "user";
+    private String USER_AUTH;
     private String GROUP_NAME;
 
     public MeetingTabFragment() {
         // Required empty public constructor
     }
 
-    public static GroupTabFragment newInstance(String GROUP_NAME) {
+    public static GroupTabFragment newInstance(String GROUP_NAME, String USER_AUTH) {
         GroupTabFragment fragment = new GroupTabFragment();
         Bundle args = new Bundle();
         args.putString(GRUP_NAME_TOKEN, GROUP_NAME);
+        args.putString(USER_TOKEN, USER_AUTH);
         fragment.setArguments(args);
         return fragment;
     }
@@ -31,6 +34,7 @@ public class MeetingTabFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             GROUP_NAME = (String) getArguments().get(GRUP_NAME_TOKEN);
+            USER_AUTH = (String) getArguments().get(USER_TOKEN);
         }
     }
 

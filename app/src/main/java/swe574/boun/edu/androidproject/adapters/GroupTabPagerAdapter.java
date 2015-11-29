@@ -15,11 +15,15 @@ import swe574.boun.edu.androidproject.fragments.NoteTabFragment;
 public class GroupTabPagerAdapter extends FragmentStatePagerAdapter {
     private List<String> mTitles;
     private int mNumOfTabs;
+    private String mAuth;
+    private String mGroup;
 
-    public GroupTabPagerAdapter(FragmentManager fm, List<String> mTitles, int mNumOfTabs) {
+    public GroupTabPagerAdapter(FragmentManager fm, List<String> mTitles, int mNumOfTabs, String mAuth, String mGroup) {
         super(fm);
         this.mTitles = mTitles;
         this.mNumOfTabs = mNumOfTabs;
+        this.mAuth = mAuth;
+        this.mGroup = mGroup;
     }
 
     @Override
@@ -27,16 +31,16 @@ public class GroupTabPagerAdapter extends FragmentStatePagerAdapter {
         Fragment fragment = null;
         switch (position) {
             case 0:
-                fragment = new GroupTabFragment();
+                fragment = new GroupTabFragment().newInstance(mAuth, mGroup);
                 break;
             case 1:
-                fragment = new MeetingTabFragment();
+                fragment = new MeetingTabFragment().newInstance(mAuth, mGroup);
                 break;
             case 2:
-                fragment = new DiscussionTabFragment();
+                fragment = new DiscussionTabFragment().newInstance(mAuth, mGroup);
                 break;
             case 3:
-                fragment = new NoteTabFragment();
+                fragment = new NoteTabFragment().newInstance(mAuth, mGroup);
                 break;
         }
         return fragment;

@@ -74,11 +74,11 @@ public class ProfileNavigationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("Remove Account");
-                builder.setMessage("Are you sure to remove your account?\n\nAs our terms of usage, our company holds all of the rights of the content" +
+                builder.setTitle("Archive Account");
+                builder.setMessage("Are you sure to archive your account?\n\nAs our terms of usage, our company holds all of the rights of the content" +
                         " that is posted, used, shared and uploaded content in our website in whatever form of content it has been used. The content owned by our company will be only used for display purposes only." +
                         " Pressing 'Yes' " +
-                        "means that you agree on our terms of account removal.");
+                        "means that you agree on our terms of account archival.");
                 builder.setPositiveButton("Yes, I agree", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

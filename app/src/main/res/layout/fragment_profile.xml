@@ -200,7 +200,7 @@ tools:context="swe574.boun.edu.androidproject.fragments.ProfileFragment"
             <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:text="Remove Account"
+                android:text="Archive Account"
                 android:id="@+id/buttonRemoveAccount"
                 android:layout_weight="1"
                 android:layout_margin="16dp"

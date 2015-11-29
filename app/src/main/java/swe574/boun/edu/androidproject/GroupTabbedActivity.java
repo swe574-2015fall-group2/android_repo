@@ -1,5 +1,6 @@
 package swe574.boun.edu.androidproject;
 
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -48,9 +49,10 @@ public class GroupTabbedActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
+        Intent intent = getIntent();
         mTitles = new ArrayList<>();
         mTitles.addAll(Arrays.asList(new String[]{"Home" , "Meetings" , "Discussions" , "Notes"}));
-        mSectionsPagerAdapter = new GroupTabPagerAdapter(getSupportFragmentManager(), mTitles, 4);
+        mSectionsPagerAdapter = new GroupTabPagerAdapter(getSupportFragmentManager(), mTitles, 4, intent.getStringExtra("user"), intent.getStringExtra("name"));
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);

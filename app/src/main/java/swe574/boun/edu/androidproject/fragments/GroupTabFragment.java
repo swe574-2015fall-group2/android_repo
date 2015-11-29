@@ -34,6 +34,7 @@ public class GroupTabFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            USER_AUTH = (String) getArguments().get(USER_TOKEN);
             GROUP_NAME = (String) getArguments().get(GRUP_NAME_TOKEN);
         }
     }

@@ -24,10 +24,12 @@ import swe574.boun.edu.androidproject.model.Group;
 public class ListGroupAdapter extends BaseAdapter{
     private Context mContext;
     private final ArrayList<Group> mGroups;
+    private final String mAuth;
 
-    public ListGroupAdapter(Context mContext, ArrayList<Group> mGroups) {
+    public ListGroupAdapter(Context mContext, ArrayList<Group> mGroups, String mAuth) {
         this.mContext = mContext;
         this.mGroups = mGroups;
+        this.mAuth = mAuth;
     }
 
     @Override
@@ -80,7 +82,8 @@ public class ListGroupAdapter extends BaseAdapter{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, GroupTabbedActivity.class);
-                intent.putExtra("id", g.getmID());
+                intent.putExtra("user", mAuth);
+                intent.putExtra("name", g.getmID());
                 mContext.startActivity(intent);
             }
         });

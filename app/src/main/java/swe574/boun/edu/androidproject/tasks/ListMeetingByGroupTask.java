@@ -32,7 +32,6 @@ import swe574.boun.edu.androidproject.R;
 public class ListMeetingByGroupTask extends AsyncTask<Void, Void, Boolean> {
     private Activity mActivity;
     private String mAuthToken;
-    private int mMeetingId;
     /*
     private Date mMeetingDateTime;
     private String mMeetingAgendaSet;
@@ -52,7 +51,6 @@ public class ListMeetingByGroupTask extends AsyncTask<Void, Void, Boolean> {
         super();
         this.mActivity = mActivity;
         this.mAuthToken = mAuthToken;
-        this.mMeetingId = mMeetingId;
         this.mProgress = mParent.findViewById(R.id.meeting_progress);
         this.mMeetingForm = mParent.findViewById(R.id.meeting_form);
     }
@@ -84,7 +82,6 @@ public class ListMeetingByGroupTask extends AsyncTask<Void, Void, Boolean> {
             // Create JSON String
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("authToken", mAuthToken);
-            jsonObject.accumulate("Id", mMeetingId);
             String json = jsonObject.toString();
             // Create request output stream.
             OutputStream outputStream = httpURLConnection.getOutputStream();

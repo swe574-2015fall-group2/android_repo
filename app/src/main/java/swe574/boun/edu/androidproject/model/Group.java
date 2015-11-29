@@ -46,6 +46,7 @@ public final class Group implements Parcelable{
     public URL getmPicture() {
         URL mutable = null;
         try {
+            if(mPicture != null)
             mutable = new URL(mPicture.getPath());
         } catch (MalformedURLException e) {
             e.printStackTrace();

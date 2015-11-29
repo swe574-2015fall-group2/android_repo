@@ -33,7 +33,7 @@
             android:label="@string/title_activity_forgotten_password" >
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".HomeDrawerActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
@@ -48,14 +48,14 @@
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
-            android:name=".GroupActivity"
+            android:name=".GroupTabbedActivity"
             android:label="@string/title_activity_group"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity android:name=".ViewMeetingActivity"></activity>
         <activity android:name=".MeetingPeopleActivity">
         </activity>
-        <activity android:name=".AllGroupsActivity" />
+        <activity android:name=".ViewAllGroupsActivity" />
     </application>
 
 </manifest>

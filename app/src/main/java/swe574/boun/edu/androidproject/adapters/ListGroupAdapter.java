@@ -17,7 +17,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 
-import swe574.boun.edu.androidproject.GroupActivity;
+import swe574.boun.edu.androidproject.GroupTabbedActivity;
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.model.Group;
 
@@ -79,7 +79,7 @@ public class ListGroupAdapter extends BaseAdapter{
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, GroupActivity.class);
+                Intent intent = new Intent(mContext, GroupTabbedActivity.class);
                 intent.putExtra("id", g.getmID());
                 mContext.startActivity(intent);
             }

@@ -7,10 +7,10 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.List;
 
-import swe574.boun.edu.androidproject.fragments.DiscussionFragment;
-import swe574.boun.edu.androidproject.fragments.GroupHomeFragment;
-import swe574.boun.edu.androidproject.fragments.MeetingFragment;
-import swe574.boun.edu.androidproject.fragments.NoteFragment;
+import swe574.boun.edu.androidproject.fragments.DiscussionTabFragment;
+import swe574.boun.edu.androidproject.fragments.GroupTabFragment;
+import swe574.boun.edu.androidproject.fragments.MeetingTabFragment;
+import swe574.boun.edu.androidproject.fragments.NoteTabFragment;
 
 public class GroupTabPagerAdapter extends FragmentStatePagerAdapter {
     private List<String> mTitles;
@@ -27,16 +27,16 @@ public class GroupTabPagerAdapter extends FragmentStatePagerAdapter {
         Fragment fragment = null;
         switch (position) {
             case 0:
-                fragment = new GroupHomeFragment();
+                fragment = new GroupTabFragment();
                 break;
             case 1:
-                fragment = new MeetingFragment();
+                fragment = new MeetingTabFragment();
                 break;
             case 2:
-                fragment = new DiscussionFragment();
+                fragment = new DiscussionTabFragment();
                 break;
             case 3:
-                fragment = new NoteFragment();
+                fragment = new NoteTabFragment();
                 break;
         }
         return fragment;

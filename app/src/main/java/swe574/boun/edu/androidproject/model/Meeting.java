@@ -9,7 +9,18 @@ import java.util.List;
 /**
  * Created by Jongaros on 11/29/2015.
  */
-public final class Meeting implements Parcelable{
+public final class Meeting implements Parcelable {
+    public static final Creator<Meeting> CREATOR = new Creator<Meeting>() {
+        @Override
+        public Meeting createFromParcel(Parcel in) {
+            return new Meeting(in);
+        }
+
+        @Override
+        public Meeting[] newArray(int size) {
+            return new Meeting[size];
+        }
+    };
     private final String mID;
     private final Date mDate;
     private final List<String> mAgenda;
@@ -53,18 +64,6 @@ public final class Meeting implements Parcelable{
         mInvited = in.createTypedArrayList(User.CREATOR);
         mAttended = in.createTypedArrayList(User.CREATOR);
     }
-
-    public static final Creator<Meeting> CREATOR = new Creator<Meeting>() {
-        @Override
-        public Meeting createFromParcel(Parcel in) {
-            return new Meeting(in);
-        }
-
-        @Override
-        public Meeting[] newArray(int size) {
-            return new Meeting[size];
-        }
-    };
 
     public String getmID() {
         return mID;

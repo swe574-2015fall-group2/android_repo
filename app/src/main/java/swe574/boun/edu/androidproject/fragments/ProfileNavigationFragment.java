@@ -31,6 +31,10 @@ public class ProfileNavigationFragment extends Fragment {
     private String USER_ID;
     private int EDIT_MENU_ID;
 
+    public ProfileNavigationFragment() {
+        // Required empty public constructor
+    }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -45,10 +49,6 @@ public class ProfileNavigationFragment extends Fragment {
         args.putString(USER_TOKEN, user_id);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public ProfileNavigationFragment() {
-        // Required empty public constructor
     }
 
     @Override

@@ -13,12 +13,12 @@ import java.util.List;
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.message.model.Person;
 
-public class PeopleListAdapter extends BaseAdapter{
+public class PeopleListAdapter extends BaseAdapter {
 
     Context mContext;
     List<Person> mPersonList;
 
-    public PeopleListAdapter(Context context, List<Person> persons){
+    public PeopleListAdapter(Context context, List<Person> persons) {
         mContext = context;
         mPersonList = persons;
     }
@@ -49,19 +49,18 @@ public class PeopleListAdapter extends BaseAdapter{
 
         Person person = mPersonList.get(position);
 
-        if(mNameView != null){
+        if (mNameView != null) {
             mNameView.setText(person.getmFullName());
         }
 
-        if(mDescriptionView != null){
+        if (mDescriptionView != null) {
             mDescriptionView.setText(person.getmDescription());
         }
 
-        if(mImageView != null){
-            if(person.getmImage() != null){
+        if (mImageView != null) {
+            if (person.getmImage() != null) {
                 mImageView.setImageBitmap(person.getmImage());
-            }
-            else{
+            } else {
                 mImageView.setImageResource(R.drawable.ic_no_person);
             }
         }

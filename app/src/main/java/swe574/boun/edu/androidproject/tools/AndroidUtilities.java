@@ -35,7 +35,7 @@ public class AndroidUtilities {
     }
 
     public static int dp(float value) {
-        return (int)Math.ceil(density * value);
+        return (int) Math.ceil(density * value);
     }
 
     public static void runOnUIThread(Runnable runnable) {
@@ -66,7 +66,7 @@ public class AndroidUtilities {
     }
 
     public static boolean copyFile(File sourceFile, File destFile) throws IOException {
-        if(!destFile.exists()) {
+        if (!destFile.exists()) {
             destFile.createNewFile();
         }
         FileChannel source = null;
@@ -79,10 +79,10 @@ public class AndroidUtilities {
             //FileLog.e("tmessages", e);
             return false;
         } finally {
-            if(source != null) {
+            if (source != null) {
                 source.close();
             }
-            if(destination != null) {
+            if (destination != null) {
                 destination.close();
             }
         }
@@ -117,7 +117,7 @@ public class AndroidUtilities {
             if (mAttachInfo != null) {
                 Field mStableInsetsField = mAttachInfo.getClass().getDeclaredField("mStableInsets");
                 mStableInsetsField.setAccessible(true);
-                Rect insets = (Rect)mStableInsetsField.get(mAttachInfo);
+                Rect insets = (Rect) mStableInsetsField.get(mAttachInfo);
                 return insets.bottom;
             }
         } catch (Exception e) {

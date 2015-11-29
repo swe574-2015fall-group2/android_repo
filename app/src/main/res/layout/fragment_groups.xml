@@ -1,112 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical" android:background="@drawable/background_login">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_login"
+    android:orientation="vertical">
 
-    <ProgressBar android:id="@+id/group_progress" style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp" android:visibility="gone" android:layout_gravity="center_horizontal"
-        android:background="@drawable/background_form"/>
+    <ProgressBar
+        android:id="@+id/group_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/background_form"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/group_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@drawable/background_login">
+        android:background="@drawable/background_login"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="10">
+            android:layout_weight="10"
+            android:orientation="vertical">
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
                 android:layout_marginLeft="18dp"
                 android:layout_marginRight="18dp"
                 android:layout_marginTop="16dp"
+                android:layout_weight="1"
                 android:background="@drawable/background_form">
 
                 <TextView
+                    android:id="@+id/textViewMyGroups"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="My Groups"
-                    android:id="@+id/textViewMyGroups"
-                    android:gravity="center"
                     android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="My Groups"
                     android:textSize="20dp"
                     android:textStyle="bold" />
             </FrameLayout>
 
 
             <ListView
+                android:id="@+id/gridViewMyGroups"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:id="@+id/gridViewMyGroups"
-                android:layout_weight="8"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="8dp"
-                android:gravity="center"
+                android:layout_weight="8"
                 android:background="@drawable/style_group_gridview"
+                android:gravity="center"
                 android:horizontalSpacing="1dp"
-                android:verticalSpacing="1dp"
-                />
+                android:verticalSpacing="1dp" />
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
                 android:layout_marginLeft="18dp"
                 android:layout_marginRight="18dp"
                 android:layout_marginTop="8dp"
-                android:visibility="gone"
-                android:background="@drawable/background_form">
+                android:layout_weight="1"
+                android:background="@drawable/background_form"
+                android:visibility="gone">
 
                 <TextView
+                    android:id="@+id/textViewRecommendedGroups"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="Recommended Groups"
-                    android:id="@+id/textViewRecommendedGroups"
-                    android:gravity="center"
                     android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="Recommended Groups"
                     android:textSize="20dp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
             </FrameLayout>
 
             <ListView
+                android:id="@+id/gridViewRecommendedGroups"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:id="@+id/gridViewRecommendedGroups"
-                android:layout_weight="4"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="8dp"
-                android:numColumns="2"
-                android:visibility="gone"
-                android:gravity="center"
+                android:layout_weight="4"
                 android:background="@drawable/style_group_gridview"
+                android:gravity="center"
                 android:horizontalSpacing="1dp"
-                android:verticalSpacing="1dp"/>
+                android:numColumns="2"
+                android:verticalSpacing="1dp"
+                android:visibility="gone" />
         </LinearLayout>
 
         <Button
+            android:id="@+id/buttonViewAllGroups"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:text="View All Groups"
-            android:id="@+id/buttonViewAllGroups"
-            android:layout_weight="1"
-            android:textColor="@color/white"
-            android:background="@drawable/button_style"
+            android:layout_marginBottom="8dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_weight="1"
+            android:background="@drawable/button_style"
+            android:text="View All Groups"
+            android:textColor="@color/white" />
     </LinearLayout>
-
 
 
 </LinearLayout>

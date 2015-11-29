@@ -3,23 +3,21 @@ package swe574.boun.edu.androidproject;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.LoaderManager.LoaderCallbacks;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
-
-import android.content.CursorLoader;
-import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -115,7 +113,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mRegisterButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent registerIntent = new Intent(LoginActivity.this,RegisterActivity.class);
+                Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivityForResult(registerIntent, REGISTER_REQUEST);
             }
         });
@@ -126,8 +124,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == REGISTER_REQUEST){
-            if(resultCode == RESULT_OK){
+        if (requestCode == REGISTER_REQUEST) {
+            if (resultCode == RESULT_OK) {
                 // Auto login if registration was successful.
                 String[] loginElements = data.getStringArrayExtra("LoginForm");
                 mEmailView.setText(loginElements[0]);
@@ -311,6 +309,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     }
 
+    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
+        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<>(LoginActivity.this,
+                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
+
+        mEmailView.setAdapter(adapter);
+    }
+
+
     private interface ProfileQuery {
         String[] PROJECTION = {
                 ContactsContract.CommonDataKinds.Email.ADDRESS,
@@ -319,16 +327,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         int ADDRESS = 0;
         int IS_PRIMARY = 1;
-    }
-
-
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        mEmailView.setAdapter(adapter);
     }
 
     /**
@@ -421,31 +419,30 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             int response = 0;
 
             try {
-                response  = httpURLConnection.getResponseCode();
+                response = httpURLConnection.getResponseCode();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             // Get the Response
             String responseJson = "";
-            if(response == HttpURLConnection.HTTP_OK){//Response is okay
+            if (response == HttpURLConnection.HTTP_OK) {//Response is okay
                 String line = "";
                 try {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-                    while ((line=reader.readLine()) != null) {
+                    while ((line = reader.readLine()) != null) {
                         responseJson += line;
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-            else{
+            } else {
                 // Server is down or webserver is changed.
                 return false;
             }
             try {
                 JSONObject object = new JSONObject(responseJson);
                 boolean success = object.getString("status").equals("success");
-                if(success){
+                if (success) {
                     JSONObject result = object.getJSONObject("result");
                     mAuth = result.getString("token");
                     return true;
@@ -464,7 +461,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                SharedPreferences preferences = getSharedPreferences("user" , MODE_PRIVATE);
+                SharedPreferences preferences = getSharedPreferences("user", MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("token", mAuth);
                 editor.apply();

@@ -40,54 +40,6 @@ public class MessageActivity extends ActionBarActivity implements SizeNotifierRe
     private EditText chatEditText1;
     private ArrayList<ChatMessage> chatMessages;
     private ImageView enterChatView1, emojiButton;
-    private ChatListAdapter listAdapter;
-    private EmojiView emojiView;
-    private SizeNotifierRelativeLayout sizeNotifierRelativeLayout;
-    private boolean showingEmoji;
-    private int keyboardHeight;
-    private boolean keyboardVisible;
-    private WindowManager.LayoutParams windowLayoutParams;
-
-
-    private EditText.OnKeyListener keyListener = new View.OnKeyListener() {
-        @Override
-        public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-            // If the event is a key-down event on the "enter" button
-            if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-                    (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                // Perform action on key press
-
-                EditText editText = (EditText) v;
-
-                if(v==chatEditText1)
-                {
-                    sendMessage(editText.getText().toString(), UserType.OTHER);
-                }
-
-                chatEditText1.setText("");
-
-                return true;
-            }
-            return false;
-
-        }
-    };
-
-    private ImageView.OnClickListener clickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-            if(v==enterChatView1)
-            {
-                sendMessage(chatEditText1.getText().toString(), UserType.OTHER);
-            }
-
-            chatEditText1.setText("");
-
-        }
-    };
-
     private final TextWatcher watcher1 = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -105,14 +57,55 @@ public class MessageActivity extends ActionBarActivity implements SizeNotifierRe
 
         @Override
         public void afterTextChanged(Editable editable) {
-            if(editable.length()==0){
+            if (editable.length() == 0) {
                 enterChatView1.setImageResource(R.drawable.ic_chat_send);
-            }else{
+            } else {
                 enterChatView1.setImageResource(R.drawable.ic_chat_send_active);
             }
         }
     };
+    private ChatListAdapter listAdapter;
+    private EmojiView emojiView;
+    private SizeNotifierRelativeLayout sizeNotifierRelativeLayout;
+    private boolean showingEmoji;
+    private int keyboardHeight;
+    private boolean keyboardVisible;
+    private WindowManager.LayoutParams windowLayoutParams;
+    private EditText.OnKeyListener keyListener = new View.OnKeyListener() {
+        @Override
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
 
+            // If the event is a key-down event on the "enter" button
+            if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                    (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                // Perform action on key press
+
+                EditText editText = (EditText) v;
+
+                if (v == chatEditText1) {
+                    sendMessage(editText.getText().toString(), UserType.OTHER);
+                }
+
+                chatEditText1.setText("");
+
+                return true;
+            }
+            return false;
+
+        }
+    };
+    private ImageView.OnClickListener clickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            if (v == enterChatView1) {
+                sendMessage(chatEditText1.getText().toString(), UserType.OTHER);
+            }
+
+            chatEditText1.setText("");
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,7 +131,7 @@ public class MessageActivity extends ActionBarActivity implements SizeNotifierRe
         });
 
 
-        emojiButton = (ImageView)findViewById(R.id.emojiButton);
+        emojiButton = (ImageView) findViewById(R.id.emojiButton);
 
         emojiButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,9 +156,8 @@ public class MessageActivity extends ActionBarActivity implements SizeNotifierRe
         NotificationCenter.getInstance().addObserver(this, NotificationCenter.emojiDidLoaded);
     }
 
-    private void sendMessage(final String messageText, final UserType userType)
-    {
-        if(messageText.trim().length()==0)
+    private void sendMessage(final String messageText, final UserType userType) {
+        if (messageText.trim().length() == 0)
             return;
 
         final ChatMessage message = new ChatMessage();
@@ -175,16 +167,16 @@ public class MessageActivity extends ActionBarActivity implements SizeNotifierRe
         message.setMessageTime(new Date().getTime());
         chatMessages.add(message);
 
-        if(listAdapter!=null)
+        if (listAdapter != null)
             listAdapter.notifyDataSetChanged();
 
         // Mark message as delivered after one second
 
         final ScheduledExecutorService exec = Executors.newScheduledThreadPool(1);
 
-        exec.schedule(new Runnable(){
+        exec.schedule(new Runnable() {
             @Override
-            public void run(){
+            public void run() {
                 message.setMessageStatus(Status.DELIVERED);
 
                 final ChatMessage message = new ChatMessage();
@@ -206,8 +198,7 @@ public class MessageActivity extends ActionBarActivity implements SizeNotifierRe
 
     }
 
-    private Activity getActivity()
-    {
+    private Activity getActivity() {
         return this;
     }
 
@@ -295,8 +286,7 @@ public class MessageActivity extends ActionBarActivity implements SizeNotifierRe
                 return;
             }
 
-        }
-        else {
+        } else {
             removeEmojiWindow();
             if (sizeNotifierRelativeLayout != null) {
                 sizeNotifierRelativeLayout.post(new Runnable() {
@@ -331,7 +321,6 @@ public class MessageActivity extends ActionBarActivity implements SizeNotifierRe
     }
 
 
-
     /**
      * Hides the emoji popup
      */
@@ -349,7 +338,6 @@ public class MessageActivity extends ActionBarActivity implements SizeNotifierRe
     public boolean isEmojiPopupShowing() {
         return showingEmoji;
     }
-
 
 
     /**
@@ -433,6 +421,7 @@ public class MessageActivity extends ActionBarActivity implements SizeNotifierRe
 
     /**
      * Get the system status bar height
+     *
      * @return
      */
     public int getStatusBarHeight() {

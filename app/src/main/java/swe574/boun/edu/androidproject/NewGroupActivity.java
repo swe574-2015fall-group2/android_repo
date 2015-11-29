@@ -1,16 +1,12 @@
 package swe574.boun.edu.androidproject;
 
-import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import swe574.boun.edu.androidproject.model.Group;
 import swe574.boun.edu.androidproject.tasks.CreateGroupTask;
 
 
@@ -40,27 +36,26 @@ public class NewGroupActivity extends AppCompatActivity {
     }
 
     private void attemptCreate() {
-        if(mTask != null){
+        if (mTask != null) {
             return;
         }
 
         boolean cancel = false;
         View focus = null;
-        String name,description;
-        if(!validateDescription(description = mGroupDescriptionView.getText().toString())){
+        String name, description;
+        if (!validateDescription(description = mGroupDescriptionView.getText().toString())) {
             focus = mGroupDescriptionView;
             cancel = true;
         }
-        if (!validateName(name = mGroupNameView.getText().toString())){
+        if (!validateName(name = mGroupNameView.getText().toString())) {
             focus = mGroupNameView;
             cancel = true;
         }
 
-        if(!cancel){
+        if (!cancel) {
             mTask = new CreateGroupTask(this, this, mAuth, (ViewGroup) ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0));
             mTask.execute((Void) null);
-        }
-        else {
+        } else {
             focus.requestFocus();
         }
     }

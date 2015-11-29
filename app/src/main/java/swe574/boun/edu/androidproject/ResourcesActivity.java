@@ -6,12 +6,9 @@ import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.CheckBox;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -39,7 +36,7 @@ public class ResourcesActivity extends AppCompatActivity {
 
         mResourceTask = new UserResourceTask(mResourceList);
 
-        SharedPreferences preferences = getSharedPreferences("user" , MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences("user", MODE_PRIVATE);
         String token = preferences.getString("token", "");
 
         mResourceTask.execute(token);
@@ -81,7 +78,7 @@ public class ResourcesActivity extends AppCompatActivity {
         }
     }
 
-    private class UserResourceTask extends AsyncTask<String, Void, List<Resource>>{
+    private class UserResourceTask extends AsyncTask<String, Void, List<Resource>> {
         private ListView mResourceList;
         private List<Resource> mResources;
 

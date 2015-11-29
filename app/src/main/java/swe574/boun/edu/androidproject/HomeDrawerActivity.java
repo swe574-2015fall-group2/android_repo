@@ -10,10 +10,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import swe574.boun.edu.androidproject.fragments.GroupsNavigationFragment;
 import swe574.boun.edu.androidproject.fragments.HomeNavigationFragment;
@@ -92,16 +90,14 @@ public class HomeDrawerActivity extends AppCompatActivity
         } else if (id == R.id.nav_profile) {
 
             selectedFragment = ProfileNavigationFragment.class;
-        }
-        else if (id == R.id.nav_messages){
+        } else if (id == R.id.nav_messages) {
             selectedFragment = MessageNavigationFragment.class;
         }
 
         try {
-            if(selectedFragment == GroupsNavigationFragment.class){
-                fragment = GroupsNavigationFragment.newInstance(preferences.getString("token",""));
-            }
-            else{
+            if (selectedFragment == GroupsNavigationFragment.class) {
+                fragment = GroupsNavigationFragment.newInstance(preferences.getString("token", ""));
+            } else {
                 fragment = (Fragment) selectedFragment.newInstance();
             }
         } catch (InstantiationException e) {

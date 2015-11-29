@@ -10,6 +10,17 @@ import java.util.List;
  * Created by Jongaros on 11/29/2015.
  */
 public final class User implements Parcelable {
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
     private final String mID;
     private final String mUsername;
     private final String mName;
@@ -47,18 +58,6 @@ public final class User implements Parcelable {
         mBlockedUsers = in.createTypedArrayList(User.CREATOR);
         mStatus = in.readString();
     }
-
-    public static final Creator<User> CREATOR = new Creator<User>() {
-        @Override
-        public User createFromParcel(Parcel in) {
-            return new User(in);
-        }
-
-        @Override
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
 
     public String getmID() {
         return mID;

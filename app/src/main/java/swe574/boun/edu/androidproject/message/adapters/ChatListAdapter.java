@@ -20,9 +20,9 @@ import swe574.boun.edu.androidproject.tools.AndroidUtilities;
 
 public class ChatListAdapter extends BaseAdapter {
 
+    public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("HH:mm");
     private ArrayList<ChatMessage> chatMessages;
     private Context context;
-    public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("HH:mm");
 
     public ChatListAdapter(ArrayList<ChatMessage> chatMessages, Context context) {
         this.chatMessages = chatMessages;
@@ -91,7 +91,7 @@ public class ChatListAdapter extends BaseAdapter {
 
             }
 
-            holder2.messageTextView.setText(Emoji.replaceEmoji(message.getMessageText(), holder2.messageTextView.getPaint().getFontMetricsInt(), AndroidUtilities.dp(16) ));
+            holder2.messageTextView.setText(Emoji.replaceEmoji(message.getMessageText(), holder2.messageTextView.getPaint().getFontMetricsInt(), AndroidUtilities.dp(16)));
             //holder2.messageTextView.setText(message.getMessageText());
             holder2.timeTextView.setText(SIMPLE_DATE_FORMAT.format(message.getMessageTime()));
 

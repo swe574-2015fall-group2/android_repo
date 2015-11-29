@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 import android.util.MalformedJsonException;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.ListView;
 
 import org.json.JSONException;
@@ -57,7 +56,7 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
     protected ArrayList<Group> doInBackground(Void... params) {
         mResult = false;
         HttpURLConnection httpURLConnection = null;
-        try{
+        try {
             // Create a new UrlConnection
             URL postUrl = new URL("http://162.243.215.160:9000/v1/group/listMyGroups");
             // Open the created connection to server.
@@ -84,29 +83,27 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
             outputStream.close();
             httpURLConnection.connect();
             // Get response code
-            int response  = httpURLConnection.getResponseCode();
+            int response = httpURLConnection.getResponseCode();
             // Get the Response
             String responseJson = "";
-            if(response == HttpURLConnection.HTTP_OK){
-            //Response is okay
+            if (response == HttpURLConnection.HTTP_OK) {
+                //Response is okay
                 String line = "";
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-                    while ((line=reader.readLine()) != null) {
-                        responseJson += line;
-                    }
-            }
-            else{
+                BufferedReader reader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+                while ((line = reader.readLine()) != null) {
+                    responseJson += line;
+                }
+            } else {
                 // Server is down or webserver is changed.
                 throw new IllegalStateException("Response code is not valid");
             }
             //TODO RECHECK WITH DATA
             JSONObject object = new JSONObject(responseJson);
-            if(object.getString("status").equals("success")){
+            if (object.getString("status").equals("success")) {
                 mResult = true;
                 httpURLConnection.disconnect();
                 return null;
-            }
-            else{
+            } else {
                 throw new MalformedJsonException("Returned JSON String isn't fit the format.");
             }
         } catch (UnsupportedEncodingException e) {
@@ -115,8 +112,7 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             httpURLConnection.disconnect();
         }
         return null;
@@ -127,7 +123,7 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
         mGroupForm.setVisibility(View.VISIBLE);
         mProgress.setVisibility(View.GONE);
 
-        if(mResult){
+        if (mResult) {
             ListGroupAdapter adapter = new ListGroupAdapter(mView.getContext(), result, mAuthToken);
             mMyGroup.setAdapter(adapter);
         }

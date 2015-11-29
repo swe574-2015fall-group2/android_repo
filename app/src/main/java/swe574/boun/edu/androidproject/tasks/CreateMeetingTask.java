@@ -21,22 +21,22 @@ import java.util.Date;
 
 import swe574.boun.edu.androidproject.R;
 
-public class CreateMeetingTask extends AsyncTask<Void, Void, Boolean>{
+public class CreateMeetingTask extends AsyncTask<Void, Void, Boolean> {
     private final String mAuth;
     private final View mProgressView;
     private final View mFormView;
     private String mMeetingId;
     private Date mMeetingDateTime;
     private String mMeetingAgendaSet;
-  //  private String mMeetingToDoSet;
+    //  private String mMeetingToDoSet;
     private String mMeetingEstimatedDuration;
-  //  private int mMeetingActualDuration;
+    //  private int mMeetingActualDuration;
     private String mMeetingLocation;
     private String mMeetingDescription;
-   // private String mMeetingStatus;
+    // private String mMeetingStatus;
     private String mMeetingType;
- //   private String mMeetingInvitedUserSet;
- //   private String mMeetingAttendedUserSet;
+    //   private String mMeetingInvitedUserSet;
+    //   private String mMeetingAttendedUserSet;
 
     public CreateMeetingTask(String mAuth, ViewGroup mParent) {
         super();
@@ -68,7 +68,7 @@ public class CreateMeetingTask extends AsyncTask<Void, Void, Boolean>{
     protected Boolean doInBackground(Void... params) {
         boolean result = false;
         HttpURLConnection httpURLConnection = null;
-        try{
+        try {
             // Create a new UrlConnection
             URL postUrl = new URL("http://162.243.215.160:9000/v1/meeting/create");
             // Open the created connection to server.
@@ -102,28 +102,26 @@ public class CreateMeetingTask extends AsyncTask<Void, Void, Boolean>{
             outputStream.close();
             httpURLConnection.connect();
             // Get response code
-            int response  = httpURLConnection.getResponseCode();
+            int response = httpURLConnection.getResponseCode();
             // Get the Response
             String responseJson = "";
-            if(response == HttpURLConnection.HTTP_OK){
+            if (response == HttpURLConnection.HTTP_OK) {
                 //Response is okay
                 String line = "";
                 BufferedReader reader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-                while ((line=reader.readLine()) != null) {
+                while ((line = reader.readLine()) != null) {
                     responseJson += line;
                 }
-            }
-            else{
+            } else {
                 // Server is down or webserver is changed.
                 throw new IllegalStateException("Response code is not valid");
             }
             JSONObject object = new JSONObject(responseJson);
-            if(object.getString("status").equals("success")){
+            if (object.getString("status").equals("success")) {
                 result = true;
                 httpURLConnection.disconnect();
                 return result;
-            }
-            else{
+            } else {
                 throw new MalformedJsonException("Returned JSON String isn't fit the format.");
             }
         } catch (UnsupportedEncodingException e) {
@@ -132,8 +130,7 @@ public class CreateMeetingTask extends AsyncTask<Void, Void, Boolean>{
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             httpURLConnection.disconnect();
         }
         return result;
@@ -144,11 +141,10 @@ public class CreateMeetingTask extends AsyncTask<Void, Void, Boolean>{
         mProgressView.setVisibility(View.GONE);
         mFormView.setVisibility(View.VISIBLE);
         String message;
-        if(result){
+        if (result) {
             message = "You have successfully created meeting " /*+ mMeetingName*/;
-        }
-        else{
-            message ="Meeting creation failed, please check your parameters. " /*+ mMeetingName*/;
+        } else {
+            message = "Meeting creation failed, please check your parameters. " /*+ mMeetingName*/;
         }
     }
 

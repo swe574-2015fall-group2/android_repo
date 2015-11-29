@@ -6,16 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.List;
-import java.util.zip.Inflater;
 
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.beans.Resource;
 
-public class ResourceListAdapter extends BaseAdapter{
+public class ResourceListAdapter extends BaseAdapter {
     private Context mContext;
     private List<Resource> mResources;
 
@@ -42,18 +40,18 @@ public class ResourceListAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.resourcelistitem,null,true);
+        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.resourcelistitem, null, true);
 
         TextView mSize = (TextView) viewGroup.findViewById(R.id.textViewSize);
         TextView mFormat = (TextView) viewGroup.findViewById(R.id.textViewFormat);
 
         Resource resource = mResources.get(position);
 
-        if(mSize != null){
+        if (mSize != null) {
             mSize.setText(resource.getmSize());
         }
 
-        if(mFormat != null){
+        if (mFormat != null) {
             mFormat.setText(resource.getmFormat());
         }
 

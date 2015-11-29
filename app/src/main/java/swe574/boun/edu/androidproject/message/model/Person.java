@@ -22,7 +22,7 @@ public final class Person {
         return mFullName;
     }
 
-    public Bitmap getmImage(){
+    public Bitmap getmImage() {
         Bitmap image = mImage.copy(mImage.getConfig(), false);
         return image;
     }

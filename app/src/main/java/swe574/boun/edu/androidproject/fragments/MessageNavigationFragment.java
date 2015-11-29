@@ -22,6 +22,10 @@ public class MessageNavigationFragment extends Fragment {
     private final static String USER_TOKEN = "user";
     private String USER_ID;
 
+    public MessageNavigationFragment() {
+        // Required empty public constructor
+    }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -36,10 +40,6 @@ public class MessageNavigationFragment extends Fragment {
         args.putString(USER_TOKEN, user_id);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public MessageNavigationFragment() {
-        // Required empty public constructor
     }
 
     @Override

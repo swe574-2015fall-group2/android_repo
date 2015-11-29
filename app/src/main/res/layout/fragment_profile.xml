@@ -1,32 +1,35 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-android:layout_height="match_parent" android:orientation="vertical"
-tools:context="swe574.boun.edu.androidproject.fragments.ProfileFragment"
-    android:background="@drawable/background_login">
-<FrameLayout
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="3"
-    android:id="@+id/profilePicture"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    android:layout_marginTop="16dp"
-    android:layout_marginBottom="16dp"
-    android:background="@drawable/background_form"/>
+    android:layout_height="match_parent"
+    android:background="@drawable/background_login"
+    android:orientation="vertical"
+    tools:context="swe574.boun.edu.androidproject.fragments.ProfileFragment">
+
+    <FrameLayout
+        android:id="@+id/profilePicture"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="3"
+        android:background="@drawable/background_form" />
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="5"
         android:layout_margin="16dp"
+        android:layout_weight="5"
+        android:background="@drawable/background_form"
         android:baselineAligned="false"
-        android:measureWithLargestChild="true"
         android:layoutMode="opticalBounds"
+        android:measureWithLargestChild="true"
         android:orientation="vertical"
         android:scrollIndicators="none"
-        android:stretchColumns="true"
         android:shrinkColumns="true"
-        android:background="@drawable/background_form">
+        android:stretchColumns="true">
 
         <TableRow
             android:layout_width="0dp"
@@ -36,17 +39,17 @@ tools:context="swe574.boun.edu.androidproject.fragments.ProfileFragment"
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_weight="1"
                 android:text="University:"
-                android:layout_weight="1" />
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Placeholder"
                 android:id="@+id/textViewUniversity"
-                android:layout_weight="1" />
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Placeholder"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
         <TableRow
@@ -57,17 +60,17 @@ tools:context="swe574.boun.edu.androidproject.fragments.ProfileFragment"
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_weight="1"
                 android:text="Programme:"
-                android:layout_weight="1" />
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Placeholder"
                 android:id="@+id/textViewProgramme"
-                android:layout_weight="1" />
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Placeholder"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
         <TableRow
@@ -78,17 +81,17 @@ tools:context="swe574.boun.edu.androidproject.fragments.ProfileFragment"
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_weight="1"
                 android:text="Join Date:"
-                android:layout_weight="1" />
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Placeholder"
                 android:id="@+id/textViewJoinDate"
-                android:layout_weight="1" />
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Placeholder"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
         <TableRow
@@ -99,17 +102,17 @@ tools:context="swe574.boun.edu.androidproject.fragments.ProfileFragment"
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_weight="1"
                 android:text="Linkedin:"
-                android:layout_weight="1" />
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Placeholder"
                 android:id="@+id/textViewLinkedin"
-                android:layout_weight="1" />
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Placeholder"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
         <TableRow
@@ -120,17 +123,17 @@ tools:context="swe574.boun.edu.androidproject.fragments.ProfileFragment"
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_weight="1"
                 android:text="Academica:"
-                android:layout_weight="1" />
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
+                android:id="@+id/textViewAcademica"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_weight="1"
                 android:text="Placeholder"
-                android:id="@+id/textViewAcademica"
-                android:layout_weight="1" />
+                android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
         <TableRow
@@ -141,30 +144,30 @@ tools:context="swe574.boun.edu.androidproject.fragments.ProfileFragment"
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_weight="1"
                 android:text="Total Contribution:"
-                android:layout_weight="1" />
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
+                android:id="@+id/textViewContribution"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_weight="1"
                 android:text="Placeholder"
-                android:id="@+id/textViewContribution"
-                android:layout_weight="1" />
+                android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
     </TableLayout>
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4.5"
         android:layout_margin="16dp"
+        android:layout_weight="4.5"
+        android:background="@drawable/background_form"
         android:measureWithLargestChild="true"
         android:orientation="vertical"
         android:shrinkColumns="true"
-        android:stretchColumns="true"
-        android:background="@drawable/background_form">
+        android:stretchColumns="true">
 
         <TableRow
             android:layout_width="match_parent"
@@ -172,24 +175,24 @@ tools:context="swe574.boun.edu.androidproject.fragments.ProfileFragment"
             android:layout_weight="1">
 
             <Button
+                android:id="@+id/buttonPrivacy"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:text="Privacy Settings"
-                android:id="@+id/buttonPrivacy"
+                android:layout_margin="16dp"
                 android:layout_weight="1"
                 android:background="@drawable/button_style"
-                android:textColor="@color/white"
-                android:layout_margin="16dp"/>
+                android:text="Privacy Settings"
+                android:textColor="@color/white" />
 
             <Button
+                android:id="@+id/buttonResources"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:text="Manage Resources"
-                android:id="@+id/buttonResources"
-                android:layout_weight="1"
                 android:layout_margin="16dp"
+                android:layout_weight="1"
                 android:background="@drawable/button_style"
-                android:textColor="@color/white"/>
+                android:text="Manage Resources"
+                android:textColor="@color/white" />
         </TableRow>
 
         <TableRow
@@ -198,15 +201,14 @@ tools:context="swe574.boun.edu.androidproject.fragments.ProfileFragment"
             android:layout_weight="1">
 
             <Button
+                android:id="@+id/buttonRemoveAccount"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:text="Archive Account"
-                android:id="@+id/buttonRemoveAccount"
-                android:layout_weight="1"
                 android:layout_margin="16dp"
+                android:layout_weight="1"
                 android:background="@drawable/button_style"
-                android:textColor="@color/white"
-                />
+                android:text="Archive Account"
+                android:textColor="@color/white" />
         </TableRow>
     </TableLayout>
 </LinearLayout>

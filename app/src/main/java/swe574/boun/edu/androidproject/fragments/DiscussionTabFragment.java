@@ -59,8 +59,8 @@ public class DiscussionTabFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
 
-        if(this.isVisible()){
-            if(isVisibleToUser){
+        if (this.isVisible()) {
+            if (isVisibleToUser) {
                 getActivity().setTitle("Discussions");
             }
         }

@@ -8,14 +8,25 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class Group implements Parcelable{
+public final class Group implements Parcelable {
+    public static final Creator<Group> CREATOR = new Creator<Group>() {
+        @Override
+        public Group createFromParcel(Parcel in) {
+            return new Group(in);
+        }
+
+        @Override
+        public Group[] newArray(int size) {
+            return new Group[size];
+        }
+    };
     private final URL mPicture;
     private final String mName;
     private final String mDescription;
     private final String mID;
     private final List<String> mTags;
 
-    public Group(URL mPicture, String mName, String mDescription,String mID, List<String> mTags) {
+    public Group(URL mPicture, String mName, String mDescription, String mID, List<String> mTags) {
         this.mPicture = mPicture;
         this.mName = mName;
         this.mDescription = mDescription;
@@ -31,23 +42,11 @@ public final class Group implements Parcelable{
         mTags = in.createStringArrayList();
     }
 
-    public static final Creator<Group> CREATOR = new Creator<Group>() {
-        @Override
-        public Group createFromParcel(Parcel in) {
-            return new Group(in);
-        }
-
-        @Override
-        public Group[] newArray(int size) {
-            return new Group[size];
-        }
-    };
-
     public URL getmPicture() {
         URL mutable = null;
         try {
-            if(mPicture != null)
-            mutable = new URL(mPicture.getPath());
+            if (mPicture != null)
+                mutable = new URL(mPicture.getPath());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

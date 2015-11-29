@@ -2,9 +2,7 @@ package swe574.boun.edu.androidproject;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.ListView;
 
 import swe574.boun.edu.androidproject.tasks.FetchAllGroupsTask;
@@ -12,7 +10,7 @@ import swe574.boun.edu.androidproject.tasks.FetchAllGroupsTask;
 /**
  * Created by Jongaros on 11/25/2015.
  */
-public class ViewAllGroupsActivity extends AppCompatActivity{
+public class ViewAllGroupsActivity extends AppCompatActivity {
     private String mAuth;
     private ListView mGroups;
     private FetchAllGroupsTask mTask;
@@ -26,7 +24,7 @@ public class ViewAllGroupsActivity extends AppCompatActivity{
         mGroups = (ListView) findViewById(R.id.gridViewAllGroups);
         //Get Data from Database.
         mTask = new FetchAllGroupsTask((ViewGroup) ((ViewGroup) this
-                .findViewById(android.R.id.content)).getChildAt(0),mAuth);
+                .findViewById(android.R.id.content)).getChildAt(0), mAuth);
         mTask.execute();
         setTitle("All Groups");
 

@@ -3,21 +3,19 @@ package swe574.boun.edu.androidproject;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
-
 import android.content.CursorLoader;
 import android.content.Loader;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -247,6 +245,16 @@ public class ForgottenPasswordActivity extends AppCompatActivity implements Load
 
     }
 
+    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
+        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<>(ForgottenPasswordActivity.this,
+                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
+
+        mEmailView.setAdapter(adapter);
+    }
+
+
     private interface ProfileQuery {
         String[] PROJECTION = {
                 ContactsContract.CommonDataKinds.Email.ADDRESS,
@@ -255,16 +263,6 @@ public class ForgottenPasswordActivity extends AppCompatActivity implements Load
 
         int ADDRESS = 0;
         int IS_PRIMARY = 1;
-    }
-
-
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(ForgottenPasswordActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        mEmailView.setAdapter(adapter);
     }
 
     /**
@@ -352,31 +350,30 @@ public class ForgottenPasswordActivity extends AppCompatActivity implements Load
             int response = 0;
 
             try {
-                response  = httpURLConnection.getResponseCode();
+                response = httpURLConnection.getResponseCode();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             // Get the Response
             String responseJson = "";
-            if(response == HttpURLConnection.HTTP_OK){//Response is okay
+            if (response == HttpURLConnection.HTTP_OK) {//Response is okay
                 String line = "";
                 try {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-                    while ((line=reader.readLine()) != null) {
+                    while ((line = reader.readLine()) != null) {
                         responseJson += line;
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-            else{
+            } else {
                 // Server is down or webserver is changed.
                 return false;
             }
             try {
                 JSONObject object = new JSONObject(responseJson);
                 boolean success = object.getBoolean("ack");
-                if(success){
+                if (success) {
                     return true;
                 }
                 return false;

@@ -4,17 +4,11 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import swe574.boun.edu.androidproject.R;
-import swe574.boun.edu.androidproject.model.Group;
 
 public class NewNoteActivity extends AppCompatActivity {
     private Button mCreateButton;
@@ -44,19 +38,19 @@ public class NewNoteActivity extends AppCompatActivity {
     }
 
     private void attemptCreate() {
-        if(mTask != null){
+        if (mTask != null) {
             return;
         }
 
         View view = null;
-        String name,description,tags;
-        if(!validateDescription(description = mNoteDescriptionView.getText().toString())){
+        String name, description, tags;
+        if (!validateDescription(description = mNoteDescriptionView.getText().toString())) {
 
         }
-        if(!validateTags(tags = mNoteTagsView.getText().toString())){
+        if (!validateTags(tags = mNoteTagsView.getText().toString())) {
 
         }
-        if (!validateName(name = mNoteNameView.getText().toString())){
+        if (!validateName(name = mNoteNameView.getText().toString())) {
 
         }
 
@@ -91,7 +85,7 @@ public class NewNoteActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Boolean success) {
-            if(success){
+            if (success) {
                 Toast.makeText(mContext, "The note has created successfully.", Toast.LENGTH_LONG).show();
                 finish();
             }

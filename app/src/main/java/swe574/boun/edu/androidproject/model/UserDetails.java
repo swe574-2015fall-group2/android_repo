@@ -9,7 +9,18 @@ import java.net.URL;
 /**
  * Created by Jongaros on 11/29/2015.
  */
-public final class UserDetails implements Parcelable{
+public final class UserDetails implements Parcelable {
+    public static final Creator<UserDetails> CREATOR = new Creator<UserDetails>() {
+        @Override
+        public UserDetails createFromParcel(Parcel in) {
+            return new UserDetails(in);
+        }
+
+        @Override
+        public UserDetails[] newArray(int size) {
+            return new UserDetails[size];
+        }
+    };
     private final String mBirthDate;
     private final String mProfession;
     private final String mUniversity;
@@ -42,18 +53,6 @@ public final class UserDetails implements Parcelable{
         mImage = (URL) in.readSerializable();
     }
 
-    public static final Creator<UserDetails> CREATOR = new Creator<UserDetails>() {
-        @Override
-        public UserDetails createFromParcel(Parcel in) {
-            return new UserDetails(in);
-        }
-
-        @Override
-        public UserDetails[] newArray(int size) {
-            return new UserDetails[size];
-        }
-    };
-
     public String getmBirthDate() {
         return mBirthDate;
     }
@@ -76,7 +75,7 @@ public final class UserDetails implements Parcelable{
 
     public URL getmLinkedin() {
         URL url = null;
-        if(mLinkedin != null) {
+        if (mLinkedin != null) {
             try {
                 url = new URL(mLinkedin.getPath());
             } catch (MalformedURLException e) {
@@ -88,7 +87,7 @@ public final class UserDetails implements Parcelable{
 
     public URL getmAcademia() {
         URL url = null;
-        if(mAcademia != null) {
+        if (mAcademia != null) {
             try {
                 url = new URL(mAcademia.getPath());
             } catch (MalformedURLException e) {
@@ -100,7 +99,7 @@ public final class UserDetails implements Parcelable{
 
     public URL getmImage() {
         URL url = null;
-        if(mImage != null) {
+        if (mImage != null) {
             try {
                 url = new URL(mImage.getPath());
             } catch (MalformedURLException e) {

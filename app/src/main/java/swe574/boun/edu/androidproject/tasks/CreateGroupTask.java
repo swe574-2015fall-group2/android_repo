@@ -25,7 +25,7 @@ import java.net.URL;
 
 import swe574.boun.edu.androidproject.R;
 
-public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean>{
+public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean> {
     private final Activity mActivity;
     private final Context mContext;
     private final String mAuth;
@@ -34,7 +34,7 @@ public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean>{
     private final View mProgressView;
     private final View mFormView;
 
-    public CreateGroupTask(Activity mActivity , Context mContext, String mAuth, ViewGroup mParent) {
+    public CreateGroupTask(Activity mActivity, Context mContext, String mAuth, ViewGroup mParent) {
         super();
         this.mActivity = mActivity;
         this.mContext = mContext;
@@ -55,7 +55,7 @@ public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean>{
     protected Boolean doInBackground(Void... params) {
         boolean result = false;
         HttpURLConnection httpURLConnection = null;
-        try{
+        try {
             // Create a new UrlConnection
             URL postUrl = new URL("http://162.243.215.160:9000/v1/group/create");
             // Open the created connection to server.
@@ -84,28 +84,26 @@ public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean>{
             outputStream.close();
             httpURLConnection.connect();
             // Get response code
-            int response  = httpURLConnection.getResponseCode();
+            int response = httpURLConnection.getResponseCode();
             // Get the Response
             String responseJson = "";
-            if(response == HttpURLConnection.HTTP_OK){
+            if (response == HttpURLConnection.HTTP_OK) {
                 //Response is okay
                 String line = "";
                 BufferedReader reader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-                while ((line=reader.readLine()) != null) {
+                while ((line = reader.readLine()) != null) {
                     responseJson += line;
                 }
-            }
-            else{
+            } else {
                 // Server is down or webserver is changed.
                 throw new IllegalStateException("Response code is not valid");
             }
             JSONObject object = new JSONObject(responseJson);
-            if(object.getString("status").equals("success")){
+            if (object.getString("status").equals("success")) {
                 result = true;
                 httpURLConnection.disconnect();
                 return result;
-            }
-            else{
+            } else {
                 throw new MalformedJsonException("Returned JSON String isn't fit the format.");
             }
         } catch (UnsupportedEncodingException e) {
@@ -114,8 +112,7 @@ public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean>{
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             httpURLConnection.disconnect();
         }
         return result;
@@ -126,14 +123,13 @@ public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean>{
         mProgressView.setVisibility(View.GONE);
         mFormView.setVisibility(View.VISIBLE);
         String message;
-        if(result){
+        if (result) {
             message = "You have successfully created group " + mName;
+        } else {
+            message = "Group creation failed, please check your parameters. " + mName;
         }
-        else{
-            message ="Group creation failed, please check your parameters. " + mName;
-        }
-        Toast.makeText(mContext, message , Toast.LENGTH_LONG).show();
-        if(result) mActivity.finish();
+        Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
+        if (result) mActivity.finish();
     }
 
     @Override

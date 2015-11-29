@@ -29,7 +29,7 @@ public class EmojiView extends LinearLayout {
             R.drawable.ic_emoji_flower,
             R.drawable.ic_emoji_bell,
             R.drawable.ic_emoji_car,
-            R.drawable.ic_emoji_symbol };
+            R.drawable.ic_emoji_symbol};
     private Listener listener;
     private ViewPager pager;
     private FrameLayout recentsWrap;
@@ -83,12 +83,13 @@ public class EmojiView extends LinearLayout {
             if (i >= 4) {
                 return str;
             }
-            int j = (int)(0xFFFF & paramLong >> 16 * (3 - i));
+            int j = (int) (0xFFFF & paramLong >> 16 * (3 - i));
             if (j != 0) {
-                str = str + (char)j;
+                str = str + (char) j;
             }
         }
     }
+
     private void init() {
         setOrientation(LinearLayout.VERTICAL);
         for (int i = 0; i < Emoji.data.length; i++) {
@@ -196,6 +197,12 @@ public class EmojiView extends LinearLayout {
         }
     }
 
+    public static abstract interface Listener {
+        public abstract void onBackspace();
+
+        public abstract void onEmojiSelected(String paramString);
+    }
+
     private class EmojiGridAdapter extends BaseAdapter {
         long[] data;
 
@@ -216,7 +223,7 @@ public class EmojiView extends LinearLayout {
         }
 
         public View getView(int i, View view, ViewGroup paramViewGroup) {
-            ImageView imageView = (ImageView)view;
+            ImageView imageView = (ImageView) view;
             if (imageView == null) {
                 imageView = new ImageView(EmojiView.this.getContext()) {
                     public void onMeasure(int paramAnonymousInt1, int paramAnonymousInt2) {
@@ -226,9 +233,9 @@ public class EmojiView extends LinearLayout {
                 imageView.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View view) {
                         if (EmojiView.this.listener != null) {
-                            EmojiView.this.listener.onEmojiSelected(EmojiView.this.convert((Long)view.getTag()));
+                            EmojiView.this.listener.onEmojiSelected(EmojiView.this.convert((Long) view.getTag()));
                         }
-                        EmojiView.this.addToRecent((Long)view.getTag());
+                        EmojiView.this.addToRecent((Long) view.getTag());
                     }
                 });
                 imageView.setBackgroundResource(R.drawable.list_selector);
@@ -288,10 +295,5 @@ public class EmojiView extends LinearLayout {
                 super.unregisterDataSetObserver(observer);
             }
         }
-    }
-
-    public static abstract interface Listener {
-        public abstract void onBackspace();
-        public abstract void onEmojiSelected(String paramString);
     }
 }

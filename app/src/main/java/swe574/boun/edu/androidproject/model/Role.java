@@ -9,7 +9,18 @@ import java.util.List;
 /**
  * Created by Jongaros on 11/29/2015.
  */
-public final class Role implements Parcelable{
+public final class Role implements Parcelable {
+    public static final Creator<Role> CREATOR = new Creator<Role>() {
+        @Override
+        public Role createFromParcel(Parcel in) {
+            return new Role(in);
+        }
+
+        @Override
+        public Role[] newArray(int size) {
+            return new Role[size];
+        }
+    };
     private final String mID;
     private final String mName;
     private final List<String> mPermissions;
@@ -26,18 +37,6 @@ public final class Role implements Parcelable{
         mPermissions = in.createStringArrayList();
     }
 
-    public static final Creator<Role> CREATOR = new Creator<Role>() {
-        @Override
-        public Role createFromParcel(Parcel in) {
-            return new Role(in);
-        }
-
-        @Override
-        public Role[] newArray(int size) {
-            return new Role[size];
-        }
-    };
-
     public String getmID() {
         return mID;
     }
@@ -48,8 +47,8 @@ public final class Role implements Parcelable{
 
     public List<String> getmPermissions() {
         List<String> newList = null;
-        if(mPermissions != null)
-        newList = new ArrayList<>(mPermissions);
+        if (mPermissions != null)
+            newList = new ArrayList<>(mPermissions);
         return newList;
     }
 

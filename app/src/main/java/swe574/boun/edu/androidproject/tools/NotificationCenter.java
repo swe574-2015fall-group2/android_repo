@@ -6,15 +6,12 @@ import java.util.HashMap;
 public class NotificationCenter {
 
     public static final int emojiDidLoaded = 999;
-
+    private static volatile NotificationCenter Instance = null;
     final private HashMap<Integer, ArrayList<Object>> observers = new HashMap<Integer, ArrayList<Object>>();
-
     final private HashMap<Integer, Object> removeAfterBroadcast = new HashMap<Integer, Object>();
     final private HashMap<Integer, Object> addAfterBroadcast = new HashMap<Integer, Object>();
-
     private int broadcasting = 0;
 
-    private static volatile NotificationCenter Instance = null;
     public static NotificationCenter getInstance() {
         NotificationCenter localInstance = Instance;
         if (localInstance == null) {
@@ -28,17 +25,13 @@ public class NotificationCenter {
         return localInstance;
     }
 
-    public interface NotificationCenterDelegate {
-        public abstract void didReceivedNotification(int id, Object... args);
-    }
-
     public void postNotificationName(int id, Object... args) {
         synchronized (observers) {
             broadcasting++;
             ArrayList<Object> objects = observers.get(id);
             if (objects != null) {
                 for (Object obj : objects) {
-                    ((NotificationCenterDelegate)obj).didReceivedNotification(id, args);
+                    ((NotificationCenterDelegate) obj).didReceivedNotification(id, args);
                 }
             }
             broadcasting--;
@@ -90,5 +83,9 @@ public class NotificationCenter {
                 }
             }
         }
+    }
+
+    public interface NotificationCenterDelegate {
+        public abstract void didReceivedNotification(int id, Object... args);
     }
 }

@@ -10,11 +10,17 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="swe574.boun.edu.androidproject.ViewMeetingActivity">
 
-    <ProgressBar android:id="@+id/meeting_progress" style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp" android:visibility="gone" android:background="@drawable/background_form"
-        android:layout_alignParentTop="false" android:layout_gravity="center"
-        android:layout_centerHorizontal="true"/>
+    <ProgressBar
+        android:id="@+id/meeting_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="false"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/background_form"
+        android:visibility="gone" />
 
     <RelativeLayout
         android:id="@+id/meeting_form"

@@ -1,13 +1,9 @@
 package swe574.boun.edu.androidproject.tasks;
 
-import java.util.Date;
 import android.app.Activity;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
-import android.widget.LinearLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,9 +16,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
+import java.util.Date;
 
 import swe574.boun.edu.androidproject.R;
 
@@ -63,7 +58,7 @@ public class ViewMeetingTask extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        try{
+        try {
             // Create a new UrlConnection
             URL postUrl = new URL("http://162.243.215.160:9000/v1/meeting/queryByGroup");
             // Open the created connection to server.
@@ -90,23 +85,22 @@ public class ViewMeetingTask extends AsyncTask<Void, Void, Boolean> {
             outputStream.close();
             httpURLConnection.connect();
             // Get response code
-            int response  = httpURLConnection.getResponseCode();
+            int response = httpURLConnection.getResponseCode();
             // Get the Response
             String responseJson = "";
-            if(response == HttpURLConnection.HTTP_OK){
+            if (response == HttpURLConnection.HTTP_OK) {
                 //Response is okay
                 String line = "";
                 BufferedReader reader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-                while ((line=reader.readLine()) != null) {
+                while ((line = reader.readLine()) != null) {
                     responseJson += line;
                 }
-            }
-            else{
+            } else {
                 // Server is down or webserver is changed.
                 return false;
             }
             JSONObject object = new JSONObject(responseJson);
-            if(object != null){
+            if (object != null) {
                 // DO SOMETHING WITH RESULTS
             }
             return false;
@@ -125,7 +119,7 @@ public class ViewMeetingTask extends AsyncTask<Void, Void, Boolean> {
         mMeetingForm.setVisibility(View.VISIBLE);
         mProgress.setVisibility(View.GONE);
 
-        if(result){
+        if (result) {
 
         }
     }

@@ -9,12 +9,8 @@ import swe574.boun.edu.androidproject.tools.AndroidUtilities;
 
 public class SizeNotifierRelativeLayout extends RelativeLayout {
 
-    private Rect rect = new Rect();
     public SizeNotifierRelativeLayoutDelegate delegate;
-
-    public abstract interface SizeNotifierRelativeLayoutDelegate {
-        public abstract void onSizeChanged(int keyboardHeight);
-    }
+    private Rect rect = new Rect();
 
     public SizeNotifierRelativeLayout(Context context) {
         super(context);
@@ -28,9 +24,9 @@ public class SizeNotifierRelativeLayout extends RelativeLayout {
         super(context, attrs, defStyle);
     }
 
-
     /**
      * Calculate the soft keyboard height and report back to listener
+     *
      * @param changed
      * @param l
      * @param t
@@ -47,6 +43,11 @@ public class SizeNotifierRelativeLayout extends RelativeLayout {
             int keyboardHeight = usableViewHeight - (rect.bottom - rect.top);
             delegate.onSizeChanged(keyboardHeight);
         }
+    }
+
+
+    public abstract interface SizeNotifierRelativeLayoutDelegate {
+        public abstract void onSizeChanged(int keyboardHeight);
     }
 
 

@@ -3,32 +3,27 @@ package swe574.boun.edu.androidproject;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
-
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -53,7 +48,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A register screen that offers user to register.
  */
-public class RegisterActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>{
+public class RegisterActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -226,11 +221,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         return password.length() > 4;
     }
 
-    private boolean isLastnameValid(String lastname){
+    private boolean isLastnameValid(String lastname) {
         return lastname.length() > 3;
     }
 
-    private boolean isNameValid(String name){
+    private boolean isNameValid(String name) {
         return name.length() > 3;
     }
 
@@ -304,6 +299,15 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
     }
 
+    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
+        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<>(RegisterActivity.this,
+                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
+
+        mEmailView.setAdapter(adapter);
+    }
+
     private interface ProfileQuery {
         String[] PROJECTION = {
                 ContactsContract.CommonDataKinds.Email.ADDRESS,
@@ -312,15 +316,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
         int ADDRESS = 0;
         int IS_PRIMARY = 1;
-    }
-
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(RegisterActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        mEmailView.setAdapter(adapter);
     }
 
     /**
@@ -378,7 +373,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             try {
                 jsonObject.accumulate("username", mEmail);
                 jsonObject.accumulate("password", mPassword);
-                jsonObject.accumulate("firstname" , mName);
+                jsonObject.accumulate("firstname", mName);
                 jsonObject.accumulate("lastname", mLastname);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -417,31 +412,30 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             int response = 0;
 
             try {
-                response  = httpURLConnection.getResponseCode();
+                response = httpURLConnection.getResponseCode();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             // Get the Response
             String responseJson = "";
-            if(response == HttpURLConnection.HTTP_OK){//Response is okay
+            if (response == HttpURLConnection.HTTP_OK) {//Response is okay
                 String line = "";
                 try {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-                    while ((line=reader.readLine()) != null) {
+                    while ((line = reader.readLine()) != null) {
                         responseJson += line;
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-            else{
+            } else {
                 // Server is down or webserver is changed.
                 return false;
             }
             try {
                 JSONObject object = new JSONObject(responseJson);
                 boolean success = object.getString("status").equals("success");
-                if(success){
+                if (success) {
                     return true;
                 }
                 return false;
@@ -458,7 +452,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
             if (success) {
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra("LoginForm", new String[] {mEmail, mPassword});
+                resultIntent.putExtra("LoginForm", new String[]{mEmail, mPassword});
                 setResult(RESULT_OK, resultIntent);
                 finish();
             } else {

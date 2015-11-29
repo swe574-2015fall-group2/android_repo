@@ -21,6 +21,10 @@ public class HomeNavigationFragment extends Fragment {
     private final static String USER_TOKEN = "user";
     private String USER_ID;
 
+    public HomeNavigationFragment() {
+        // Required empty public constructor
+    }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -34,10 +38,6 @@ public class HomeNavigationFragment extends Fragment {
         args.putString(USER_TOKEN, user_id);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public HomeNavigationFragment() {
-        // Required empty public constructor
     }
 
     @Override

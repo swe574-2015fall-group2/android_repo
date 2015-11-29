@@ -21,10 +21,10 @@ import swe574.boun.edu.androidproject.GroupTabbedActivity;
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.model.Group;
 
-public class ListGroupAdapter extends BaseAdapter{
-    private Context mContext;
+public class ListGroupAdapter extends BaseAdapter {
     private final ArrayList<Group> mGroups;
     private final String mAuth;
+    private Context mContext;
 
     public ListGroupAdapter(Context mContext, ArrayList<Group> mGroups, String mAuth) {
         this.mContext = mContext;
@@ -50,7 +50,7 @@ public class ListGroupAdapter extends BaseAdapter{
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.listitem_group, null , false);
+        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.listitem_group, null, false);
 
         final Group g = mGroups.get(position);
         TextView mName = (TextView) view.findViewById(R.id.textViewGroupName);
@@ -58,17 +58,17 @@ public class ListGroupAdapter extends BaseAdapter{
         ImageView mImage = (ImageView) view.findViewById(R.id.group_image);
 
         String name = g.getmName();
-        if(mName != null){
+        if (mName != null) {
             mName.setText(name);
         }
 
         String description = g.getmDescription();
-        if(mDescription != null){
+        if (mDescription != null) {
             mDescription.setText(description);
         }
 
         URL url = g.getmPicture();
-        if(url != null){
+        if (url != null) {
             try {
                 InputStream stream = (InputStream) url.getContent();
                 Drawable drawable = Drawable.createFromStream(stream, "not 9patch");

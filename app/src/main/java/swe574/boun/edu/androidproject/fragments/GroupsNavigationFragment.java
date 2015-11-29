@@ -13,9 +13,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 
-import swe574.boun.edu.androidproject.ViewAllGroupsActivity;
 import swe574.boun.edu.androidproject.NewGroupActivity;
 import swe574.boun.edu.androidproject.R;
+import swe574.boun.edu.androidproject.ViewAllGroupsActivity;
 import swe574.boun.edu.androidproject.tasks.FetchMyGroupsTask;
 
 /**
@@ -28,9 +28,9 @@ import swe574.boun.edu.androidproject.tasks.FetchMyGroupsTask;
 public class GroupsNavigationFragment extends Fragment {
     // Fragment parameters.
     private final static String USER_TOKEN = "user";
+    FetchMyGroupsTask mTask;
     private String USER_AUTH;
     private int ADD_GROUP_ID;
-    FetchMyGroupsTask mTask;
     //UI parameters
     private Button mViewAllGroups;
     private ListView mMyGroupView;
@@ -75,7 +75,7 @@ public class GroupsNavigationFragment extends Fragment {
         mViewAllGroups.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(),ViewAllGroupsActivity.class);
+                Intent i = new Intent(getActivity(), ViewAllGroupsActivity.class);
                 i.putExtra("user", USER_AUTH);
                 startActivity(i);
             }

@@ -84,6 +84,7 @@ public class GroupsFragment extends Fragment {
         });
 
         mMyGroupView = (ListView) view.findViewById(R.id.gridViewMyGroups);
+        mRecGroupView = (ListView) view.findViewById(R.id.gridViewRecommendedGroups);
         //mTask = new FetchMyGroupsTask(view, USER_AUTH);
         //mTask.execute();
         return view;

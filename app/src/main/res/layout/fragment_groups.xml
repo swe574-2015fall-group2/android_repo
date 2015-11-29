@@ -46,7 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:id="@+id/gridViewMyGroups"
-                android:layout_weight="4"
+                android:layout_weight="8"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="8dp"
@@ -63,6 +63,7 @@
                 android:layout_marginLeft="18dp"
                 android:layout_marginRight="18dp"
                 android:layout_marginTop="8dp"
+                android:visibility="gone"
                 android:background="@drawable/background_form">
 
                 <TextView
@@ -76,7 +77,7 @@
                     android:textStyle="bold"/>
             </FrameLayout>
 
-            <GridView
+            <ListView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:id="@+id/gridViewRecommendedGroups"
@@ -85,6 +86,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="8dp"
                 android:numColumns="2"
+                android:visibility="gone"
                 android:gravity="center"
                 android:background="@drawable/style_group_gridview"
                 android:horizontalSpacing="1dp"

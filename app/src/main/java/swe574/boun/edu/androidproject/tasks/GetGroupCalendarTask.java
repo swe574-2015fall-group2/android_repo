@@ -3,15 +3,17 @@ package swe574.boun.edu.androidproject.tasks;
 import android.os.AsyncTask;
 import android.widget.ListView;
 
+import swe574.boun.edu.androidproject.model.Group;
+
 /**
  * Created by Jongaros on 11/29/2015.
  */
 public class GetGroupCalendarTask extends AsyncTask<Void, Void, Void> {
     private ListView mParent;
     private String mAuth;
-    private String mGroup;
+    private Group mGroup;
 
-    public GetGroupCalendarTask(String mGroup, String mAuth, ListView mParent) {
+    public GetGroupCalendarTask(Group mGroup, String mAuth, ListView mParent) {
         this.mGroup = mGroup;
         this.mAuth = mAuth;
         this.mParent = mParent;

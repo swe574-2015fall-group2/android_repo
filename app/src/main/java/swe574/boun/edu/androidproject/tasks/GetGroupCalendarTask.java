@@ -18,9 +18,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 
-import swe574.boun.edu.androidproject.adapters.MeetingListAdapter;
 import swe574.boun.edu.androidproject.model.Group;
 import swe574.boun.edu.androidproject.model.Meeting;
 
@@ -98,8 +96,8 @@ public class GetGroupCalendarTask extends AsyncTask<Void, Void, ArrayList<Meetin
                 httpURLConnection.disconnect();
                 return meetings;
             } else {
-                if(!object.getString("consumerMessage").equals("Meeting not found"))
-                throw new MalformedJsonException("Returned JSON String isn't fit the format.");
+                if (!object.getString("consumerMessage").equals("Meeting not found"))
+                    throw new MalformedJsonException("Returned JSON String isn't fit the format.");
             }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -115,7 +113,7 @@ public class GetGroupCalendarTask extends AsyncTask<Void, Void, ArrayList<Meetin
 
     @Override
     protected void onPostExecute(ArrayList<Meeting> result) {
-        if(mResult){
+        if (mResult) {
             // TODO MeetingListAdapter adapter = new MeetingListAdapter();
             // mParent.setAdapter(adapter);
         }

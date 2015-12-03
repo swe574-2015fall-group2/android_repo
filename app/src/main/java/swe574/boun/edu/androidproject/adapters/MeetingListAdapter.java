@@ -4,12 +4,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import swe574.boun.edu.androidproject.model.Meeting;
-
 /**
  * Created by Jongaros on 11/29/2015.
  */
-public class MeetingListAdapter extends BaseAdapter{
+public class MeetingListAdapter extends BaseAdapter {
     @Override
     public int getCount() {
         return 0;

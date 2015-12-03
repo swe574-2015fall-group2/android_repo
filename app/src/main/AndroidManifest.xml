@@ -48,7 +48,15 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".ViewMeetingActivity"></activity>
         <activity android:name=".MeetingPeopleActivity"></activity>
-        <activity android:name=".ViewAllGroupsActivity" />
+        <activity
+            android:name=".ViewAllGroupsActivity"
+            android:label="View All Groups">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

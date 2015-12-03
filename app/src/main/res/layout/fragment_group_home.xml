@@ -2,44 +2,52 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_login"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/groupName"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Placeholder" />
-
-    <TextView
-        android:id="@+id/line"
-        style="?android:attr/listSeparatorTextViewStyle"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#000"
-        android:gravity="center_horizontal"
-        android:paddingTop="5dip" />
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/background_form"
+        android:padding="5dp"
+        android:text="Banana Lovers"
+        android:textAppearance="@android:style/TextAppearance.Holo.Large" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="16dp"
         android:orientation="vertical">
 
         <FrameLayout
             android:id="@+id/meetingCalendar"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1">
+
+            <ListView
+                android:id="@+id/group_calendar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_form" />
+        </FrameLayout>
 
         <FrameLayout
             android:id="@+id/pinnedResources"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:visibility="gone"/>
 
         <FrameLayout
             android:id="@+id/keyContent"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:visibility="gone"/>
     </LinearLayout>
 </LinearLayout>

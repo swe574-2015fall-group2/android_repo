@@ -8,9 +8,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.model.Group;
+import swe574.boun.edu.androidproject.tasks.GetGroupCalendarTask;
 
 public class GroupTabFragment extends Fragment {
     private final static String GROUP_TOKEN = "group";
@@ -44,6 +47,13 @@ public class GroupTabFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_group_home, null, false);
+
+        TextView groupName = (TextView) rootView.findViewById(R.id.groupName);
+        groupName.setText(mGroup.getmName());
+
+        ListView list = (ListView) rootView.findViewById(R.id.group_calendar);
+        GetGroupCalendarTask mCalendarTask = new GetGroupCalendarTask(mGroup, mAuth, list, getContext());
+        mCalendarTask.execute();
 
         return rootView;
     }

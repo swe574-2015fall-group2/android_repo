@@ -27,18 +27,18 @@ import swe574.boun.edu.androidproject.model.Meeting;
 /**
  * Created by Jongaros on 11/29/2015.
  */
-public class GetGroupCalendarTask extends AsyncTask<Void, Void, ArrayList<Meeting>> {
+public class FetchAllMeetingTask extends AsyncTask<Void, Void, ArrayList<Meeting>> {
     private ListView mParent;
     private Context mContext;
     private String mAuth;
     private Group mGroup;
     private boolean mResult;
 
-    public GetGroupCalendarTask(Group mGroup, String mAuth, ListView mParent, Context mContext) {
+    public FetchAllMeetingTask(Context mContext, Group mGroup, String mAuth, ListView mParent) {
+        this.mContext = mContext;
         this.mGroup = mGroup;
         this.mAuth = mAuth;
         this.mParent = mParent;
-        this.mContext = mContext;
     }
 
     @Override
@@ -47,6 +47,7 @@ public class GetGroupCalendarTask extends AsyncTask<Void, Void, ArrayList<Meetin
         HttpURLConnection httpURLConnection = null;
         try {
             // Create a new UrlConnection
+            // TODO
             URL postUrl = new URL("http://162.243.215.160:9000/v1/meeting/queryByGroup");
             // Open the created connection to server.
             httpURLConnection = (HttpURLConnection) postUrl.openConnection();
@@ -91,8 +92,7 @@ public class GetGroupCalendarTask extends AsyncTask<Void, Void, ArrayList<Meetin
             if (object.getString("status").equals("success")) {
                 ArrayList<Meeting> meetings = new ArrayList<>();
                 JSONArray array = object.getJSONObject("result").getJSONArray("meetingList");
-                int limit = array.length() > 4 ? 4 : array.length();
-                for (int i = 0; i < limit; i++) {
+                for (int i = 0; i < array.length(); i++) {
                     JSONObject o = array.getJSONObject(i);
                     meetings.add(Meeting.createFromJSON(o));
                 }

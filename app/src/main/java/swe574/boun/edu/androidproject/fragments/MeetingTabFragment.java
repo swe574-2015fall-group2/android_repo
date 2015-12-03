@@ -7,9 +7,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.model.Group;
+import swe574.boun.edu.androidproject.tasks.FetchAllMeetingTask;
 
 public class MeetingTabFragment extends Fragment {
     private final static String GROUP_TOKEN = "group";
@@ -42,7 +44,11 @@ public class MeetingTabFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_meeting, null, false);
+        ViewGroup parentView = (ViewGroup) inflater.inflate(R.layout.fragment_meeting, null, false);
+
+        ListView listView = (ListView) parentView.findViewById(R.id.listMeetings);
+        FetchAllMeetingTask task = new FetchAllMeetingTask(getContext(), mGroup, mAuth, listView);
+        return parentView;
     }
 
     @Override

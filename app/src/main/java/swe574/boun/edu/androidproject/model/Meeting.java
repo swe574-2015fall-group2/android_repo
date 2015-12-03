@@ -70,51 +70,6 @@ public final class Meeting implements Parcelable {
         mAttended = in.createTypedArrayList(User.CREATOR);
     }
 
-    public static Meeting createFromJSON(JSONObject o) throws JSONException {
-        Meeting meeting = null;
-        String id = o.getString("id");
-        Date date = (Date) o.get("datetime");
-        List<String> agenda = null;
-        JSONArray agendaset = o.getJSONArray("agendaSet");
-        if (agendaset != null) {
-            agenda = new ArrayList<>();
-            for (int i = 0; i < agendaset.length(); i++) {
-                agenda.add(((JSONObject) agendaset.get(i)).toString());
-            }
-        }
-        List<String> todo = null;
-        JSONArray todoset = o.getJSONArray("todoSet");
-        if (todoset != null) {
-            todo = new ArrayList<>();
-            for (int i = 0; i < todoset.length(); i++) {
-                todo.add(((JSONObject) todoset.get(i)).toString());
-            }
-        }
-        long esti = o.getInt("estimatedDuration");
-        long act = o.getInt("actualDuration");
-        String loc = o.getString("location");
-        String desc = o.getString("description");
-        String status = o.getString("status");
-        String type = o.getString("type");
-        List<User> invited = null;
-        JSONArray inviset = o.getJSONArray("invitedUserSet");
-        if (inviset != null) {
-            invited = new ArrayList<>();
-            for (int i = 0; i < inviset.length(); i++) {
-                // invited.add(((JSONObject) inviset.get(i)).toString());
-            }
-        }
-        List<User> attended = null;
-        JSONArray attset = o.getJSONArray("attandedUserSet");
-        if (attset != null) {
-            attended = new ArrayList<>();
-            for (int i = 0; i < attset.length(); i++) {
-                // attended.add(((JSONObject) attset.get(i)).toString());
-            }
-        }
-        return new Meeting(id, date, agenda, todo, esti, act, loc, desc, status, type, invited, attended);
-    }
-
     public String getmID() {
         return mID;
     }
@@ -182,5 +137,50 @@ public final class Meeting implements Parcelable {
         dest.writeString(mType);
         dest.writeList(mInvited);
         dest.writeList(mAttended);
+    }
+
+    public static Meeting createFromJSON(JSONObject o) throws JSONException {
+        Meeting meeting = null;
+        String id = o.getString("id");
+        Date date = (Date) o.get("datetime");
+        List<String> agenda = null;
+        JSONArray agendaset = o.getJSONArray("agendaSet");
+        if(agendaset != null){
+            agenda = new ArrayList<>();
+            for(int i = 0 ; i < agendaset.length(); i++){
+                agenda.add(((JSONObject) agendaset.get(i)).toString());
+            }
+        }
+        List<String> todo = null;
+        JSONArray todoset = o.getJSONArray("todoSet");
+        if(todoset != null){
+            todo = new ArrayList<>();
+            for(int i = 0 ; i < todoset.length(); i++){
+                todo.add(((JSONObject) todoset.get(i)).toString());
+            }
+        }
+        long esti = o.getInt("estimatedDuration");
+        long act = o.getInt("actualDuration");
+        String loc = o.getString("location");
+        String desc = o.getString("description");
+        String status = o.getString("status");
+        String type = o.getString("type");
+        List<User> invited = null;
+        JSONArray inviset = o.getJSONArray("invitedUserSet");
+        if(inviset != null){
+            invited = new ArrayList<>();
+            for(int i = 0 ; i < inviset.length(); i++){
+                // invited.add(((JSONObject) inviset.get(i)).toString());
+            }
+        }
+        List<User> attended = null;
+        JSONArray attset = o.getJSONArray("attandedUserSet");
+        if(attset != null){
+            attended = new ArrayList<>();
+            for(int i = 0 ; i < attset.length(); i++){
+                // attended.add(((JSONObject) attset.get(i)).toString());
+            }
+        }
+        return new Meeting(id, date, agenda, todo, esti, act, loc, desc, status, type, invited, attended);
     }
 }

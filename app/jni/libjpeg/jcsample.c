@@ -49,15 +49,12 @@
 
 
 /* Pointer to routine to downsample a single component */
-typedef JMETHOD(
-void, downsample1_ptr,
-(
-j_compress_ptr
-        cinfo, jpeg_component_info
-* compptr,
-JSAMPARRAY
-        input_data, JSAMPARRAY
-output_data));
+typedef JMETHOD(void, downsample1_ptr,
+                (j_compress_ptr
+                        cinfo, jpeg_component_info * compptr,
+                                JSAMPARRAY
+                        input_data, JSAMPARRAY
+                        output_data));
 
 /* Private subobject */
 
@@ -76,10 +73,8 @@ typedef my_downsampler *my_downsample_ptr;
  */
 
 METHODDEF(void)
-
-start_pass_downsample(j_compress_ptr
-cinfo) {
-/* no work for now */
+start_pass_downsample(j_compress_ptr cinfo) {
+    /* no work for now */
 }
 
 
@@ -89,34 +84,22 @@ cinfo) {
  */
 
 LOCAL(void)
+expand_right_edge(JSAMPARRAY image_data, int num_rows,
+                  JDIMENSION input_cols, JDIMENSION output_cols) {
+    register JSAMPROW ptr;
+    register JSAMPLE pixval;
+    register int count;
+    int row;
+    int numcols = (int) (output_cols - input_cols);
 
-expand_right_edge(JSAMPARRAY
-image_data,
-int num_rows,
-        JDIMENSION
-input_cols,
-JDIMENSION output_cols
-) {
-register JSAMPROW ptr;
-register JSAMPLE pixval;
-register int count;
-int row;
-int numcols = (int) (output_cols - input_cols);
-
-if (numcols > 0) {
-for (
-row = 0;
-row<num_rows;
-row++) {
-ptr = image_data[row] + input_cols;
-pixval = ptr[-1];        /* don't need GETJSAMPLE() here */
-for (
-count = numcols;
-count > 0; count--)
-*ptr++ =
-pixval;
-}
-}
+    if (numcols > 0) {
+        for (row = 0; row < num_rows; row++) {
+            ptr = image_data[row] + input_cols;
+            pixval = ptr[-1];        /* don't need GETJSAMPLE() here */
+            for (count = numcols; count > 0; count--)
+                *ptr++ = pixval;
+        }
+    }
 }
 
 
@@ -127,27 +110,20 @@ pixval;
  */
 
 METHODDEF(void)
+sep_downsample(j_compress_ptr cinfo,
+               JSAMPIMAGE input_buf, JDIMENSION in_row_index,
+               JSAMPIMAGE output_buf, JDIMENSION out_row_group_index) {
+    my_downsample_ptr downsample = (my_downsample_ptr) cinfo->downsample;
+    int ci;
+    jpeg_component_info *compptr;
+    JSAMPARRAY in_ptr, out_ptr;
 
-sep_downsample(j_compress_ptr
-cinfo,
-JSAMPIMAGE input_buf, JDIMENSION
-in_row_index,
-JSAMPIMAGE output_buf, JDIMENSION
-out_row_group_index) {
-my_downsample_ptr downsample = (my_downsample_ptr) cinfo->downsample;
-int ci;
-jpeg_component_info *compptr;
-JSAMPARRAY in_ptr, out_ptr;
-
-for (
-ci = 0, compptr = cinfo->comp_info;
-ci < cinfo->
-num_components;
-ci++, compptr++) {
-in_ptr = input_buf[ci] + in_row_index;
-out_ptr = output_buf[ci] + (out_row_group_index * compptr->v_samp_factor);
-(*downsample->methods[ci])(cinfo, compptr, in_ptr, out_ptr);
-}
+    for (ci = 0, compptr = cinfo->comp_info; ci < cinfo->num_components;
+         ci++, compptr++) {
+        in_ptr = input_buf[ci] + in_row_index;
+        out_ptr = output_buf[ci] + (out_row_group_index * compptr->v_samp_factor);
+        (*downsample->methods[ci])(cinfo, compptr, in_ptr, out_ptr);
+    }
 }
 
 
@@ -159,67 +135,42 @@ out_ptr = output_buf[ci] + (out_row_group_index * compptr->v_samp_factor);
  */
 
 METHODDEF(void)
+int_downsample(j_compress_ptr cinfo, jpeg_component_info *compptr,
+               JSAMPARRAY input_data, JSAMPARRAY output_data) {
+    int inrow, outrow, h_expand, v_expand, numpix, numpix2, h, v;
+    JDIMENSION outcol, outcol_h;    /* outcol_h == outcol*h_expand */
+    JDIMENSION output_cols = compptr->width_in_blocks * DCTSIZE;
+    JSAMPROW inptr, outptr;
+    INT32 outvalue;
 
-int_downsample(j_compress_ptr
-cinfo,
-jpeg_component_info *compptr,
-        JSAMPARRAY
-input_data,
-JSAMPARRAY output_data
-) {
-int inrow, outrow, h_expand, v_expand, numpix, numpix2, h, v;
-JDIMENSION outcol, outcol_h;
-/* outcol_h == outcol*h_expand */
-JDIMENSION output_cols = compptr->width_in_blocks * DCTSIZE;
-JSAMPROW inptr, outptr;
-INT32 outvalue;
+    h_expand = cinfo->max_h_samp_factor / compptr->h_samp_factor;
+    v_expand = cinfo->max_v_samp_factor / compptr->v_samp_factor;
+    numpix = h_expand * v_expand;
+    numpix2 = numpix / 2;
 
-h_expand = cinfo->max_h_samp_factor / compptr->h_samp_factor;
-v_expand = cinfo->max_v_samp_factor / compptr->v_samp_factor;
-numpix = h_expand * v_expand;
-numpix2 = numpix / 2;
+    /* Expand input data enough to let all the output samples be generated
+     * by the standard loop.  Special-casing padded output would be more
+     * efficient.
+     */
+    expand_right_edge(input_data, cinfo->max_v_samp_factor,
+                      cinfo->image_width, output_cols * h_expand);
 
-/* Expand input data enough to let all the output samples be generated
- * by the standard loop.  Special-casing padded output would be more
- * efficient.
- */
-expand_right_edge(input_data, cinfo
-->max_v_samp_factor,
-cinfo->image_width,
-output_cols *h_expand
-);
-
-inrow = 0;
-for (
-outrow = 0;
-outrow < compptr->
-v_samp_factor;
-outrow++) {
-outptr = output_data[outrow];
-for (
-outcol = 0, outcol_h = 0;
-outcol<output_cols;
-outcol++, outcol_h += h_expand) {
-outvalue = 0;
-for (
-v = 0;
-v<v_expand;
-v++) {
-inptr = input_data[inrow + v] + outcol_h;
-for (
-h = 0;
-h<h_expand;
-h++) {
-outvalue += (INT32)
-GETJSAMPLE(*inptr
-++);
-}
-}
-*outptr++ = (JSAMPLE) ((outvalue + numpix2) / numpix);
-}
-inrow +=
-v_expand;
-}
+    inrow = 0;
+    for (outrow = 0; outrow < compptr->v_samp_factor; outrow++) {
+        outptr = output_data[outrow];
+        for (outcol = 0, outcol_h = 0; outcol < output_cols;
+             outcol++, outcol_h += h_expand) {
+            outvalue = 0;
+            for (v = 0; v < v_expand; v++) {
+                inptr = input_data[inrow + v] + outcol_h;
+                for (h = 0; h < h_expand; h++) {
+                    outvalue += (INT32) GETJSAMPLE(*inptr++);
+                }
+            }
+            *outptr++ = (JSAMPLE) ((outvalue + numpix2) / numpix);
+        }
+        inrow += v_expand;
+    }
 }
 
 
@@ -230,24 +181,14 @@ v_expand;
  */
 
 METHODDEF(void)
-
-fullsize_downsample(j_compress_ptr
-cinfo,
-jpeg_component_info *compptr,
-        JSAMPARRAY
-input_data,
-JSAMPARRAY output_data
-) {
-/* Copy the data */
-jcopy_sample_rows(input_data,
-0, output_data, 0,
-cinfo->max_v_samp_factor, cinfo->image_width);
-/* Edge-expand */
-expand_right_edge(output_data, cinfo
-->max_v_samp_factor,
-cinfo->image_width, compptr->
-width_in_blocks *DCTSIZE
-);
+fullsize_downsample(j_compress_ptr cinfo, jpeg_component_info *compptr,
+                    JSAMPARRAY input_data, JSAMPARRAY output_data) {
+    /* Copy the data */
+    jcopy_sample_rows(input_data, 0, output_data, 0,
+                      cinfo->max_v_samp_factor, cinfo->image_width);
+    /* Edge-expand */
+    expand_right_edge(output_data, cinfo->max_v_samp_factor,
+                      cinfo->image_width, compptr->width_in_blocks * DCTSIZE);
 }
 
 
@@ -264,49 +205,32 @@ width_in_blocks *DCTSIZE
  */
 
 METHODDEF(void)
+h2v1_downsample(j_compress_ptr cinfo, jpeg_component_info *compptr,
+                JSAMPARRAY input_data, JSAMPARRAY output_data) {
+    int outrow;
+    JDIMENSION outcol;
+    JDIMENSION output_cols = compptr->width_in_blocks * DCTSIZE;
+    register JSAMPROW inptr, outptr;
+    register int bias;
 
-h2v1_downsample(j_compress_ptr
-cinfo,
-jpeg_component_info *compptr,
-        JSAMPARRAY
-input_data,
-JSAMPARRAY output_data
-) {
-int outrow;
-JDIMENSION outcol;
-JDIMENSION output_cols = compptr->width_in_blocks * DCTSIZE;
-register JSAMPROW inptr, outptr;
-register int bias;
+    /* Expand input data enough to let all the output samples be generated
+     * by the standard loop.  Special-casing padded output would be more
+     * efficient.
+     */
+    expand_right_edge(input_data, cinfo->max_v_samp_factor,
+                      cinfo->image_width, output_cols * 2);
 
-/* Expand input data enough to let all the output samples be generated
- * by the standard loop.  Special-casing padded output would be more
- * efficient.
- */
-expand_right_edge(input_data, cinfo
-->max_v_samp_factor,
-cinfo->image_width, output_cols * 2);
-
-for (
-outrow = 0;
-outrow < compptr->
-v_samp_factor;
-outrow++) {
-outptr = output_data[outrow];
-inptr = input_data[outrow];
-bias = 0;            /* bias = 0,1,0,1,... for successive samples */
-for (
-outcol = 0;
-outcol<output_cols;
-outcol++) {
-*outptr++ = (JSAMPLE) ((
-GETJSAMPLE(*inptr)
-+
-GETJSAMPLE(inptr[1])
-+ bias) >> 1);
-bias ^= 1;        /* 0=>1, 1=>0 */
-inptr += 2;
-}
-}
+    for (outrow = 0; outrow < compptr->v_samp_factor; outrow++) {
+        outptr = output_data[outrow];
+        inptr = input_data[outrow];
+        bias = 0;            /* bias = 0,1,0,1,... for successive samples */
+        for (outcol = 0; outcol < output_cols; outcol++) {
+            *outptr++ = (JSAMPLE) ((GETJSAMPLE(*inptr) + GETJSAMPLE(inptr[1])
+                                    + bias) >> 1);
+            bias ^= 1;        /* 0=>1, 1=>0 */
+            inptr += 2;
+        }
+    }
 }
 
 
@@ -317,57 +241,37 @@ inptr += 2;
  */
 
 METHODDEF(void)
+h2v2_downsample(j_compress_ptr cinfo, jpeg_component_info *compptr,
+                JSAMPARRAY input_data, JSAMPARRAY output_data) {
+    int inrow, outrow;
+    JDIMENSION outcol;
+    JDIMENSION output_cols = compptr->width_in_blocks * DCTSIZE;
+    register JSAMPROW inptr0, inptr1, outptr;
+    register int bias;
 
-h2v2_downsample(j_compress_ptr
-cinfo,
-jpeg_component_info *compptr,
-        JSAMPARRAY
-input_data,
-JSAMPARRAY output_data
-) {
-int inrow, outrow;
-JDIMENSION outcol;
-JDIMENSION output_cols = compptr->width_in_blocks * DCTSIZE;
-register JSAMPROW inptr0, inptr1, outptr;
-register int bias;
+    /* Expand input data enough to let all the output samples be generated
+     * by the standard loop.  Special-casing padded output would be more
+     * efficient.
+     */
+    expand_right_edge(input_data, cinfo->max_v_samp_factor,
+                      cinfo->image_width, output_cols * 2);
 
-/* Expand input data enough to let all the output samples be generated
- * by the standard loop.  Special-casing padded output would be more
- * efficient.
- */
-expand_right_edge(input_data, cinfo
-->max_v_samp_factor,
-cinfo->image_width, output_cols * 2);
-
-inrow = 0;
-for (
-outrow = 0;
-outrow < compptr->
-v_samp_factor;
-outrow++) {
-outptr = output_data[outrow];
-inptr0 = input_data[inrow];
-inptr1 = input_data[inrow + 1];
-bias = 1;            /* bias = 1,2,1,2,... for successive samples */
-for (
-outcol = 0;
-outcol<output_cols;
-outcol++) {
-*outptr++ = (JSAMPLE) ((
-GETJSAMPLE(*inptr0)
-+
-GETJSAMPLE(inptr0[1])
-+
-GETJSAMPLE(*inptr1)
-+
-GETJSAMPLE(inptr1[1])
-+ bias) >> 2);
-bias ^= 3;        /* 1=>2, 2=>1 */
-inptr0 += 2;
-inptr1 += 2;
-}
-inrow += 2;
-}
+    inrow = 0;
+    for (outrow = 0; outrow < compptr->v_samp_factor; outrow++) {
+        outptr = output_data[outrow];
+        inptr0 = input_data[inrow];
+        inptr1 = input_data[inrow + 1];
+        bias = 1;            /* bias = 1,2,1,2,... for successive samples */
+        for (outcol = 0; outcol < output_cols; outcol++) {
+            *outptr++ = (JSAMPLE) ((GETJSAMPLE(*inptr0) + GETJSAMPLE(inptr0[1]) +
+                                    GETJSAMPLE(*inptr1) + GETJSAMPLE(inptr1[1])
+                                    + bias) >> 2);
+            bias ^= 3;        /* 1=>2, 2=>1 */
+            inptr0 += 2;
+            inptr1 += 2;
+        }
+        inrow += 2;
+    }
 }
 
 
@@ -559,73 +463,58 @@ fullsize_smooth_downsample(j_compress_ptr cinfo, jpeg_component_info *compptr,
  */
 
 GLOBAL(void)
+jinit_downsampler(j_compress_ptr cinfo) {
+    my_downsample_ptr downsample;
+    int ci;
+    jpeg_component_info *compptr;
+    boolean smoothok = TRUE;
 
-jinit_downsampler(j_compress_ptr
-cinfo) {
-my_downsample_ptr downsample;
-int ci;
-jpeg_component_info *compptr;
-boolean smoothok = TRUE;
+    downsample = (my_downsample_ptr)
+            (*cinfo->mem->alloc_small)((j_common_ptr) cinfo, JPOOL_IMAGE,
+    SIZEOF(my_downsampler));
+    cinfo->downsample = (struct jpeg_downsampler *) downsample;
+    downsample->pub.start_pass = start_pass_downsample;
+    downsample->pub.downsample = sep_downsample;
+    downsample->pub.need_context_rows = FALSE;
 
-downsample = (my_downsample_ptr)
-        (*cinfo->mem->alloc_small)((j_common_ptr) cinfo, JPOOL_IMAGE,
-                                   SIZEOF(my_downsampler));
-cinfo->
-downsample = (struct jpeg_downsampler *) downsample;
-downsample->pub.
-start_pass = start_pass_downsample;
-downsample->pub.
-downsample = sep_downsample;
-downsample->pub.
-need_context_rows = FALSE;
+    if (cinfo->CCIR601_sampling)
+        ERREXIT(cinfo, JERR_CCIR601_NOTIMPL);
 
-if (cinfo->CCIR601_sampling)
-ERREXIT(cinfo, JERR_CCIR601_NOTIMPL
-);
-
-/* Verify we can handle the sampling factors, and set up method pointers */
-for (
-ci = 0, compptr = cinfo->comp_info;
-ci < cinfo->
-num_components;
-ci++, compptr++) {
-if (compptr->h_samp_factor == cinfo->max_h_samp_factor &&
-compptr->v_samp_factor == cinfo->max_v_samp_factor) {
+    /* Verify we can handle the sampling factors, and set up method pointers */
+    for (ci = 0, compptr = cinfo->comp_info; ci < cinfo->num_components;
+         ci++, compptr++) {
+        if (compptr->h_samp_factor == cinfo->max_h_samp_factor &&
+            compptr->v_samp_factor == cinfo->max_v_samp_factor) {
 #ifdef INPUT_SMOOTHING_SUPPORTED
-if (cinfo->smoothing_factor) {
-    downsample->methods[ci] = fullsize_smooth_downsample;
-    downsample->pub.need_context_rows = TRUE;
-} else
+            if (cinfo->smoothing_factor) {
+                downsample->methods[ci] = fullsize_smooth_downsample;
+                downsample->pub.need_context_rows = TRUE;
+            } else
 #endif
-downsample->methods[ci] =
-fullsize_downsample;
-} else if (compptr->h_samp_factor * 2 == cinfo->max_h_samp_factor &&
-compptr->v_samp_factor == cinfo->max_v_samp_factor) {
-smoothok = FALSE;
-downsample->methods[ci] =
-h2v1_downsample;
-} else if (compptr->h_samp_factor * 2 == cinfo->max_h_samp_factor &&
-compptr->v_samp_factor * 2 == cinfo->max_v_samp_factor) {
+                downsample->methods[ci] = fullsize_downsample;
+        } else if (compptr->h_samp_factor * 2 == cinfo->max_h_samp_factor &&
+                   compptr->v_samp_factor == cinfo->max_v_samp_factor) {
+            smoothok = FALSE;
+            downsample->methods[ci] = h2v1_downsample;
+        } else if (compptr->h_samp_factor * 2 == cinfo->max_h_samp_factor &&
+                   compptr->v_samp_factor * 2 == cinfo->max_v_samp_factor) {
 #ifdef INPUT_SMOOTHING_SUPPORTED
-if (cinfo->smoothing_factor) {
-    downsample->methods[ci] = h2v2_smooth_downsample;
-    downsample->pub.need_context_rows = TRUE;
-} else
+            if (cinfo->smoothing_factor) {
+                downsample->methods[ci] = h2v2_smooth_downsample;
+                downsample->pub.need_context_rows = TRUE;
+            } else
 #endif
-downsample->methods[ci] =
-h2v2_downsample;
-} else if ((cinfo->max_h_samp_factor % compptr->h_samp_factor) == 0 &&
-(cinfo->max_v_samp_factor % compptr->v_samp_factor) == 0) {
-smoothok = FALSE;
-downsample->methods[ci] =
-int_downsample;
-} else
-ERREXIT(cinfo, JERR_FRACT_SAMPLE_NOTIMPL
-);
-}
+                downsample->methods[ci] = h2v2_downsample;
+        } else if ((cinfo->max_h_samp_factor % compptr->h_samp_factor) == 0 &&
+                   (cinfo->max_v_samp_factor % compptr->v_samp_factor) == 0) {
+            smoothok = FALSE;
+            downsample->methods[ci] = int_downsample;
+        } else
+            ERREXIT(cinfo, JERR_FRACT_SAMPLE_NOTIMPL);
+    }
 
 #ifdef INPUT_SMOOTHING_SUPPORTED
-if (cinfo->smoothing_factor && !smoothok)
-    TRACEMS(cinfo, 0, JTRC_SMOOTH_NOTIMPL);
+    if (cinfo->smoothing_factor && !smoothok)
+        TRACEMS(cinfo, 0, JTRC_SMOOTH_NOTIMPL);
 #endif
 }

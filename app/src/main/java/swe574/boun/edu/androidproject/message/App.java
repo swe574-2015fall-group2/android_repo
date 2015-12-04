@@ -9,6 +9,7 @@ public class App extends Application {
 
     public static volatile Handler applicationHandler = null;
     private static App Instance;
+    public static String mAuth;
 
     public static App getInstance() {
         return Instance;

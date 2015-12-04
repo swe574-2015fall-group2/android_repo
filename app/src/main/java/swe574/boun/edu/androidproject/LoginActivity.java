@@ -47,6 +47,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import swe574.boun.edu.androidproject.message.App;
+import swe574.boun.edu.androidproject.model.User;
+
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
@@ -337,7 +340,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         private final String mEmail;
         private final String mPassword;
-        private String mAuth;
+        private User mUser;
 
         UserLoginTask(String email, String password) {
             mEmail = email;
@@ -346,7 +349,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            mAuth = "The entered username and/or password is invalid";
             // Create a new UrlConnection
             URL postUrl = null;
             try {
@@ -444,7 +446,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 boolean success = object.getString("status").equals("success");
                 if (success) {
                     JSONObject result = object.getJSONObject("result");
-                    mAuth = result.getString("token");
+                    mUser = new User(result.getString("id"), null, null, null, null, null, null, null, null, null);
+                    App.mAuth = result.getString("token");
                     return true;
                 }
                 return false;
@@ -461,11 +464,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                SharedPreferences preferences = getSharedPreferences("user", MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("token", mAuth);
-                editor.apply();
                 Intent intent = new Intent(LoginActivity.this, HomeDrawerActivity.class);
+                intent.putExtra("user", mUser);
                 startActivity(intent);
                 finish();
             } else {

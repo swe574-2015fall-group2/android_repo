@@ -17,9 +17,11 @@ import swe574.boun.edu.androidproject.fragments.GroupsNavigationFragment;
 import swe574.boun.edu.androidproject.fragments.HomeNavigationFragment;
 import swe574.boun.edu.androidproject.fragments.MessageNavigationFragment;
 import swe574.boun.edu.androidproject.fragments.ProfileNavigationFragment;
+import swe574.boun.edu.androidproject.model.User;
 
 public class HomeDrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private User mUser;
     int code = 0;
 
     @Override
@@ -41,6 +43,8 @@ public class HomeDrawerActivity extends AppCompatActivity
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeNavigationFragment()).commit();
         }
+
+        mUser = getIntent().getParcelableExtra("user");
     }
 
     @Override
@@ -80,7 +84,6 @@ public class HomeDrawerActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         Fragment fragment = null;
-        SharedPreferences preferences = getSharedPreferences("user", MODE_PRIVATE);
         Class selectedFragment = null;
 
         if (id == R.id.nav_home) {

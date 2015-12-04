@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import swe574.boun.edu.androidproject.R;
+import swe574.boun.edu.androidproject.model.HomeFragment;
+import swe574.boun.edu.androidproject.model.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,35 +18,17 @@ import swe574.boun.edu.androidproject.R;
  * Use the {@link HomeNavigationFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeNavigationFragment extends Fragment {
-    // Fragment parameters.
-    private final static String USER_TOKEN = "user";
-    private String USER_ID;
+public class HomeNavigationFragment extends HomeFragment {
 
     public HomeNavigationFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param user_id ID Of the user.
-     * @return A new instance of fragment HomeFragment.
-     */
-    public static HomeNavigationFragment newInstance(String user_id) {
-        HomeNavigationFragment fragment = new HomeNavigationFragment();
-        Bundle args = new Bundle();
-        args.putString(USER_TOKEN, user_id);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            USER_ID = (String) getArguments().get(USER_TOKEN);
+            // USER_ID = (String) getArguments().get(USER_TOKEN);
         }
     }
 

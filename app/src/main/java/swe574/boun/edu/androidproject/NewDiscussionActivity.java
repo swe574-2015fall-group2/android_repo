@@ -67,27 +67,4 @@ public class NewDiscussionActivity extends AppCompatActivity {
         return false;
     }
 
-
-    private class CreateDiscussionTask extends AsyncTask<Void, Void, Boolean> {
-        private ContactsContract.CommonDataKinds.Note mDiscussion;
-        private Context mContext;
-
-        public CreateDiscussionTask(ContactsContract.CommonDataKinds.Note mDiscussion, Context mContext) {
-            this.mDiscussion = mDiscussion;
-            this.mContext = mContext;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            return false;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean success) {
-            if (success) {
-                Toast.makeText(mContext, "The discussion has created successfully.", Toast.LENGTH_LONG).show();
-                finish();
-            }
-        }
-    }
 }

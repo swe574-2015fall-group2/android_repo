@@ -17,10 +17,6 @@ import swe574.boun.edu.androidproject.model.User;
 import swe574.boun.edu.androidproject.tasks.GetGroupCalendarTask;
 
 public class GroupTabFragment extends Fragment {
-    private final static String GROUP_TOKEN = "group";
-    private final static String USER_TOKEN = "user";
-    private Group mGroup;
-    private User mUser;
 
     public GroupTabFragment() {
         // Required empty public constructor

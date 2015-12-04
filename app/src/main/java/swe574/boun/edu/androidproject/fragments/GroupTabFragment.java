@@ -13,31 +13,14 @@ import android.widget.TextView;
 
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.model.Group;
+import swe574.boun.edu.androidproject.model.ModelFragment;
 import swe574.boun.edu.androidproject.model.User;
 import swe574.boun.edu.androidproject.tasks.GetGroupCalendarTask;
 
-public class GroupTabFragment extends Fragment {
+public class GroupTabFragment extends ModelFragment {
 
     public GroupTabFragment() {
         // Required empty public constructor
-    }
-
-    public static GroupTabFragment newInstance(final Group GROUP, final User user) {
-        GroupTabFragment fragment = new GroupTabFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(GROUP_TOKEN, GROUP);
-        args.putParcelable(USER_TOKEN, user);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mUser = getArguments().getParcelable(USER_TOKEN);
-            mGroup = getArguments().getParcelable(GROUP_TOKEN);
-        }
     }
 
     @Nullable

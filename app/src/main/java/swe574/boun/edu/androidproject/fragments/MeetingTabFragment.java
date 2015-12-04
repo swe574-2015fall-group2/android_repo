@@ -10,33 +10,11 @@ import android.view.ViewGroup;
 
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.model.Group;
+import swe574.boun.edu.androidproject.model.ModelFragment;
 
-public class MeetingTabFragment extends Fragment {
-    private final static String GROUP_TOKEN = "group";
-    private final static String USER_TOKEN = "user";
-    private Group mGroup;
-    private String mAuth;
-
+public class MeetingTabFragment extends ModelFragment {
     public MeetingTabFragment() {
         // Required empty public constructor
-    }
-
-    public static MeetingTabFragment newInstance(Group GROUP, String USER_AUTH) {
-        MeetingTabFragment fragment = new MeetingTabFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(GROUP_TOKEN, GROUP);
-        args.putString(USER_TOKEN, USER_AUTH);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mAuth = (String) getArguments().getString(USER_TOKEN);
-            mGroup = getArguments().getParcelable(GROUP_TOKEN);
-        }
     }
 
     @Nullable

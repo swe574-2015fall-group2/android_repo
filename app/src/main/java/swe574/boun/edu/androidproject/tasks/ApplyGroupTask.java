@@ -1,10 +1,9 @@
 package swe574.boun.edu.androidproject.tasks;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.MalformedJsonException;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,47 +20,30 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-import swe574.boun.edu.androidproject.R;
-import swe574.boun.edu.androidproject.adapters.ListGroupAdapter;
 import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.Group;
+import swe574.boun.edu.androidproject.model.Meeting;
 import swe574.boun.edu.androidproject.model.User;
 
 /**
- * < Parametre Tipi, Progress Tipi, Return Tipi
+ * Created by Jongaros on 12/4/2015.
  */
-public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
-    private ViewGroup mView;
+public class ApplyGroupTask extends AsyncTask<Void,Void,Boolean>{
+    private Context mContext;
     private User mUser;
-    private View mGroupForm;
-    private ListView mMyGroup;
-    private View mProgress;
-    private Boolean mResult;
+    private Group mGroup;
 
-    public FetchMyGroupsTask(ViewGroup mView, User mUser) {
-        this.mView = mView;
+    public ApplyGroupTask(User mUser, Group mGroup) {
         this.mUser = mUser;
-    }
-
-    /**
-     * Runs on main thread. Fetch UI elements here.
-     */
-    @Override
-    protected void onPreExecute() {
-        mMyGroup = (ListView) mView.findViewById(R.id.gridViewMyGroups);
-        mGroupForm = mView.findViewById(R.id.group_form);
-        mProgress = mView.findViewById(R.id.group_progress);
-        mGroupForm.setVisibility(View.GONE);
-        mProgress.setVisibility(View.VISIBLE);
+        this.mGroup = mGroup;
     }
 
     @Override
-    protected ArrayList<Group> doInBackground(Void... params) {
-        mResult = false;
-        HttpURLConnection httpURLConnection = null;
+    protected Boolean doInBackground(Void... params) {
         try {
+            HttpURLConnection httpURLConnection = null;
             // Create a new UrlConnection
-            URL postUrl = new URL("http://162.243.215.160:9000/v1/group/listMyGroups");
+            URL postUrl = new URL("http://162.243.215.160:9000/v1/group/join");
             // Open the created connection to server.
             httpURLConnection = (HttpURLConnection) postUrl.openConnection();
             // Set up the post parameters
@@ -74,6 +56,7 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
             // Create JSON String
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("authToken", App.mAuth);
+            jsonObject.accumulate("groupId", mGroup.getmID());
             String json = jsonObject.toString();
             // Create request output stream.
             OutputStream outputStream = httpURLConnection.getOutputStream();
@@ -101,22 +84,12 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
                 throw new IllegalStateException("Response code is not valid");
             }
             httpURLConnection.disconnect();
-            //TODO RECHECK WITH DATA
             JSONObject object = new JSONObject(responseJson);
             if (object.getString("status").equals("success")) {
-                ArrayList<Group> results = new ArrayList<>();
-                mResult = true;
-
-                if(object.has("groupList")){
-                    JSONArray groupList = object.getJSONArray("groupList");
-                    for(int i = 0 ; i < groupList.length() ; i++){
-                        JSONObject anGroup = groupList.getJSONObject(i);
-                        results.add(new Group(null, anGroup.getString("name"), anGroup.getString("description"), anGroup.getString("id"), null, anGroup.getBoolean("joined")));
-                    }
-                }
-                return results;
+                return true;
             } else {
-                throw new MalformedJsonException("Returned JSON String isn't fit the format.");
+                if (!object.getString("consumerMessage").equals("Meeting not found"))
+                    throw new MalformedJsonException("Returned JSON String isn't fit the format.");
             }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -125,23 +98,18 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return null;
+        return false;
     }
 
     @Override
-    protected void onPostExecute(ArrayList<Group> result) {
-        mGroupForm.setVisibility(View.VISIBLE);
-        mProgress.setVisibility(View.GONE);
-
-        if (mResult) {
-            ListGroupAdapter adapter = new ListGroupAdapter(mView.getContext(), result, mUser);
-            mMyGroup.setAdapter(adapter);
+    protected void onPostExecute(Boolean bool) {
+        String message;
+        if(bool){
+message = "You have been successfully applied to the group";
         }
-    }
-
-    @Override
-    protected void onCancelled() {
-        mGroupForm.setVisibility(View.VISIBLE);
-        mProgress.setVisibility(View.GONE);
+        else {
+message = "There is a problem with the server, please try again later";
+        }
+        Toast.makeText(mContext , message, Toast.LENGTH_LONG);
     }
 }

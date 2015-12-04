@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import swe574.boun.edu.androidproject.R;
+import swe574.boun.edu.androidproject.model.HomeFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,37 +18,10 @@ import swe574.boun.edu.androidproject.R;
  * Use the {@link MessageNavigationFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MessageNavigationFragment extends Fragment {
-    // Fragment parameters.
-    private final static String USER_TOKEN = "user";
-    private String USER_ID;
+public class MessageNavigationFragment extends HomeFragment {
 
     public MessageNavigationFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param user_id ID Of the user.
-     * @return A new instance of fragment MessageFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MessageNavigationFragment newInstance(String user_id) {
-        MessageNavigationFragment fragment = new MessageNavigationFragment();
-        Bundle args = new Bundle();
-        args.putString(USER_TOKEN, user_id);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            USER_ID = (String) getArguments().get(USER_TOKEN);
-        }
     }
 
     @Override

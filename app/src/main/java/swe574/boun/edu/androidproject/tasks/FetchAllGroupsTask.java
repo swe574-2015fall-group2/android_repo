@@ -23,22 +23,24 @@ import java.util.ArrayList;
 
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.adapters.ListGroupAdapter;
+import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.Group;
+import swe574.boun.edu.androidproject.model.User;
 
 /**
  * < Parametre Tipi, Progress Tipi, Return Tipi
  */
 public class FetchAllGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
     private ViewGroup mView;
-    private String mAuthToken;
+    private User mUser;
     private View mGroupForm;
     private ListView mMyGroup;
     private View mProgress;
     private Boolean mResult;
 
-    public FetchAllGroupsTask(ViewGroup mView, String mAuthToken) {
+    public FetchAllGroupsTask(ViewGroup mView, User mUser) {
         this.mView = mView;
-        this.mAuthToken = mAuthToken;
+        this.mUser = mUser;
     }
 
     /**
@@ -71,7 +73,7 @@ public class FetchAllGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> 
             httpURLConnection.setRequestProperty("Content-Type", "application/json");
             // Create JSON String
             JSONObject jsonObject = new JSONObject();
-            jsonObject.accumulate("authToken", mAuthToken);
+            jsonObject.accumulate("authToken", App.mAuth);
             String json = jsonObject.toString();
             // Create request output stream.
             OutputStream outputStream = httpURLConnection.getOutputStream();
@@ -98,17 +100,18 @@ public class FetchAllGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> 
                 // Server is down or webserver is changed.
                 throw new IllegalStateException("Response code is not valid");
             }
-            //TODO RECHECK WITH DATA
+            httpURLConnection.disconnect();
             JSONObject object = new JSONObject(responseJson);
             if (object.getString("status").equals("success")) {
                 ArrayList<Group> groups = new ArrayList<>();
-                JSONArray array = object.getJSONObject("result").getJSONArray("groupList");
-                for (int i = 0; i < array.length(); i++) {
-                    JSONObject o = array.getJSONObject(i);
-                    groups.add(new Group(null, o.getString("name"), o.getString("description"), o.getString("id"), null));
+                if(object.has("groupList")) {
+                    JSONArray array = object.getJSONObject("result").getJSONArray("groupList");
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject o = array.getJSONObject(i);
+                        groups.add(new Group(null, o.getString("name"), o.getString("description"), o.getString("id"), null, o.getBoolean("joined")));
+                    }
                 }
                 mResult = true;
-                httpURLConnection.disconnect();
                 return groups;
             } else {
                 throw new MalformedJsonException("Returned JSON String isn't fit the format.");
@@ -119,8 +122,6 @@ public class FetchAllGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> 
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
-        } finally {
-            httpURLConnection.disconnect();
         }
         return null;
     }
@@ -131,7 +132,7 @@ public class FetchAllGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> 
         mProgress.setVisibility(View.GONE);
 
         if (mResult) {
-            ListGroupAdapter adapter = new ListGroupAdapter(mView.getContext(), result, mAuthToken);
+            ListGroupAdapter adapter = new ListGroupAdapter(mView.getContext(), result, mUser);
             mMyGroup.setAdapter(adapter);
         }
     }

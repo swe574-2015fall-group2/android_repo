@@ -27,4 +27,12 @@ public class HomeFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mUser = getArguments().getParcelable(USER_TOKEN);
+        }
+    }
 }

@@ -16,6 +16,7 @@ import android.widget.ListView;
 import swe574.boun.edu.androidproject.NewGroupActivity;
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.ViewAllGroupsActivity;
+import swe574.boun.edu.androidproject.model.HomeFragment;
 import swe574.boun.edu.androidproject.tasks.FetchMyGroupsTask;
 
 /**
@@ -25,11 +26,9 @@ import swe574.boun.edu.androidproject.tasks.FetchMyGroupsTask;
  * Use the {@link GroupsNavigationFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class GroupsNavigationFragment extends Fragment {
+public class GroupsNavigationFragment extends HomeFragment {
     // Fragment parameters.
-    private final static String USER_TOKEN = "user";
     FetchMyGroupsTask mTask;
-    private String USER_AUTH;
     private int ADD_GROUP_ID;
     //UI parameters
     private Button mViewAllGroups;
@@ -40,27 +39,9 @@ public class GroupsNavigationFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param USER_AUTH ID Of the user.
-     * @return A new instance of fragment GroupsFragment.
-     */
-    public static GroupsNavigationFragment newInstance(String USER_AUTH) {
-        GroupsNavigationFragment fragment = new GroupsNavigationFragment();
-        Bundle args = new Bundle();
-        args.putString(USER_TOKEN, USER_AUTH);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            USER_AUTH = (String) getArguments().get(USER_TOKEN);
-        }
         getActivity().findViewById(R.id.search_bar_layout).setVisibility(View.GONE);
         setHasOptionsMenu(true);
     }
@@ -76,15 +57,15 @@ public class GroupsNavigationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), ViewAllGroupsActivity.class);
-                i.putExtra("user", USER_AUTH);
+                i.putExtra("user", mUser);
                 startActivity(i);
             }
         });
 
         mMyGroupView = (ListView) view.findViewById(R.id.gridViewMyGroups);
         mRecGroupView = (ListView) view.findViewById(R.id.gridViewRecommendedGroups);
-        //mTask = new FetchMyGroupsTask(view, USER_AUTH);
-        //mTask.execute();
+        mTask = new FetchMyGroupsTask(view, mUser);
+        mTask.execute();
         return view;
     }
 
@@ -100,7 +81,7 @@ public class GroupsNavigationFragment extends Fragment {
         int id = item.getItemId();
         if (id == ADD_GROUP_ID) {
             Intent intent = new Intent(getActivity(), NewGroupActivity.class);
-            intent.putExtra("user", USER_AUTH);
+            intent.putExtra("user", mUser);
             startActivity(intent);
         }
         return true;

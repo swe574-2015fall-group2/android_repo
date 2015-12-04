@@ -17,46 +17,26 @@ import android.widget.FrameLayout;
 import swe574.boun.edu.androidproject.LoginActivity;
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.ResourcesActivity;
+import swe574.boun.edu.androidproject.model.HomeFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * to handle interaction events.
- * Use the {@link ProfileNavigationFragment#newInstance} factory method to
+ * Use the {@link swe574.boun.edu.androidproject.model.HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProfileNavigationFragment extends Fragment {
+public class ProfileNavigationFragment extends HomeFragment {
     // Fragment parameters.
-    private final static String USER_TOKEN = "user";
-    private String USER_ID;
     private int EDIT_MENU_ID;
 
     public ProfileNavigationFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param user_id ID Of the user.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ProfileNavigationFragment newInstance(String user_id) {
-        ProfileNavigationFragment fragment = new ProfileNavigationFragment();
-        Bundle args = new Bundle();
-        args.putString(USER_TOKEN, user_id);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            USER_ID = (String) getArguments().get(USER_TOKEN);
-        }
         setHasOptionsMenu(true);
     }
 
@@ -100,7 +80,7 @@ public class ProfileNavigationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ResourcesActivity.class);
-                intent.putExtra("user", USER_ID);
+                intent.putExtra("user", mUser);
                 startActivity(intent);
             }
         });

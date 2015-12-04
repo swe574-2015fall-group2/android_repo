@@ -1,7 +1,9 @@
 package swe574.boun.edu.androidproject.adapters;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -20,16 +22,18 @@ import java.util.ArrayList;
 import swe574.boun.edu.androidproject.GroupTabbedActivity;
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.model.Group;
+import swe574.boun.edu.androidproject.model.User;
+import swe574.boun.edu.androidproject.tasks.ApplyGroupTask;
 
 public class ListGroupAdapter extends BaseAdapter {
     private final ArrayList<Group> mGroups;
-    private final String mAuth;
+    private final User mUser;
     private Context mContext;
 
-    public ListGroupAdapter(Context mContext, ArrayList<Group> mGroups, String mAuth) {
+    public ListGroupAdapter(Context mContext, ArrayList<Group> mGroups, User mUser) {
         this.mContext = mContext;
         this.mGroups = mGroups;
-        this.mAuth = mAuth;
+        this.mUser = mUser;
     }
 
     @Override
@@ -81,10 +85,27 @@ public class ListGroupAdapter extends BaseAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, GroupTabbedActivity.class);
-                intent.putExtra("user", mAuth);
-                intent.putExtra("group", mGroups.get(position));
-                mContext.startActivity(intent);
+                if(g.ismJoined()) {
+                    Intent intent = new Intent(mContext, GroupTabbedActivity.class);
+                    intent.putExtra("user", mUser);
+                    intent.putExtra("group", g);
+                    mContext.startActivity(intent);
+                }
+                else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setTitle("Join " + g.getmName());
+                    builder.setMessage("Do you want to apply ot the group " + g.getmName() + " ?");
+                    builder.setPositiveButton("Apply", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ApplyGroupTask mTask = new ApplyGroupTask(mUser, g);
+                            mTask.execute();
+                        }
+                    });
+                    builder.setNegativeButton("No", null);
+                    builder.setCancelable(true);
+                    builder.show();
+                }
             }
         });
 

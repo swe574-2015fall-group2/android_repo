@@ -1,5 +1,6 @@
 package swe574.boun.edu.androidproject;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -17,6 +18,7 @@ import swe574.boun.edu.androidproject.fragments.GroupsNavigationFragment;
 import swe574.boun.edu.androidproject.fragments.HomeNavigationFragment;
 import swe574.boun.edu.androidproject.fragments.MessageNavigationFragment;
 import swe574.boun.edu.androidproject.fragments.ProfileNavigationFragment;
+import swe574.boun.edu.androidproject.model.HomeFragment;
 import swe574.boun.edu.androidproject.model.User;
 
 public class HomeDrawerActivity extends AppCompatActivity
@@ -83,30 +85,21 @@ public class HomeDrawerActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        Fragment fragment = null;
-        Class selectedFragment = null;
-
-        if (id == R.id.nav_home) {
-            selectedFragment = HomeNavigationFragment.class;
-        } else if (id == R.id.nav_groups) {
-            selectedFragment = GroupsNavigationFragment.class;
-        } else if (id == R.id.nav_profile) {
-
-            selectedFragment = ProfileNavigationFragment.class;
-        } else if (id == R.id.nav_messages) {
-            selectedFragment = MessageNavigationFragment.class;
-        }
-
-        try {
-            if (selectedFragment == GroupsNavigationFragment.class) {
-                fragment = GroupsNavigationFragment.newInstance(preferences.getString("token", ""));
-            } else {
-                fragment = (Fragment) selectedFragment.newInstance();
-            }
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        HomeFragment fragment = null;
+        
+        switch (id){
+            case R.id.nav_home:
+                fragment = HomeNavigationFragment.newInstance(mUser);
+                break;
+            case R.id.nav_groups:
+                fragment = GroupsNavigationFragment.newInstance(mUser);
+                break;
+            case R.id.nav_profile:
+                fragment = ProfileNavigationFragment.newInstance(mUser);
+                break;
+            case R.id.nav_messages:
+                fragment = MessageNavigationFragment.newInstance(mUser);
+                break;
         }
 
         FragmentManager manager = getSupportFragmentManager();

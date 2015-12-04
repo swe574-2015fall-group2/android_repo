@@ -25,13 +25,15 @@ public final class Group implements Parcelable {
     private final String mDescription;
     private final String mID;
     private final List<String> mTags;
+    private final boolean mJoined;
 
-    public Group(URL mPicture, String mName, String mDescription, String mID, List<String> mTags) {
+    public Group(URL mPicture, String mName, String mDescription, String mID, List<String> mTags, boolean mJoined) {
         this.mPicture = mPicture;
         this.mName = mName;
         this.mDescription = mDescription;
         this.mID = mID;
         this.mTags = mTags;
+        this.mJoined = mJoined;
     }
 
     protected Group(Parcel in) {
@@ -40,6 +42,7 @@ public final class Group implements Parcelable {
         mDescription = in.readString();
         mID = in.readString();
         mTags = in.createStringArrayList();
+        mJoined = in.readByte() != 0;
     }
 
     public URL getmPicture() {
@@ -70,6 +73,10 @@ public final class Group implements Parcelable {
         return mID;
     }
 
+    public boolean ismJoined() {
+        return mJoined;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -82,5 +89,6 @@ public final class Group implements Parcelable {
         dest.writeString(mDescription);
         dest.writeString(mID);
         dest.writeList(mTags);
+        dest.writeByte((byte) (mJoined ? 1 : 0));
     }
 }

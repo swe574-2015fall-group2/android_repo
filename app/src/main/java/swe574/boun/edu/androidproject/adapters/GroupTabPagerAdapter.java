@@ -12,18 +12,19 @@ import swe574.boun.edu.androidproject.fragments.GroupTabFragment;
 import swe574.boun.edu.androidproject.fragments.MeetingTabFragment;
 import swe574.boun.edu.androidproject.fragments.NoteTabFragment;
 import swe574.boun.edu.androidproject.model.Group;
+import swe574.boun.edu.androidproject.model.User;
 
 public class GroupTabPagerAdapter extends FragmentStatePagerAdapter {
     private List<String> mTitles;
     private int mNumOfTabs;
-    private String mAuth;
+    private User mUser;
     private Group mGroup;
 
-    public GroupTabPagerAdapter(FragmentManager fm, List<String> mTitles, int mNumOfTabs, String mAuth, Group mGroup) {
+    public GroupTabPagerAdapter(FragmentManager fm, List<String> mTitles, int mNumOfTabs, User mUser, Group mGroup) {
         super(fm);
         this.mTitles = mTitles;
         this.mNumOfTabs = mNumOfTabs;
-        this.mAuth = mAuth;
+        this.mUser = mUser;
         this.mGroup = mGroup;
     }
 
@@ -32,16 +33,16 @@ public class GroupTabPagerAdapter extends FragmentStatePagerAdapter {
         Fragment fragment = null;
         switch (position) {
             case 0:
-                fragment = new GroupTabFragment().newInstance(mGroup, mAuth);
+                fragment = new GroupTabFragment().newInstance(mGroup, mUser);
                 break;
             case 1:
-                fragment = new MeetingTabFragment().newInstance(mGroup, mAuth);
+                fragment = new MeetingTabFragment().newInstance(mGroup, mUser);
                 break;
             case 2:
-                fragment = new DiscussionTabFragment().newInstance(mGroup, mAuth);
+                fragment = new DiscussionTabFragment().newInstance(mGroup, mUser);
                 break;
             case 3:
-                fragment = new NoteTabFragment().newInstance(mGroup, mAuth);
+                fragment = new NoteTabFragment().newInstance(mGroup, mUser);
                 break;
         }
         return fragment;

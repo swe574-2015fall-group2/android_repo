@@ -435,10 +435,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             try {
                 JSONObject object = new JSONObject(responseJson);
                 boolean success = object.getString("status").equals("success");
-                if (success) {
-                    return true;
-                }
-                return false;
+                return success;
             } catch (JSONException e) {
                 e.printStackTrace();
                 return false;

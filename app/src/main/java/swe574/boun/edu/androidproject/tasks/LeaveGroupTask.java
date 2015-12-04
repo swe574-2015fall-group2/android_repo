@@ -1,10 +1,12 @@
 package swe574.boun.edu.androidproject.tasks;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.MalformedJsonException;
-import android.widget.ListView;
+import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,36 +19,30 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 
-import swe574.boun.edu.androidproject.adapters.ListMeetingAdapter;
+import swe574.boun.edu.androidproject.LoginActivity;
 import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.Group;
-import swe574.boun.edu.androidproject.model.Meeting;
 import swe574.boun.edu.androidproject.model.User;
 
 /**
- * Created by Jongaros on 11/29/2015.
+ * Created by Jongaros on 12/4/2015.
  */
-public class GetGroupCalendarTask extends AsyncTask<Void, Void, ArrayList<Meeting>> {
-    private ListView mParent;
-    private User mUser;
+public class LeaveGroupTask extends AsyncTask<Void, Void, Boolean> {
+    private Activity mActivity;
     private Group mGroup;
-    private boolean mResult;
 
-    public GetGroupCalendarTask(Group mGroup, User mUser, ListView mParent) {
+    public LeaveGroupTask(Activity mActivity, Group mGroup) {
+        this.mActivity = mActivity;
         this.mGroup = mGroup;
-        this.mUser = mUser;
-        this.mParent = mParent;
     }
 
     @Override
-    protected ArrayList<Meeting> doInBackground(Void... params) {
-        mResult = false;
+    protected Boolean doInBackground(Void... params) {
         try {
             HttpURLConnection httpURLConnection = null;
             // Create a new UrlConnection
-            URL postUrl = new URL("http://162.243.215.160:9000/v1/meeting/queryByGroup");
+            URL postUrl = new URL("http://162.243.215.160:9000/v1/group/leave");
             // Open the created connection to server.
             httpURLConnection = (HttpURLConnection) postUrl.openConnection();
             // Set up the post parameters
@@ -59,7 +55,7 @@ public class GetGroupCalendarTask extends AsyncTask<Void, Void, ArrayList<Meetin
             // Create JSON String
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("authToken", App.mAuth);
-            jsonObject.accumulate("id", mGroup.getmID());
+            jsonObject.accumulate("groupId", mGroup.getmID());
             String json = jsonObject.toString();
             // Create request output stream.
             OutputStream outputStream = httpURLConnection.getOutputStream();
@@ -89,19 +85,8 @@ public class GetGroupCalendarTask extends AsyncTask<Void, Void, ArrayList<Meetin
             httpURLConnection.disconnect();
             JSONObject object = new JSONObject(responseJson);
             if (object.getString("status").equals("success")) {
-                ArrayList<Meeting> meetings = new ArrayList<>();
-                if (object.has("meetingList")) {
-                    JSONArray array = object.getJSONObject("result").getJSONArray("meetingList");
-                    int limit = array.length() > 4 ? 4 : array.length();
-                    for (int i = 0; i < limit; i++) {
-                        JSONObject o = array.getJSONObject(i);
-                        meetings.add(Meeting.createFromJSON(o));
-                    }
-                }
-                mResult = true;
-                return meetings;
+                return true;
             } else {
-                if (!object.getString("consumerMessage").equals("Meeting not found"))
                     throw new MalformedJsonException("Returned JSON String isn't fit the format.");
             }
         } catch (UnsupportedEncodingException e) {
@@ -111,14 +96,23 @@ public class GetGroupCalendarTask extends AsyncTask<Void, Void, ArrayList<Meetin
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return null;
+        return false;
     }
 
     @Override
-    protected void onPostExecute(ArrayList<Meeting> result) {
-        if (mResult) {
-            ListMeetingAdapter adapter = new ListMeetingAdapter(mUser, mParent.getContext(), result);
-            mParent.setAdapter(adapter);
+    protected void onPostExecute(Boolean bool) {
+        String message;
+        if (bool) {
+            message = "You have been successfully left the group";
+        } else {
+            message = "There is a problem with the server, please try again later";
         }
+
+        Toast.makeText(mActivity, message, Toast.LENGTH_LONG);
+        Intent intent = new Intent(mActivity, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        if(bool)
+        mActivity.startActivity(intent);
     }
 }

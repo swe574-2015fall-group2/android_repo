@@ -17,6 +17,7 @@ import java.util.List;
 import swe574.boun.edu.androidproject.adapters.GroupTabLayout;
 import swe574.boun.edu.androidproject.adapters.GroupTabPagerAdapter;
 import swe574.boun.edu.androidproject.model.Group;
+import swe574.boun.edu.androidproject.model.User;
 
 public class GroupTabbedActivity extends AppCompatActivity {
 
@@ -46,10 +47,10 @@ public class GroupTabbedActivity extends AppCompatActivity {
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         Intent intent = getIntent();
-        String user = intent.getStringExtra("user");
+        User user = intent.getParcelableExtra("user");
         Group group = intent.getParcelableExtra("group");
         mTitles = new ArrayList<>();
-        mTitles.addAll(Arrays.asList(new String[]{"Home", "Meetings", "Discussions", "Notes"}));
+        mTitles.addAll(Arrays.asList("Home", "Meetings", "Discussions", "Notes"));
         mSectionsPagerAdapter = new GroupTabPagerAdapter(getSupportFragmentManager(), mTitles, 4, user, group);
 
         // Set up the ViewPager with the sections adapter.

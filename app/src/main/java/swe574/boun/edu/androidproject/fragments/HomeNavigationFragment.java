@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.model.HomeFragment;
-import swe574.boun.edu.androidproject.model.User;
 
 /**
  * A simple {@link Fragment} subclass.

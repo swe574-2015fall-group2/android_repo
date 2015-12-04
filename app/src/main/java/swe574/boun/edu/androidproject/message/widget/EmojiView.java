@@ -197,10 +197,10 @@ public class EmojiView extends LinearLayout {
         }
     }
 
-    public static abstract interface Listener {
-        public abstract void onBackspace();
+    public interface Listener {
+        void onBackspace();
 
-        public abstract void onEmojiSelected(String paramString);
+        void onEmojiSelected(String paramString);
     }
 
     private class EmojiGridAdapter extends BaseAdapter {

@@ -46,8 +46,8 @@ public class SizeNotifierRelativeLayout extends RelativeLayout {
     }
 
 
-    public abstract interface SizeNotifierRelativeLayoutDelegate {
-        public abstract void onSizeChanged(int keyboardHeight);
+    public interface SizeNotifierRelativeLayoutDelegate {
+        void onSizeChanged(int keyboardHeight);
     }
 
 

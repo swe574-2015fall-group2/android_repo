@@ -8,8 +8,8 @@ import swe574.boun.edu.androidproject.tools.NativeLoader;
 public class App extends Application {
 
     public static volatile Handler applicationHandler = null;
-    private static App Instance;
     public static String mAuth;
+    private static App Instance;
 
     public static App getInstance() {
         return Instance;

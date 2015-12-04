@@ -28,6 +28,10 @@ public class CreateMeetingTask extends AsyncTask<Void, Void, Boolean> {
   //  private String mMeetingId;
     private Date mMeetingDateTime;
     private String mMeetingAgendaSet;
+    private String mMeetingName;
+    private String mMeetingTimeZone;
+    private String mMeetingStartHour;
+    private String mMeetingEndHour;
     //  private String mMeetingToDoSet;
     private String mMeetingEstimatedDuration;
     //  private int mMeetingActualDuration;
@@ -35,25 +39,31 @@ public class CreateMeetingTask extends AsyncTask<Void, Void, Boolean> {
     private String mMeetingDescription;
     // private String mMeetingStatus;
     private String mMeetingType;
-    //   private String mMeetingInvitedUserSet;
+    private String mMeetingInvitedUserSet;
+    private String mMeetingGroupId;
     //   private String mMeetingAttendedUserSet;
 
     public CreateMeetingTask(String mAuth, ViewGroup mParent) {
         super();
         this.mAuth = mAuth;
-       /* this.mMeetingId = ((EditText) mParent.findViewById(R.id.meetingId)).getText().toString();
+        //this.mMeetingId = ((EditText) mParent.findViewById(R.id.meetingId)).getText().toString();
         this.mMeetingDateTime = (Date) mParent.findViewById(R.id.meetingDate);
         this.mMeetingAgendaSet = ((EditText) mParent.findViewById(R.id.meetingAgendaSet)).getText().toString();
-        this.mMeetingToDoSet = ((EditText) mParent.findViewById(R.id.meetingToDoSet)).getText().toString();
+        //this.mMeetingToDoSet = ((EditText) mParent.findViewById(R.id.meetingToDoSet)).getText().toString();
         this.mMeetingEstimatedDuration = ((EditText) mParent.findViewById(R.id.meetingEstimatedDuration)).getText().toString();
-        this.mMeetingActualDuration = ((EditText) mParent.findViewById(R.id.meetingActualDuration)).getText().toString();
+        //this.mMeetingActualDuration = ((EditText) mParent.findViewById(R.id.meetingActualDuration)).getText().toString();
         this.mMeetingLocation = ((EditText) mParent.findViewById(R.id.meetingLocation)).getText().toString();
         this.mMeetingDescription = ((EditText) mParent.findViewById(R.id.meetingDescription)).getText().toString();
-        this.mMeetingStatus = ((EditText) mParent.findViewById(R.id.meetingStatus)).getText().toString();
+        this.mMeetingName = ((EditText) mParent.findViewById(R.id.meetingName)).getText().toString();
+        this.mMeetingTimeZone = ((EditText) mParent.findViewById(R.id.meetingTimeZone)).getText().toString();
+        this.mMeetingStartHour = ((EditText) mParent.findViewById(R.id.meetingStartHour)).getText().toString();
+        this.mMeetingEndHour = ((EditText) mParent.findViewById(R.id.meetingEndHour)).getText().toString();
+        //this.mMeetingStatus = ((EditText) mParent.findViewById(R.id.meetingStatus)).getText().toString();
         this.mMeetingType = ((EditText) mParent.findViewById(R.id.meetingType)).getText().toString();
         this.mMeetingInvitedUserSet = ((EditText) mParent.findViewById(R.id.meetingInvitedUserSet)).getText().toString();
-        this.mMeetingAttendedUserSet = ((EditText) mParent.findViewById(R.id.meetingAttendedUserSet)).getText().toString();
-        */
+        this.mMeetingGroupId = ((EditText) mParent.findViewById(R.id.meetingGroupId)).getText().toString();
+        //this.mMeetingAttendedUserSet = ((EditText) mParent.findViewById(R.id.meetingAttendedUserSet)).getText().toString();
+
         this.mProgressView = mParent.findViewById(R.id.meeting_progress);
         this.mFormView = mParent.findViewById(R.id.meeting_form);
     }
@@ -89,6 +99,13 @@ public class CreateMeetingTask extends AsyncTask<Void, Void, Boolean> {
             jsonObject.accumulate("location", mMeetingLocation);
             jsonObject.accumulate("description", mMeetingDescription);
             jsonObject.accumulate("type", mMeetingType);
+            jsonObject.accumulate("invitedUserIdList", mMeetingInvitedUserSet);
+            jsonObject.accumulate("name", mMeetingName);
+            jsonObject.accumulate("timezone", mMeetingTimeZone);
+            jsonObject.accumulate("startHour", mMeetingStartHour);
+            jsonObject.accumulate("endHour", mMeetingEndHour);
+            jsonObject.accumulate("type", mMeetingType);
+            jsonObject.accumulate("groupId", mMeetingGroupId);
         //    jsonObject.accumulate("meetingId", mMeetingId);
             String json = jsonObject.toString();
             // Create request output stream.

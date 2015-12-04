@@ -25,7 +25,7 @@ public class CreateMeetingTask extends AsyncTask<Void, Void, Boolean> {
     private final String mAuth;
     private final View mProgressView;
     private final View mFormView;
-    private String mMeetingId;
+  //  private String mMeetingId;
     private Date mMeetingDateTime;
     private String mMeetingAgendaSet;
     //  private String mMeetingToDoSet;
@@ -89,7 +89,7 @@ public class CreateMeetingTask extends AsyncTask<Void, Void, Boolean> {
             jsonObject.accumulate("location", mMeetingLocation);
             jsonObject.accumulate("description", mMeetingDescription);
             jsonObject.accumulate("type", mMeetingType);
-            jsonObject.accumulate("groupId", mMeetingId);
+        //    jsonObject.accumulate("meetingId", mMeetingId);
             String json = jsonObject.toString();
             // Create request output stream.
             OutputStream outputStream = httpURLConnection.getOutputStream();

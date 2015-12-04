@@ -29,10 +29,7 @@
 
 #ifndef NO_GETENV
 #ifndef HAVE_STDLIB_H        /* <stdlib.h> should declare getenv() */
-
-extern char *getenvJPP((const char *name)
-
-);
+extern char *getenvJPP((const char *name));
 #endif
 #endif
 
@@ -86,20 +83,20 @@ extern char *getenvJPP((const char *name)
  * of the alignment requirement of ALIGN_TYPE.
  */
 
-typedef union small_pool_struct *small_pool_ptr;
+                   typedef union small_pool_struct *small_pool_ptr;
 
-typedef union small_pool_struct {
-    struct {
-        small_pool_ptr next;
-        /* next in list of pools */
-        size_t bytes_used;
-        /* how many bytes already used within pool */
-        size_t bytes_left;        /* bytes still available in this pool */
-    } hdr;
-    ALIGN_TYPE dummy;        /* included in union to ensure alignment */
-} small_pool_hdr;
+                   typedef union small_pool_struct {
+                       struct {
+                           small_pool_ptr next;
+                           /* next in list of pools */
+                           size_t bytes_used;
+                           /* how many bytes already used within pool */
+                           size_t bytes_left;        /* bytes still available in this pool */
+                       } hdr;
+                       ALIGN_TYPE dummy;        /* included in union to ensure alignment */
+                   } small_pool_hdr;
 
-typedef union large_pool_struct FAR
+                   typedef union large_pool_struct FAR
 *
 large_pool_ptr;
 

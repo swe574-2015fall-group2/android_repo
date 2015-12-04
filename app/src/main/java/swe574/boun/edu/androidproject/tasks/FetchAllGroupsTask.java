@@ -104,7 +104,7 @@ public class FetchAllGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> 
             JSONObject object = new JSONObject(responseJson);
             if (object.getString("status").equals("success")) {
                 ArrayList<Group> groups = new ArrayList<>();
-                if (object.has("groupList")) {
+                if(object.has("groupList")) {
                     JSONArray array = object.getJSONObject("result").getJSONArray("groupList");
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject o = array.getJSONObject(i);

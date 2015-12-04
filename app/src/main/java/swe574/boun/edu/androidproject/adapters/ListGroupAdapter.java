@@ -85,12 +85,13 @@ public class ListGroupAdapter extends BaseAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (g.ismJoined()) {
+                if(g.ismJoined()) {
                     Intent intent = new Intent(mContext, GroupTabbedActivity.class);
                     intent.putExtra("user", mUser);
                     intent.putExtra("group", g);
                     mContext.startActivity(intent);
-                } else {
+                }
+                else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                     builder.setTitle("Join " + g.getmName());
                     builder.setMessage("Do you want to apply ot the group " + g.getmName() + " ?");

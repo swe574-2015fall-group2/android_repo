@@ -79,7 +79,7 @@ public final class Meeting implements Parcelable {
         if (agendaset != null) {
             agenda = new ArrayList<>();
             for (int i = 0; i < agendaset.length(); i++) {
-                agenda.add(((JSONObject) agendaset.get(i)).toString());
+                agenda.add(agendaset.get(i).toString());
             }
         }
         List<String> todo = null;
@@ -87,7 +87,7 @@ public final class Meeting implements Parcelable {
         if (todoset != null) {
             todo = new ArrayList<>();
             for (int i = 0; i < todoset.length(); i++) {
-                todo.add(((JSONObject) todoset.get(i)).toString());
+                todo.add(todoset.get(i).toString());
             }
         }
         long esti = o.getInt("estimatedDuration");

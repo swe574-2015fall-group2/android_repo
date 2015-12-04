@@ -4,7 +4,6 @@ package swe574.boun.edu.androidproject.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import swe574.boun.edu.androidproject.R;
-import swe574.boun.edu.androidproject.model.Group;
 import swe574.boun.edu.androidproject.model.ModelFragment;
-import swe574.boun.edu.androidproject.model.User;
 import swe574.boun.edu.androidproject.tasks.GetGroupCalendarTask;
 
 public class GroupTabFragment extends ModelFragment {

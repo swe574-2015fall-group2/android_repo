@@ -19,11 +19,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import swe574.boun.edu.androidproject.adapters.ListMeetingAdapter;
 import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.Group;
 import swe574.boun.edu.androidproject.model.Meeting;
 import swe574.boun.edu.androidproject.model.User;
-import swe574.boun.edu.androidproject.adapters.ListMeetingAdapter;
 
 /**
  * Created by Jongaros on 11/29/2015.

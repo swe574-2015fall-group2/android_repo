@@ -447,7 +447,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
     }
 
     public interface IconTabProvider {
-        public int getPageIconResId(int position);
+        int getPageIconResId(int position);
     }
 
     static class SavedState extends BaseSavedState {

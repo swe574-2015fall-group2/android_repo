@@ -72,7 +72,7 @@ public class GroupsNavigationFragment extends HomeFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        ADD_GROUP_ID = menu.FIRST + 1;
+        ADD_GROUP_ID = Menu.FIRST + 1;
         menu.add(1, ADD_GROUP_ID, 1, "Create Group");
     }
 

@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.util.MalformedJsonException;
 import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,17 +17,15 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 
 import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.Group;
-import swe574.boun.edu.androidproject.model.Meeting;
 import swe574.boun.edu.androidproject.model.User;
 
 /**
  * Created by Jongaros on 12/4/2015.
  */
-public class ApplyGroupTask extends AsyncTask<Void,Void,Boolean>{
+public class ApplyGroupTask extends AsyncTask<Void, Void, Boolean> {
     private Context mContext;
     private User mUser;
     private Group mGroup;
@@ -104,12 +101,11 @@ public class ApplyGroupTask extends AsyncTask<Void,Void,Boolean>{
     @Override
     protected void onPostExecute(Boolean bool) {
         String message;
-        if(bool){
-message = "You have been successfully applied to the group";
+        if (bool) {
+            message = "You have been successfully applied to the group";
+        } else {
+            message = "There is a problem with the server, please try again later";
         }
-        else {
-message = "There is a problem with the server, please try again later";
-        }
-        Toast.makeText(mContext , message, Toast.LENGTH_LONG);
+        Toast.makeText(mContext, message, Toast.LENGTH_LONG);
     }
 }

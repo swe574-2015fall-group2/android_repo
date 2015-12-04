@@ -86,6 +86,6 @@ public class NotificationCenter {
     }
 
     public interface NotificationCenterDelegate {
-        public abstract void didReceivedNotification(int id, Object... args);
+        void didReceivedNotification(int id, Object... args);
     }
 }

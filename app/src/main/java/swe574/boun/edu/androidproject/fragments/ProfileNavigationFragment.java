@@ -91,7 +91,7 @@ public class ProfileNavigationFragment extends HomeFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        EDIT_MENU_ID = menu.FIRST + 1;
+        EDIT_MENU_ID = Menu.FIRST + 1;
         menu.add(1, EDIT_MENU_ID, 1, "Edit Profile");
     }
 

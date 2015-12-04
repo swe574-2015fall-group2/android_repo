@@ -21,7 +21,10 @@
 extern void *malloc
 JPP((size_t
 size));
-extern void freeJPP((void *ptr));
+
+extern void freeJPP((void *ptr)
+
+);
 #endif
 
 
@@ -30,8 +33,11 @@ extern void freeJPP((void *ptr));
  * routines malloc() and free().
  */
 
-                GLOBAL(void *)
-                jpeg_get_small(j_common_ptr cinfo, size_t sizeofobject
+GLOBAL(void *)
+
+jpeg_get_small(j_common_ptr
+cinfo,
+size_t sizeofobject
 ) {
 return (void *)
 malloc(sizeofobject);

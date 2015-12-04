@@ -12,7 +12,7 @@ public class ModelFragment extends Fragment {
     protected Group mGroup;
     protected User mUser;
 
-    public ModelFragment(){
+    public ModelFragment() {
         // Required empty public constructor
     }
 

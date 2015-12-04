@@ -1,10 +1,7 @@
 package swe574.boun.edu.androidproject;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -23,8 +20,8 @@ import swe574.boun.edu.androidproject.model.User;
 
 public class HomeDrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private User mUser;
     int code = 0;
+    private User mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +83,8 @@ public class HomeDrawerActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         HomeFragment fragment = null;
-        
-        switch (id){
+
+        switch (id) {
             case R.id.nav_home:
                 fragment = HomeNavigationFragment.newInstance(mUser);
                 break;

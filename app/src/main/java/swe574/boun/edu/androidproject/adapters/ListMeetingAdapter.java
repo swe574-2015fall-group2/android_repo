@@ -52,7 +52,7 @@ public class ListMeetingAdapter extends BaseAdapter {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.listitem_meeting, null, false);
 
         final Meeting meeting = mMeetings.get(position);
-        if(meeting.getmDate() != null){
+        if (meeting.getmDate() != null) {
             Calendar meetingDate = Calendar.getInstance();
             meetingDate.setTime(meeting.getmDate());
 
@@ -67,12 +67,12 @@ public class ListMeetingAdapter extends BaseAdapter {
         }
 
         TextView mDesc = (TextView) viewGroup.findViewById(R.id.meeting_description);
-        if(meeting.getmDescription() != null) {
+        if (meeting.getmDescription() != null) {
             mDesc.setText(meeting.getmDescription());
         }
 
         TextView mLocation = (TextView) viewGroup.findViewById(R.id.meeting_location);
-        if(meeting.getmLocation() != null) {
+        if (meeting.getmLocation() != null) {
             mLocation.setText(meeting.getmLocation());
         }
 

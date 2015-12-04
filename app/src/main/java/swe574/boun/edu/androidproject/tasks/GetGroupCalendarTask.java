@@ -19,29 +19,32 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.Group;
 import swe574.boun.edu.androidproject.model.Meeting;
+import swe574.boun.edu.androidproject.model.User;
+import swe574.boun.edu.androidproject.adapters.ListMeetingAdapter;
 
 /**
  * Created by Jongaros on 11/29/2015.
  */
 public class GetGroupCalendarTask extends AsyncTask<Void, Void, ArrayList<Meeting>> {
     private ListView mParent;
-    private String mAuth;
+    private User mUser;
     private Group mGroup;
     private boolean mResult;
 
-    public GetGroupCalendarTask(Group mGroup, String mAuth, ListView mParent) {
+    public GetGroupCalendarTask(Group mGroup, User mUser, ListView mParent) {
         this.mGroup = mGroup;
-        this.mAuth = mAuth;
+        this.mUser = mUser;
         this.mParent = mParent;
     }
 
     @Override
     protected ArrayList<Meeting> doInBackground(Void... params) {
         mResult = false;
-        HttpURLConnection httpURLConnection = null;
         try {
+            HttpURLConnection httpURLConnection = null;
             // Create a new UrlConnection
             URL postUrl = new URL("http://162.243.215.160:9000/v1/meeting/queryByGroup");
             // Open the created connection to server.
@@ -55,7 +58,7 @@ public class GetGroupCalendarTask extends AsyncTask<Void, Void, ArrayList<Meetin
             httpURLConnection.setRequestProperty("Content-Type", "application/json");
             // Create JSON String
             JSONObject jsonObject = new JSONObject();
-            jsonObject.accumulate("authToken", mAuth);
+            jsonObject.accumulate("authToken", App.mAuth);
             jsonObject.accumulate("id", mGroup.getmID());
             String json = jsonObject.toString();
             // Create request output stream.
@@ -83,17 +86,19 @@ public class GetGroupCalendarTask extends AsyncTask<Void, Void, ArrayList<Meetin
                 // Server is down or webserver is changed.
                 throw new IllegalStateException("Response code is not valid");
             }
+            httpURLConnection.disconnect();
             JSONObject object = new JSONObject(responseJson);
             if (object.getString("status").equals("success")) {
                 ArrayList<Meeting> meetings = new ArrayList<>();
-                JSONArray array = object.getJSONObject("result").getJSONArray("meetingList");
-                int limit = array.length() > 4 ? 4 : array.length();
-                for (int i = 0; i < limit; i++) {
-                    JSONObject o = array.getJSONObject(i);
-                    meetings.add(Meeting.createFromJSON(o));
+                if (object.has("meetingList")) {
+                    JSONArray array = object.getJSONObject("result").getJSONArray("meetingList");
+                    int limit = array.length() > 4 ? 4 : array.length();
+                    for (int i = 0; i < limit; i++) {
+                        JSONObject o = array.getJSONObject(i);
+                        meetings.add(Meeting.createFromJSON(o));
+                    }
                 }
                 mResult = true;
-                httpURLConnection.disconnect();
                 return meetings;
             } else {
                 if (!object.getString("consumerMessage").equals("Meeting not found"))
@@ -105,8 +110,6 @@ public class GetGroupCalendarTask extends AsyncTask<Void, Void, ArrayList<Meetin
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
-        } finally {
-            httpURLConnection.disconnect();
         }
         return null;
     }
@@ -114,8 +117,8 @@ public class GetGroupCalendarTask extends AsyncTask<Void, Void, ArrayList<Meetin
     @Override
     protected void onPostExecute(ArrayList<Meeting> result) {
         if (mResult) {
-            // TODO MeetingListAdapter adapter = new MeetingListAdapter();
-            // mParent.setAdapter(adapter);
+            ListMeetingAdapter adapter = new ListMeetingAdapter(mUser, mParent.getContext(), result);
+            mParent.setAdapter(adapter);
         }
     }
 }

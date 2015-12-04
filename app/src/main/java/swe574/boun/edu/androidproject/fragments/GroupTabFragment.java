@@ -8,25 +8,29 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.model.Group;
+import swe574.boun.edu.androidproject.model.User;
+import swe574.boun.edu.androidproject.tasks.GetGroupCalendarTask;
 
 public class GroupTabFragment extends Fragment {
     private final static String GROUP_TOKEN = "group";
     private final static String USER_TOKEN = "user";
     private Group mGroup;
-    private String mAuth;
+    private User mUser;
 
     public GroupTabFragment() {
         // Required empty public constructor
     }
 
-    public static GroupTabFragment newInstance(final Group GROUP, final String USER_AUTH) {
+    public static GroupTabFragment newInstance(final Group GROUP, final User user) {
         GroupTabFragment fragment = new GroupTabFragment();
         Bundle args = new Bundle();
         args.putParcelable(GROUP_TOKEN, GROUP);
-        args.putString(USER_TOKEN, USER_AUTH);
+        args.putParcelable(USER_TOKEN, user);
         fragment.setArguments(args);
         return fragment;
     }
@@ -35,7 +39,7 @@ public class GroupTabFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mAuth = (String) getArguments().getString(USER_TOKEN);
+            mUser = getArguments().getParcelable(USER_TOKEN);
             mGroup = getArguments().getParcelable(GROUP_TOKEN);
         }
     }
@@ -44,6 +48,13 @@ public class GroupTabFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_group_home, null, false);
+
+        TextView groupName = (TextView) rootView.findViewById(R.id.groupName);
+        groupName.setText(mGroup.getmName());
+
+        ListView list = (ListView) rootView.findViewById(R.id.group_calendar);
+        GetGroupCalendarTask mCalendarTask = new GetGroupCalendarTask(mGroup, mUser, list);
+        mCalendarTask.execute();
 
         return rootView;
     }

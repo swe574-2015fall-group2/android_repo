@@ -10,7 +10,7 @@ public class HomeFragment extends Fragment {
     protected static final String USER_TOKEN = "user";
     protected User mUser;
 
-    public HomeFragment(){
+    public HomeFragment() {
     }
 
     /**

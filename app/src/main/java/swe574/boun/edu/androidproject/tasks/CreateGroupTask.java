@@ -24,21 +24,19 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import swe574.boun.edu.androidproject.R;
+import swe574.boun.edu.androidproject.message.App;
 
 public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean> {
     private final Activity mActivity;
-    private final Context mContext;
-    private final String mAuth;
+    private final ViewGroup mParent;
     private final String mName;
     private final String mDescription;
     private final View mProgressView;
     private final View mFormView;
 
-    public CreateGroupTask(Activity mActivity, Context mContext, String mAuth, ViewGroup mParent) {
-        super();
+    public CreateGroupTask(Activity mActivity, ViewGroup mParent) {
         this.mActivity = mActivity;
-        this.mContext = mContext;
-        this.mAuth = mAuth;
+        this.mParent = mParent;
         this.mName = ((EditText) mParent.findViewById(R.id.groupName)).getText().toString();
         this.mDescription = ((EditText) mParent.findViewById(R.id.groupDesc)).getText().toString();
         this.mProgressView = mParent.findViewById(R.id.group_progress);
@@ -54,8 +52,8 @@ public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected Boolean doInBackground(Void... params) {
         boolean result = false;
-        HttpURLConnection httpURLConnection = null;
         try {
+            HttpURLConnection httpURLConnection = null;
             // Create a new UrlConnection
             URL postUrl = new URL("http://162.243.215.160:9000/v1/group/create");
             // Open the created connection to server.
@@ -69,7 +67,7 @@ public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean> {
             httpURLConnection.setRequestProperty("Content-Type", "application/json");
             // Create JSON String
             JSONObject jsonObject = new JSONObject();
-            jsonObject.accumulate("authToken", mAuth);
+            jsonObject.accumulate("authToken", App.mAuth);
             jsonObject.accumulate("name", mName);
             jsonObject.accumulate("description", mDescription);
             String json = jsonObject.toString();
@@ -98,10 +96,10 @@ public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean> {
                 // Server is down or webserver is changed.
                 throw new IllegalStateException("Response code is not valid");
             }
+            httpURLConnection.disconnect();
             JSONObject object = new JSONObject(responseJson);
             if (object.getString("status").equals("success")) {
                 result = true;
-                httpURLConnection.disconnect();
                 return result;
             } else {
                 throw new MalformedJsonException("Returned JSON String isn't fit the format.");
@@ -112,8 +110,6 @@ public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean> {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
-        } finally {
-            httpURLConnection.disconnect();
         }
         return result;
     }
@@ -128,7 +124,7 @@ public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean> {
         } else {
             message = "Group creation failed, please check your parameters. " + mName;
         }
-        Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
+        Toast.makeText(mActivity, message, Toast.LENGTH_LONG).show();
         if (result) mActivity.finish();
     }
 

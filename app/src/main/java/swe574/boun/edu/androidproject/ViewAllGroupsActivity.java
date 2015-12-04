@@ -13,7 +13,6 @@ import swe574.boun.edu.androidproject.tasks.FetchAllGroupsTask;
  */
 public class ViewAllGroupsActivity extends AppCompatActivity {
     private User mUser;
-    private ListView mGroups;
     private FetchAllGroupsTask mTask;
 
     @Override
@@ -22,7 +21,6 @@ public class ViewAllGroupsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_all_groups);
         //Initialize parameters
         mUser = getIntent().getParcelableExtra("user");
-        mGroups = (ListView) findViewById(R.id.gridViewAllGroups);
         //Get Data from Database.
         mTask = new FetchAllGroupsTask((ViewGroup) ((ViewGroup) this
                 .findViewById(android.R.id.content)).getChildAt(0), mUser);

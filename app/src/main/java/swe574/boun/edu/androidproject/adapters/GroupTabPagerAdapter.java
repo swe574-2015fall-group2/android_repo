@@ -12,6 +12,7 @@ import swe574.boun.edu.androidproject.fragments.GroupTabFragment;
 import swe574.boun.edu.androidproject.fragments.MeetingTabFragment;
 import swe574.boun.edu.androidproject.fragments.NoteTabFragment;
 import swe574.boun.edu.androidproject.model.Group;
+import swe574.boun.edu.androidproject.model.ModelFragment;
 import swe574.boun.edu.androidproject.model.User;
 
 public class GroupTabPagerAdapter extends FragmentStatePagerAdapter {
@@ -31,21 +32,22 @@ public class GroupTabPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         Fragment fragment = null;
+        Class type;
         switch (position) {
             case 0:
-                fragment = new GroupTabFragment().newInstance(mGroup, mUser);
+                type = GroupTabFragment.class;
                 break;
             case 1:
-                fragment = new MeetingTabFragment().newInstance(mGroup, mUser);
+                type = MeetingTabFragment.class;
                 break;
             case 2:
-                fragment = new DiscussionTabFragment().newInstance(mGroup, mUser);
+                type = DiscussionTabFragment.class;
                 break;
             case 3:
-                fragment = new NoteTabFragment().newInstance(mGroup, mUser);
+                type = NoteTabFragment.class;
                 break;
         }
-        return fragment;
+        return ModelFragment.newInstance(mGroup, mUser, type);
     }
 
     @Override

@@ -16,8 +16,15 @@ public class ModelFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static ModelFragment newInstance(final Group GROUP, final User user) {
-        ModelFragment fragment = new ModelFragment();
+    public static <T extends ModelFragment> T newInstance(final Group GROUP, final User user, Class<T> type) {
+        T fragment = null;
+        try {
+            fragment = type.newInstance();
+        } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
         Bundle args = new Bundle();
         args.putParcelable(GROUP_TOKEN, GROUP);
         args.putParcelable(USER_TOKEN, user);

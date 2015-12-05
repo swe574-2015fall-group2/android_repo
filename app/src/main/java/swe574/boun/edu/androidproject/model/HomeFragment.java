@@ -20,12 +20,19 @@ public class HomeFragment extends Fragment {
      * @param user ID Of the user.
      * @return A new instance of fragment HomeFragment.
      */
-    public static HomeFragment newInstance(User user) {
-        HomeFragment fragment = new HomeFragment();
+    public static <T extends HomeFragment> T newInstance(User user, Class<T> type) {
+        T fragment = null;
+        try {
+            fragment = type.newInstance();
+        } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
         Bundle args = new Bundle();
         args.putParcelable(USER_TOKEN, user);
         fragment.setArguments(args);
-        return fragment;
+        return type.cast(fragment);
     }
 
     @Override

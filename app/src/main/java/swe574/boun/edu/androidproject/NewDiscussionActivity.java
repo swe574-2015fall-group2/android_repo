@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import swe574.boun.edu.androidproject.tasks.CreateDiscussionTask;
+
 public class NewDiscussionActivity extends AppCompatActivity {
     private Button mCreateButton;
     private EditText mDiscussionNameView;

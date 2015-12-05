@@ -83,22 +83,22 @@ public class HomeDrawerActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         HomeFragment fragment = null;
-
+        Class type = null;
         switch (id) {
             case R.id.nav_home:
-                fragment = HomeNavigationFragment.newInstance(mUser);
+                type = HomeNavigationFragment.class;
                 break;
             case R.id.nav_groups:
-                fragment = GroupsNavigationFragment.newInstance(mUser);
+                type = GroupsNavigationFragment.class;
                 break;
             case R.id.nav_profile:
-                fragment = ProfileNavigationFragment.newInstance(mUser);
+                type = ProfileNavigationFragment.class;
                 break;
             case R.id.nav_messages:
-                fragment = MessageNavigationFragment.newInstance(mUser);
+                type = MessageNavigationFragment.class;
                 break;
         }
-
+        fragment = HomeFragment.newInstance(mUser, type);
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack("fragment" + code++).commit();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -52,11 +52,7 @@
         <activity
             android:name=".NewDiscussionActivity"
             android:label="New Discussion" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

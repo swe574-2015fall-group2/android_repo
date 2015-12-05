@@ -1,5 +1,5 @@
  package swe574.boun.edu.androidproject.tasks;
-/*
+
 import android.os.AsyncTask;
 import android.util.MalformedJsonException;
 import android.view.View;
@@ -46,21 +46,21 @@ public class CreateMeetingTask extends AsyncTask<Void, Void, Boolean> {
     public CreateMeetingTask(String mAuth, ViewGroup mParent) {
         super();
         this.mAuth = mAuth;
-        this.mMeetingDateTime = (Date) mParent.findViewById(R.id.meetingDate);
-        this.mMeetingAgendaSet = ((EditText) mParent.findViewById(R.id.meetingAgendaSet)).getText().toString();
+      //  this.mMeetingDateTime = (Date) mParent.findViewById(R.id.meetingDate);
+        //this.mMeetingAgendaSet = ((EditText) mParent.findViewById(R.id.meetingAgendaSet)).getText().toString();
         //this.mMeetingToDoSet = ((EditText) mParent.findViewById(R.id.meetingToDoSet)).getText().toString();
         //this.mMeetingEstimatedDuration = ((EditText) mParent.findViewById(R.id.meetingEstimatedDuration)).getText().toString();
         //this.mMeetingActualDuration = ((EditText) mParent.findViewById(R.id.meetingActualDuration)).getText().toString();
-        this.mMeetingLocation = ((EditText) mParent.findViewById(R.id.meetingLocation)).getText().toString();
-        this.mMeetingDescription = ((EditText) mParent.findViewById(R.id.meetingDescription)).getText().toString();
-        this.mMeetingName = ((EditText) mParent.findViewById(R.id.meetingName)).getText().toString();
-        this.mMeetingTimeZone = ((EditText) mParent.findViewById(R.id.meetingTimeZone)).getText().toString();
-        this.mMeetingStartHour = ((EditText) mParent.findViewById(R.id.meetingStartHour)).getText().toString();
-        this.mMeetingEndHour = ((EditText) mParent.findViewById(R.id.meetingEndHour)).getText().toString();
+        //this.mMeetingLocation = ((EditText) mParent.findViewById(R.id.meetingLocation)).getText().toString();
+        //this.mMeetingDescription = ((EditText) mParent.findViewById(R.id.meetingDescription)).getText().toString();
+        //this.mMeetingName = ((EditText) mParent.findViewById(R.id.meetingName)).getText().toString();
+        //this.mMeetingTimeZone = ((EditText) mParent.findViewById(R.id.meetingTimeZone)).getText().toString();
+        //this.mMeetingStartHour = ((EditText) mParent.findViewById(R.id.meetingStartHour)).getText().toString();
+        //this.mMeetingEndHour = ((EditText) mParent.findViewById(R.id.meetingEndHour)).getText().toString();
         //this.mMeetingStatus = ((EditText) mParent.findViewById(R.id.meetingStatus)).getText().toString();
-        this.mMeetingType = ((EditText) mParent.findViewById(R.id.meetingType)).getText().toString();
-        this.mMeetingInvitedUserSet = ((EditText) mParent.findViewById(R.id.meetingInvitedUserSet)).getText().toString();
-        this.mMeetingGroupId = ((EditText) mParent.findViewById(R.id.meetingGroupId)).getText().toString();
+        //this.mMeetingType = ((EditText) mParent.findViewById(R.id.meetingType)).getText().toString();
+        //this.mMeetingInvitedUserSet = ((EditText) mParent.findViewById(R.id.meetingInvitedUserSet)).getText().toString();
+        //this.mMeetingGroupId = ((EditText) mParent.findViewById(R.id.meetingGroupId)).getText().toString();
         //this.mMeetingAttendedUserSet = ((EditText) mParent.findViewById(R.id.meetingAttendedUserSet)).getText().toString();
 
         this.mProgressView = mParent.findViewById(R.id.meeting_progress);
@@ -73,10 +73,16 @@ public class CreateMeetingTask extends AsyncTask<Void, Void, Boolean> {
         mFormView.setVisibility(View.GONE);
     }
 
+
     @Override
     protected Boolean doInBackground(Void... params) {
+
+
+
         boolean result = false;
         HttpURLConnection httpURLConnection = null;
+
+        /*
         try {
             // Create a new UrlConnection
             URL postUrl = new URL("http://162.243.215.160:9000/v1/meeting/create");
@@ -149,8 +155,13 @@ public class CreateMeetingTask extends AsyncTask<Void, Void, Boolean> {
         } finally {
             httpURLConnection.disconnect();
         }
+
+        */
         return result;
+
+
     }
+
 
     @Override
     protected void onPostExecute(Boolean result) {
@@ -164,7 +175,7 @@ public class CreateMeetingTask extends AsyncTask<Void, Void, Boolean> {
          /*
         } else {
             message = "Meeting creation failed, please check your parameters. " /*+ mMeetingName*/;
- /*      }
+      }
     }
 
     @Override
@@ -174,5 +185,5 @@ public class CreateMeetingTask extends AsyncTask<Void, Void, Boolean> {
     }
 
 }
-*/
+
 

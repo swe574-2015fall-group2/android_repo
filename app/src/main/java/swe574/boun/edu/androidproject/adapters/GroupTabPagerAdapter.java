@@ -32,7 +32,7 @@ public class GroupTabPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         Fragment fragment = null;
-        Class type;
+        Class type = null;
         switch (position) {
             case 0:
                 type = GroupTabFragment.class;

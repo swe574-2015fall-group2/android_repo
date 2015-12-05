@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.MalformedJsonException;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,27 +23,26 @@ import swe574.boun.edu.androidproject.R;
 
 public class CreateDiscussionTask extends AsyncTask<Void, Void, Boolean> {
     private final String mAuth;
-    //private final View mProgressView;
-    //private final View mFormView;
-    private String mGroupName;
-    private String mGroupDescription;
-
+    private final View mProgressView;
+    private final View mFormView;
+    private final String mDiscussionName;
+    private final String mDiscussionDescription;
+    private final String mDiscussionTags;
 
     public CreateDiscussionTask(String mAuth, ViewGroup mParent) {
         super();
         this.mAuth = mAuth;
-        /*this.mDiscussionName = ((EditText) mParent.findViewById(R.id.discussionName)).getText().toString();
-        this.mDiscussionDescription = ((EditText) mParent.findViewById(R.id.discussionDescription)).getText().toString();
-        this.mDiscussionGroupId = ((EditText) mParent.findViewById(R.id.discussionGroupId)).getText().toString();
+        this.mDiscussionName = ((EditText) mParent.findViewById(R.id.discussionName)).getText().toString();
+        this.mDiscussionDescription = ((EditText) mParent.findViewById(R.id.discussionDesc)).getText().toString();
+        this.mDiscussionTags = ((EditText) mParent.findViewById(R.id.discussionTags)).getText().toString();
         this.mProgressView = mParent.findViewById(R.id.discussion_progress);
         this.mFormView = mParent.findViewById(R.id.discussion_form);
-        */
     }
 
     @Override
     protected void onPreExecute() {
-        //mProgressView.setVisibility(View.VISIBLE);
-        //mFormView.setVisibility(View.GONE);
+        mProgressView.setVisibility(View.VISIBLE);
+        mFormView.setVisibility(View.GONE);
     }
 
     @Override
@@ -64,9 +64,9 @@ public class CreateDiscussionTask extends AsyncTask<Void, Void, Boolean> {
             // Create JSON String
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("authToken", mAuth);
-           /* jsonObject.accumulate("groupId", mDiscussionGroupId);
             jsonObject.accumulate("name", mDiscussionName);
-            jsonObject.accumulate("description", mDiscussionDescription);*/
+            jsonObject.accumulate("description", mDiscussionDescription);
+            jsonObject.accumulate("tags", mDiscussionTags);
             String json = jsonObject.toString();
             // Create request output stream.
             OutputStream outputStream = httpURLConnection.getOutputStream();
@@ -115,8 +115,8 @@ public class CreateDiscussionTask extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean result) {
-        //mProgressView.setVisibility(View.GONE);
-        //mFormView.setVisibility(View.VISIBLE);
+        mProgressView.setVisibility(View.GONE);
+        mFormView.setVisibility(View.VISIBLE);
         String message;
         if (result) {
             message = "You have successfully created discussion " /*+ mMeetingName*/;
@@ -127,8 +127,8 @@ public class CreateDiscussionTask extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected void onCancelled() {
-        //mProgressView.setVisibility(View.GONE);
-        //mFormView.setVisibility(View.VISIBLE);
+        mProgressView.setVisibility(View.GONE);
+        mFormView.setVisibility(View.VISIBLE);
     }
 
 }

@@ -17,7 +17,6 @@ public class NewDiscussionActivity extends AppCompatActivity {
     private EditText mDiscussionNameView;
     private EditText mDiscussionDescriptionView;
     private EditText mDiscussionTagsView;
-    private CreateDiscussionTask mTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +38,7 @@ public class NewDiscussionActivity extends AppCompatActivity {
     }
 
     private void attemptCreate() {
-        if (mTask != null) {
-            return;
-        }
+
 
         View view = null;
         String name, description, tags;

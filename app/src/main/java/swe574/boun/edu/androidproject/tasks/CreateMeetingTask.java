@@ -1,5 +1,5 @@
-package swe574.boun.edu.androidproject.tasks;
-
+ package swe574.boun.edu.androidproject.tasks;
+/*
 import android.os.AsyncTask;
 import android.util.MalformedJsonException;
 import android.view.View;
@@ -46,11 +46,10 @@ public class CreateMeetingTask extends AsyncTask<Void, Void, Boolean> {
     public CreateMeetingTask(String mAuth, ViewGroup mParent) {
         super();
         this.mAuth = mAuth;
-        //this.mMeetingId = ((EditText) mParent.findViewById(R.id.meetingId)).getText().toString();
         this.mMeetingDateTime = (Date) mParent.findViewById(R.id.meetingDate);
         this.mMeetingAgendaSet = ((EditText) mParent.findViewById(R.id.meetingAgendaSet)).getText().toString();
         //this.mMeetingToDoSet = ((EditText) mParent.findViewById(R.id.meetingToDoSet)).getText().toString();
-        this.mMeetingEstimatedDuration = ((EditText) mParent.findViewById(R.id.meetingEstimatedDuration)).getText().toString();
+        //this.mMeetingEstimatedDuration = ((EditText) mParent.findViewById(R.id.meetingEstimatedDuration)).getText().toString();
         //this.mMeetingActualDuration = ((EditText) mParent.findViewById(R.id.meetingActualDuration)).getText().toString();
         this.mMeetingLocation = ((EditText) mParent.findViewById(R.id.meetingLocation)).getText().toString();
         this.mMeetingDescription = ((EditText) mParent.findViewById(R.id.meetingDescription)).getText().toString();
@@ -95,7 +94,7 @@ public class CreateMeetingTask extends AsyncTask<Void, Void, Boolean> {
             jsonObject.accumulate("authToken", mAuth);
             jsonObject.accumulate("datetime", mMeetingDateTime);
             jsonObject.accumulate("agendaSet", mMeetingAgendaSet);
-            jsonObject.accumulate("estimatedDuration", mMeetingEstimatedDuration);
+          //  jsonObject.accumulate("estimatedDuration", mMeetingEstimatedDuration);
             jsonObject.accumulate("location", mMeetingLocation);
             jsonObject.accumulate("description", mMeetingDescription);
             jsonObject.accumulate("type", mMeetingType);
@@ -159,10 +158,13 @@ public class CreateMeetingTask extends AsyncTask<Void, Void, Boolean> {
         mFormView.setVisibility(View.VISIBLE);
         String message;
         if (result) {
-            message = "You have successfully created meeting " /*+ mMeetingName*/;
+            message = "You have successfully created meeting. " /*+ mMeetingName*/;
+
+
+         /*
         } else {
             message = "Meeting creation failed, please check your parameters. " /*+ mMeetingName*/;
-        }
+ /*      }
     }
 
     @Override
@@ -172,3 +174,5 @@ public class CreateMeetingTask extends AsyncTask<Void, Void, Boolean> {
     }
 
 }
+*/
+

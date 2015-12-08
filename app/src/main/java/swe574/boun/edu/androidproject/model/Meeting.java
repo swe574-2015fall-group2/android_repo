@@ -72,44 +72,86 @@ public final class Meeting implements Parcelable {
 
     public static Meeting createFromJSON(JSONObject o) throws JSONException {
         Meeting meeting = null;
+        if(!o.has("id"))
+            throw new IllegalArgumentException("Meeting object is invalidated.");
         String id = o.getString("id");
-        Date date = (Date) o.get("datetime");
+        Date date = null;
+
+        if(o.has("datetime")){
+            date = (Date) o.get("datetime");
+        }
+
         List<String> agenda = null;
-        JSONArray agendaset = o.getJSONArray("agendaSet");
-        if (agendaset != null) {
-            agenda = new ArrayList<>();
-            for (int i = 0; i < agendaset.length(); i++) {
-                agenda.add(agendaset.get(i).toString());
+        if(o.has("agendaSet")){
+            JSONArray agendaset = o.getJSONArray("agendaSet");
+            if (agendaset != null) {
+                agenda = new ArrayList<>();
+                for (int i = 0; i < agendaset.length(); i++) {
+                    agenda.add(agendaset.get(i).toString());
+                }
             }
         }
+
         List<String> todo = null;
-        JSONArray todoset = o.getJSONArray("todoSet");
-        if (todoset != null) {
-            todo = new ArrayList<>();
-            for (int i = 0; i < todoset.length(); i++) {
-                todo.add(todoset.get(i).toString());
+        if(o.has("todoSet")){
+            JSONArray todoset = o.getJSONArray("todoSet");
+            if (todoset != null) {
+                todo = new ArrayList<>();
+                for (int i = 0; i < todoset.length(); i++) {
+                    todo.add(todoset.get(i).toString());
+                }
             }
         }
-        long esti = o.getInt("estimatedDuration");
-        long act = o.getInt("actualDuration");
-        String loc = o.getString("location");
-        String desc = o.getString("description");
-        String status = o.getString("status");
-        String type = o.getString("type");
+
+        long esti = 0;
+        if(o.has("estimatedDuration")){
+            esti = o.getInt("estimatedDuration");
+        }
+
+        long act = 0;
+        if(o.has("actualDuration")){
+            act = o.getInt("actualDuration");
+        }
+
+        String loc = null;
+        if(o.has("location")){
+            loc = o.getString("location");
+        }
+
+        String desc = null;
+        if(o.has("description")){
+            desc = o.getString("description");
+        }
+
+        String status = null;
+        if(o.has("status")){
+            status = o.getString("status");
+        }
+
+        String type = null;
+        if(o.has("type")){
+            type = o.getString("type");
+        }
+
         List<User> invited = null;
+        if(o.has("invitedUserSet")){
         JSONArray inviset = o.getJSONArray("invitedUserSet");
         if (inviset != null) {
             invited = new ArrayList<>();
             for (int i = 0; i < inviset.length(); i++) {
                 // invited.add(((JSONObject) inviset.get(i)).toString());
+                }
             }
         }
+
         List<User> attended = null;
-        JSONArray attset = o.getJSONArray("attandedUserSet");
-        if (attset != null) {
-            attended = new ArrayList<>();
-            for (int i = 0; i < attset.length(); i++) {
-                // attended.add(((JSONObject) attset.get(i)).toString());
+        if(o.has("attandedUserSet")) {
+            JSONArray attset = o.getJSONArray("attandedUserSet");
+            if (attset != null) {
+                attended = new ArrayList<>();
+                for (int i = 0; i < attset.length(); i++) {
+                    // attended.add(((JSONObject) attset.get(i)).toString());
+                }
             }
         }
         return new Meeting(id, date, agenda, todo, esti, act, loc, desc, status, type, invited, attended);

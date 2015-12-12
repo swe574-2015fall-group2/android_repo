@@ -126,7 +126,7 @@ public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean> {
         if (result) {
             message = "You have successfully created group " + mName;
         } else {
-            message = "";
+            message = mErrorMessage;
         }
         Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
         if (result){

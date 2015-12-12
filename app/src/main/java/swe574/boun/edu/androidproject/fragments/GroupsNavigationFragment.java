@@ -77,7 +77,7 @@ public class GroupsNavigationFragment extends HomeFragment {
                 public boolean onTouch(View v, MotionEvent event) {
                     if(event.getAction() == MotionEvent.ACTION_DOWN){
                         Intent i = new Intent(getContext(), NewGroupActivity.class);
-                        getActivity().startActivityForResult(i, HomeDrawerActivity.NEW_GROUP);
+                        startActivityForResult(i, HomeDrawerActivity.NEW_GROUP);
                     }
                     return true;
                 }
@@ -95,7 +95,7 @@ public class GroupsNavigationFragment extends HomeFragment {
                 public boolean onTouch(View v, MotionEvent event) {
                     if(event.getAction() == MotionEvent.ACTION_DOWN){
                         Intent i = new Intent(getContext(), NewGroupActivity.class);
-                        getActivity().startActivityForResult(i, HomeDrawerActivity.NEW_GROUP);
+                        startActivityForResult(i, HomeDrawerActivity.NEW_GROUP);
                     }
                     return true;
                 }

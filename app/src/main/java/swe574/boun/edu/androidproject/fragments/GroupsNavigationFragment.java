@@ -1,5 +1,6 @@
 package swe574.boun.edu.androidproject.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import swe574.boun.edu.androidproject.HomeDrawerActivity;
 import swe574.boun.edu.androidproject.NewGroupActivity;
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.ViewAllGroupsActivity;
@@ -76,9 +78,17 @@ public class GroupsNavigationFragment extends HomeFragment {
         int id = item.getItemId();
         if (id == ADD_GROUP_ID) {
             Intent intent = new Intent(getActivity(), NewGroupActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, HomeDrawerActivity.NEW_GROUP);
         }
         return true;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == HomeDrawerActivity.NEW_GROUP && resultCode == Activity.RESULT_OK){
+            mMyGroupsTask = new FetchMyGroupsTask((ViewGroup) getView(), mUser);
+            mMyGroupsTask.execute();
+        }
     }
 
     @Override

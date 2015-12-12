@@ -108,10 +108,4 @@ public class HomeDrawerActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == NEW_GROUP && resultCode == RESULT_OK){
-            recreate();
-        }
-    }
 }

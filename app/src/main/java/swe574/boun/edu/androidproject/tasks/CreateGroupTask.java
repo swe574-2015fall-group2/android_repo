@@ -3,6 +3,7 @@ package swe574.boun.edu.androidproject.tasks;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.MalformedJsonException;
 import android.view.View;
@@ -128,7 +129,10 @@ public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean> {
             message = "Group creation failed, please check your parameters. " + mName;
         }
         Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
-        if (result) mActivity.finish();
+        if (result){
+            mActivity.setResult(Activity.RESULT_OK);
+            mActivity.finish();
+        }
     }
 
     @Override

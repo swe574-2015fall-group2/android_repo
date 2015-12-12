@@ -1,9 +1,12 @@
 package swe574.boun.edu.androidproject.tasks;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.MalformedJsonException;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -21,6 +24,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import swe574.boun.edu.androidproject.NewGroupActivity;
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.adapters.ListGroupAdapter;
 import swe574.boun.edu.androidproject.message.App;
@@ -34,7 +38,7 @@ public class FetchAllGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> 
     private ViewGroup mView;
     private User mUser;
     private View mGroupForm;
-    private ListView mMyGroup;
+    private ListView mAllGroup;
     private View mProgress;
     private Boolean mResult;
 
@@ -48,7 +52,7 @@ public class FetchAllGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> 
      */
     @Override
     protected void onPreExecute() {
-        mMyGroup = (ListView) mView.findViewById(R.id.gridViewAllGroups);
+        mAllGroup = (ListView) mView.findViewById(R.id.gridViewAllGroups);
         mGroupForm = mView.findViewById(R.id.group_form);
         mProgress = mView.findViewById(R.id.group_progress);
         mGroupForm.setVisibility(View.GONE);
@@ -133,7 +137,23 @@ public class FetchAllGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> 
 
         if (mResult) {
             ListGroupAdapter adapter = new ListGroupAdapter(mView.getContext(), result, mUser);
-            mMyGroup.setAdapter(adapter);
+            mAllGroup.setAdapter(adapter);
+        }
+        if (mAllGroup.getAdapter() == null) {
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(mView.getContext(), R.layout.item_nogroups, new String[]{""});
+            mAllGroup.setAdapter(adapter);
+            mAllGroup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    Intent i = new Intent(mView.getContext(), NewGroupActivity.class);
+                    mView.getContext().startActivity(i);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
         }
     }
 

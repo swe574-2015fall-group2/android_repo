@@ -7,6 +7,17 @@ import android.os.Parcelable;
  * Created by Jongaros on 12/12/2015.
  */
 public final class UserRole implements Parcelable {
+    public static final Creator<UserRole> CREATOR = new Creator<UserRole>() {
+        @Override
+        public UserRole createFromParcel(Parcel in) {
+            return new UserRole(in);
+        }
+
+        @Override
+        public UserRole[] newArray(int size) {
+            return new UserRole[size];
+        }
+    };
     private final String mGroupID;
     private final Role mRole;
 
@@ -19,18 +30,6 @@ public final class UserRole implements Parcelable {
         mGroupID = in.readString();
         mRole = in.readParcelable(Role.class.getClassLoader());
     }
-
-    public static final Creator<UserRole> CREATOR = new Creator<UserRole>() {
-        @Override
-        public UserRole createFromParcel(Parcel in) {
-            return new UserRole(in);
-        }
-
-        @Override
-        public UserRole[] newArray(int size) {
-            return new UserRole[size];
-        }
-    };
 
     public String getmGroupID() {
         return mGroupID;

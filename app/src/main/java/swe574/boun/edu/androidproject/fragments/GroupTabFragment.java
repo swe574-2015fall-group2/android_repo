@@ -1,10 +1,8 @@
 package swe574.boun.edu.androidproject.fragments;
 
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -14,7 +12,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import swe574.boun.edu.androidproject.LoginActivity;
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.model.ModelFragment;
 import swe574.boun.edu.androidproject.tasks.GetGroupCalendarTask;

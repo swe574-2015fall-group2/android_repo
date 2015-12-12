@@ -1,12 +1,8 @@
 package swe574.boun.edu.androidproject.tasks;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -24,8 +20,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-import swe574.boun.edu.androidproject.HomeDrawerActivity;
-import swe574.boun.edu.androidproject.NewGroupActivity;
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.adapters.ListGroupAdapter;
 import swe574.boun.edu.androidproject.message.App;
@@ -35,7 +29,7 @@ import swe574.boun.edu.androidproject.model.User;
 /**
  * Created by Jongaros on 12/12/2015.
  */
-public class FetchRecommendedGroupsTask extends AsyncTask <Void, Void, ArrayList<Group>>{
+public class FetchRecommendedGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
     private ViewGroup mView;
     private User mUser;
     private View mGroupForm;
@@ -131,7 +125,7 @@ public class FetchRecommendedGroupsTask extends AsyncTask <Void, Void, ArrayList
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
-        } catch (IllegalStateException e){
+        } catch (IllegalStateException e) {
             e.printStackTrace();
         }
         return null;

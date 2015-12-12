@@ -48,7 +48,9 @@ public class HomeDrawerActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeNavigationFragment()).commit();
         }
 
-        mUser = getIntent().getParcelableExtra("user");
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        mUser = extras.getParcelable("user");
     }
 
     @Override

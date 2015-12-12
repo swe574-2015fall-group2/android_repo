@@ -3,8 +3,6 @@ package swe574.boun.edu.androidproject.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Date;
 
 /**
@@ -27,11 +25,10 @@ public final class UserDetails implements Parcelable {
     private final String mUniversity;
     private final String mProgramme;
     private final String mInterests;
-    private final URL mLinkedin;
-    private final URL mAcademia;
+    private final String mLinkedin;
+    private final String mAcademia;
 
-    public UserDetails(Date mBirthDate, String mProfession, String mUniversity, String mProgramme,
-                       String mInterests, URL mLinkedin, URL mAcademia) {
+    public UserDetails(Date mBirthDate, String mProfession, String mUniversity, String mProgramme, String mInterests, String mLinkedin, String mAcademia) {
         this.mBirthDate = mBirthDate;
         this.mProfession = mProfession;
         this.mUniversity = mUniversity;
@@ -47,8 +44,8 @@ public final class UserDetails implements Parcelable {
         mUniversity = in.readString();
         mProgramme = in.readString();
         mInterests = in.readString();
-        mLinkedin = (URL) in.readSerializable();
-        mAcademia = (URL) in.readSerializable();
+        mLinkedin = in.readString();
+        mAcademia = in.readString();
     }
 
     public Date getmBirthDate() {
@@ -71,28 +68,12 @@ public final class UserDetails implements Parcelable {
         return mInterests;
     }
 
-    public URL getmLinkedin() {
-        URL url = null;
-        if (mLinkedin != null) {
-            try {
-                url = new URL(mLinkedin.getPath());
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-        }
-        return url;
+    public String getmLinkedin() {
+        return mLinkedin;
     }
 
-    public URL getmAcademia() {
-        URL url = null;
-        if (mAcademia != null) {
-            try {
-                url = new URL(mAcademia.getPath());
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-        }
-        return url;
+    public String getmAcademia() {
+        return mAcademia;
     }
 
     @Override
@@ -107,7 +88,7 @@ public final class UserDetails implements Parcelable {
         dest.writeString(mUniversity);
         dest.writeString(mProgramme);
         dest.writeString(mInterests);
-        dest.writeSerializable(mLinkedin);
-        dest.writeSerializable(mAcademia);
+        dest.writeString(mLinkedin);
+        dest.writeString(mAcademia);
     }
 }

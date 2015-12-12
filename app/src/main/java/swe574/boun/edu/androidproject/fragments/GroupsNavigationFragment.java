@@ -70,12 +70,12 @@ public class GroupsNavigationFragment extends HomeFragment {
         mMyGroupsTask = new FetchMyGroupsTask(view, mUser);
         mMyGroupsTask.execute();
         if (mMyGroupListView.getAdapter() == null) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.item_nogroups,R.id.textview, new String[]{"No groups are found. Click here to create a group."});
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.item_nogroups, R.id.textview, new String[]{"No groups are found. Click here to create a group."});
             mMyGroupListView.setAdapter(adapter);
             mMyGroupListView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
                         Intent i = new Intent(getContext(), NewGroupActivity.class);
                         startActivityForResult(i, HomeDrawerActivity.NEW_GROUP);
                     }
@@ -88,12 +88,12 @@ public class GroupsNavigationFragment extends HomeFragment {
         mRecommendTask = new FetchRecommendedGroupsTask(view, mUser);
         mRecommendTask.execute();
         if (mRecommendGroupsListView.getAdapter() == null) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.item_nogroups,R.id.textview, new String[]{"No recommended groups are found. Click here to create a group."});
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.item_nogroups, R.id.textview, new String[]{"No recommended groups are found. Click here to create a group."});
             mRecommendGroupsListView.setAdapter(adapter);
             mRecommendGroupsListView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
                         Intent i = new Intent(getContext(), NewGroupActivity.class);
                         startActivityForResult(i, HomeDrawerActivity.NEW_GROUP);
                     }
@@ -123,7 +123,7 @@ public class GroupsNavigationFragment extends HomeFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == HomeDrawerActivity.NEW_GROUP && resultCode == Activity.RESULT_OK){
+        if (requestCode == HomeDrawerActivity.NEW_GROUP && resultCode == Activity.RESULT_OK) {
             mMyGroupsTask = new FetchMyGroupsTask((ViewGroup) getView(), mUser);
             mMyGroupsTask.execute();
             mRecommendTask = new FetchRecommendedGroupsTask((ViewGroup) getView(), mUser);

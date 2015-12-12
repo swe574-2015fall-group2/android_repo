@@ -81,7 +81,7 @@ public class QuerySelfTask extends AsyncTask<String, Void, User> {
             httpURLConnection.disconnect();
             JSONObject object = new JSONObject(responseJson);
             if (object.getString("status").equals("success")) {
-                return User.createFromJSON(id,object);
+                return User.createFromJSON(id, object);
             } else {
                 throw new MalformedJsonException("Returned JSON String isn't fit the format.");
             }

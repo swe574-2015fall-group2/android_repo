@@ -133,10 +133,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         SharedPreferences preferences = getSharedPreferences("logged", MODE_PRIVATE);
         boolean logged = preferences.getBoolean("logged", false);
-        if(logged){
-            String username = preferences.getString("username" , "");
-            String password = preferences.getString("password" , "");
-            if(!username.equals("") && !password.equals("")){
+        if (logged) {
+            String username = preferences.getString("username", "");
+            String password = preferences.getString("password", "");
+            if (!username.equals("") && !password.equals("")) {
                 mEmailView.setText(username);
                 mPasswordView.setText(password);
                 attemptLogin();

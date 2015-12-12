@@ -1,16 +1,10 @@
 package swe574.boun.edu.androidproject;
 
-import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-
-import swe574.boun.edu.androidproject.tasks.CreateDiscussionTask;
 
 public class NewDiscussionActivity extends AppCompatActivity {
     private Button mCreateButton;

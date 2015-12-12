@@ -10,11 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import swe574.boun.edu.androidproject.model.HomeFragment;
 import swe574.boun.edu.androidproject.model.User;
 import swe574.boun.edu.androidproject.tasks.FetchAllGroupsTask;
-import swe574.boun.edu.androidproject.tasks.FetchMyGroupsTask;
-import swe574.boun.edu.androidproject.tasks.FetchRecommendedGroupsTask;
 
 /**
  * Created by Jongaros on 11/25/2015.
@@ -55,7 +52,7 @@ public class ViewAllGroupsActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == HomeDrawerActivity.NEW_GROUP && resultCode == Activity.RESULT_OK){
+        if (requestCode == HomeDrawerActivity.NEW_GROUP && resultCode == Activity.RESULT_OK) {
             mTask = new FetchAllGroupsTask((ViewGroup) findViewById(android.R.id.content), mUser);
             mTask.execute();
         }

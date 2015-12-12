@@ -3,9 +3,6 @@ package swe574.boun.edu.androidproject.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 public final class Group implements Parcelable {
@@ -22,15 +19,15 @@ public final class Group implements Parcelable {
             return new Group[size];
         }
     };
-    private final URL mPicture;
+    private final Image mImage;
     private final String mName;
     private final String mDescription;
     private final String mID;
     private final List<String> mTags;
     private final boolean mJoined;
 
-    public Group(URL mPicture, String mName, String mDescription, String mID, List<String> mTags, boolean mJoined) {
-        this.mPicture = mPicture;
+    public Group(Image mImage, String mName, String mDescription, String mID, List<String> mTags, boolean mJoined) {
+        this.mImage = mImage;
         this.mName = mName;
         this.mDescription = mDescription;
         this.mID = mID;
@@ -39,7 +36,7 @@ public final class Group implements Parcelable {
     }
 
     protected Group(Parcel in) {
-        mPicture = (URL) in.readSerializable();
+        mImage = in.readParcelable(Image.class.getClassLoader());
         mName = in.readString();
         mDescription = in.readString();
         mID = in.readString();
@@ -47,15 +44,8 @@ public final class Group implements Parcelable {
         mJoined = in.readByte() != 0;
     }
 
-    public URL getmPicture() {
-        URL mutable = null;
-        try {
-            if (mPicture != null)
-                mutable = new URL(mPicture.getPath());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        return mutable;
+    public Image getmImage() {
+        return mImage;
     }
 
     public String getmName() {
@@ -67,8 +57,7 @@ public final class Group implements Parcelable {
     }
 
     public List<String> getmTags() {
-        ArrayList<String> mutable = new ArrayList<>(mTags);
-        return new ArrayList<>(mutable);
+        return mTags;
     }
 
     public String getmID() {
@@ -86,11 +75,11 @@ public final class Group implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeSerializable(mPicture);
+        dest.writeParcelable(mImage, flags);
         dest.writeString(mName);
         dest.writeString(mDescription);
         dest.writeString(mID);
-        dest.writeList(mTags);
+        dest.writeStringList(mTags);
         dest.writeByte((byte) (mJoined ? 1 : 0));
     }
 }

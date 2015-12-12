@@ -5,7 +5,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +16,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 
 import swe574.boun.edu.androidproject.GroupTabbedActivity;
@@ -71,15 +70,11 @@ public class ListGroupAdapter extends BaseAdapter {
             mDescription.setText(description);
         }
 
-        URL url = g.getmPicture();
-        if (url != null) {
-            try {
-                InputStream stream = (InputStream) url.getContent();
-                Drawable drawable = Drawable.createFromStream(stream, "not 9patch");
-                mImage.setBackground(drawable);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        String picture = g.getmImage().getmImage();
+        if (picture != null) {
+            byte[] decodedString = Base64.decode(picture, Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            mImage.setImageBitmap(decodedByte);
         }
 
         view.setOnClickListener(new View.OnClickListener() {

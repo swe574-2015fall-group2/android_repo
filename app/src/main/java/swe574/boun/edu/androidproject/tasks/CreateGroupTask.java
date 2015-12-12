@@ -3,9 +3,7 @@ package swe574.boun.edu.androidproject.tasks;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.MalformedJsonException;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -104,8 +102,7 @@ public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean> {
             if (object.getString("status").equals("success")) {
                 result = true;
                 return result;
-            }
-            else {
+            } else {
                 mErrorMessage = object.getString("consumerMessage");
             }
         } catch (UnsupportedEncodingException e) {
@@ -129,7 +126,7 @@ public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean> {
             message = mErrorMessage;
         }
         Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
-        if (result){
+        if (result) {
             mActivity.setResult(Activity.RESULT_OK);
             mActivity.finish();
         }

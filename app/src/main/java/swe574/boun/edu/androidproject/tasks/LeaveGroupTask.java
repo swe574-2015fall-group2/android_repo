@@ -1,7 +1,6 @@
 package swe574.boun.edu.androidproject.tasks;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.MalformedJsonException;
@@ -23,7 +22,6 @@ import java.net.URL;
 import swe574.boun.edu.androidproject.LoginActivity;
 import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.Group;
-import swe574.boun.edu.androidproject.model.User;
 
 /**
  * Created by Jongaros on 12/4/2015.
@@ -87,7 +85,7 @@ public class LeaveGroupTask extends AsyncTask<Void, Void, Boolean> {
             if (object.getString("status").equals("success")) {
                 return true;
             } else {
-                    throw new MalformedJsonException("Returned JSON String isn't fit the format.");
+                throw new MalformedJsonException("Returned JSON String isn't fit the format.");
             }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -112,7 +110,7 @@ public class LeaveGroupTask extends AsyncTask<Void, Void, Boolean> {
         Intent intent = new Intent(mActivity, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        if(bool)
-        mActivity.startActivity(intent);
+        if (bool)
+            mActivity.startActivity(intent);
     }
 }

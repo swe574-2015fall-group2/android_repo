@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import swe574.boun.edu.androidproject.GroupTabbedActivity;
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.model.Group;
+import swe574.boun.edu.androidproject.model.Image;
 import swe574.boun.edu.androidproject.model.User;
 import swe574.boun.edu.androidproject.tasks.ApplyGroupTask;
 
@@ -69,12 +70,14 @@ public class ListGroupAdapter extends BaseAdapter {
         if (mDescription != null) {
             mDescription.setText(description);
         }
-
-        String picture = g.getmImage().getmImage();
-        if (picture != null) {
-            byte[] decodedString = Base64.decode(picture, Base64.DEFAULT);
-            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            mImage.setImageBitmap(decodedByte);
+        Image image = g.getmImage();
+        if(image != null) {
+            String picture = g.getmImage().getmImage();
+            if (picture != null) {
+                byte[] decodedString = Base64.decode(picture, Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                mImage.setImageBitmap(decodedByte);
+            }
         }
 
         view.setOnClickListener(new View.OnClickListener() {

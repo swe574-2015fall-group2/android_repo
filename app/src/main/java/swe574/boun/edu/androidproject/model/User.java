@@ -3,13 +3,52 @@ package swe574.boun.edu.androidproject.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by Jongaros on 11/29/2015.
  */
 public final class User implements Parcelable {
+    private final String mID;
+    private final String mUsername;
+    private final String mName;
+    private final String mSurname;
+    private final Image mImage;
+    private final List<UserRole> mRoles;
+    private final UserDetails mDetails;
+    private final String mStatus;
+
+    public User(String mID, String mUsername, String mName, String mSurname, Image mImage,
+                List<UserRole> mRoles, UserDetails mDetails, String mStatus) {
+        this.mID = mID;
+        this.mUsername = mUsername;
+        this.mName = mName;
+        this.mSurname = mSurname;
+        this.mImage = mImage;
+        this.mRoles = mRoles;
+        this.mDetails = mDetails;
+        this.mStatus = mStatus;
+    }
+
+    protected User(Parcel in) {
+        mID = in.readString();
+        mUsername = in.readString();
+        mName = in.readString();
+        mSurname = in.readString();
+        mImage = in.readParcelable(Image.class.getClassLoader());
+        mRoles = in.createTypedArrayList(UserRole.CREATOR);
+        mDetails = in.readParcelable(UserDetails.class.getClassLoader());
+        mStatus = in.readString();
+    }
+
     public static final Creator<User> CREATOR = new Creator<User>() {
         @Override
         public User createFromParcel(Parcel in) {
@@ -21,43 +60,6 @@ public final class User implements Parcelable {
             return new User[size];
         }
     };
-    private final String mID;
-    private final String mUsername;
-    private final String mName;
-    private final String mSurname;
-    private final String mPassword;
-    private final URL mPicture;
-    private final List<Role> mRoles;
-    private final UserDetails mDetails;
-    private final List<User> mBlockedUsers;
-    private final String mStatus;
-
-    public User(String mID, String mUsername, String mName, String mSurname, String mPassword, URL mPicture,
-                List<Role> mRoles, UserDetails mDetails, List<User> mBlockedUsers, String mStatus) {
-        this.mID = mID;
-        this.mUsername = mUsername;
-        this.mName = mName;
-        this.mSurname = mSurname;
-        this.mPassword = mPassword;
-        this.mPicture = mPicture;
-        this.mRoles = mRoles;
-        this.mDetails = mDetails;
-        this.mBlockedUsers = mBlockedUsers;
-        this.mStatus = mStatus;
-    }
-
-    protected User(Parcel in) {
-        mID = in.readString();
-        mUsername = in.readString();
-        mName = in.readString();
-        mSurname = in.readString();
-        mPassword = in.readString();
-        mPicture = (URL) in.readSerializable();
-        mRoles = in.createTypedArrayList(Role.CREATOR);
-        mDetails = in.readParcelable(UserDetails.class.getClassLoader());
-        mBlockedUsers = in.createTypedArrayList(User.CREATOR);
-        mStatus = in.readString();
-    }
 
     public String getmID() {
         return mID;
@@ -75,24 +77,12 @@ public final class User implements Parcelable {
         return mSurname;
     }
 
-    public String getmPassword() {
-        return mPassword;
-    }
-
-    public URL getmPicture() {
-        return mPicture;
-    }
-
-    public List<Role> getmRoles() {
-        return mRoles;
+    public Image getmImage() {
+        return mImage;
     }
 
     public UserDetails getmDetails() {
         return mDetails;
-    }
-
-    public List<User> getmBlockedUsers() {
-        return mBlockedUsers;
     }
 
     public String getmStatus() {
@@ -110,11 +100,135 @@ public final class User implements Parcelable {
         dest.writeString(mUsername);
         dest.writeString(mName);
         dest.writeString(mSurname);
-        dest.writeString(mPassword);
-        dest.writeSerializable(mPicture);
-        dest.writeList(mRoles);
+        dest.writeParcelable(mImage, flags);
+        dest.writeTypedList(mRoles);
         dest.writeParcelable(mDetails, flags);
-        dest.writeList(mBlockedUsers);
         dest.writeString(mStatus);
+    }
+
+    public static User createFromJSON(String mID, JSONObject object) throws JSONException, MalformedURLException {
+        if(!object.has("result")){
+            throw new IllegalArgumentException("The JSON is invalid.");
+        }
+        JSONObject result = (JSONObject) object.get("result");
+
+        String username = null;
+        if(result.has("username")){
+            username = result.getString("username");
+        }
+
+        String firstname = null;
+        if(result.has("firstname")){
+            firstname = result.getString("firstname");
+        }
+
+        String lastname = null;
+        if(result.has("lastname")){
+            lastname = result.getString("lastname");
+        }
+
+        String status = null;
+        if(result.has("status")){
+            status = result.getString("status");
+        }
+
+        UserDetails details = null;
+        if(result.has("userDetail")){
+            JSONObject userDetail = result.getJSONObject("userDetail");
+
+            Date birthDate = null;
+            if(userDetail.has("birthDate")){
+                birthDate = (Date) userDetail.get("birthDate");
+            }
+
+            String profession = null;
+            if(userDetail.has("profession")){
+                profession = userDetail.getString("profession");
+            }
+
+            String university = null;
+            if(userDetail.has("university")){
+                university = userDetail.getString("university");
+            }
+
+            String programme = null;
+            if(userDetail.has("programme")){
+                programme = userDetail.getString("programme");
+            }
+
+            String interestedAreas = null;
+            if(userDetail.has("interestedAreas")){
+                interestedAreas = userDetail.getString("interestedAreas");
+            }
+
+            URL linkedinProfile = null;
+            if(userDetail.has("linkedinProfile")){
+                linkedinProfile = new URL(userDetail.getString("linkedinProfile"));
+            }
+
+            URL academiaProfile = null;
+            if(userDetail.has("academiaProfile")){
+                academiaProfile = new URL(userDetail.getString("academiaProfile"));
+            }
+            details = new UserDetails(birthDate, profession, university, programme, interestedAreas, linkedinProfile, academiaProfile);
+        }
+
+        Image image = null;
+        if(result.has("image")){
+            JSONObject imageObject = result.getJSONObject("image");
+
+            String type = null;
+            if(imageObject.has("type")){
+                type = imageObject.getString("type");
+            }
+
+            String base64Image = null;
+            if(imageObject.has("base64Image")){
+                base64Image = imageObject.getString("base64Image");
+            }
+            image = new Image(type, base64Image);
+        }
+
+        List<UserRole> roles = null;
+        if(result.has("roles")){
+            roles = new ArrayList<>();
+            JSONArray roleArray = result.getJSONArray("roles");
+            for(int i = 0 ; i < roleArray.length() ; i++){
+                JSONObject userRole = roleArray.getJSONObject(i);
+
+                String groupID = null;
+                if(userRole.has("groupId")){
+                    groupID = userRole.getString("groupId");
+                }
+
+                Role role = null;
+                if(userRole.has("groupRoles")){
+                    JSONObject roleObject = userRole.getJSONObject("groupRoles");
+
+                    String roleID = null;
+                    if(roleObject.has("id")){
+                        roleID = roleObject.getString("id");
+                    }
+
+                    String roleName = null;
+                    if(roleObject.has("name")){
+                        roleName = roleObject.getString("name");
+                    }
+
+                    List<String> rolePermissions = null;
+                    if(roleObject.has("permissions")){
+                        rolePermissions = new ArrayList<>();
+                        JSONArray permissionArray = roleObject.getJSONArray("permissions");
+                        for(int j = 0 ; j < permissionArray.length() ; j++){
+                            rolePermissions.add(permissionArray.getString(i));
+                        }
+                    }
+                    role = new Role(roleID, roleName, rolePermissions);
+                }
+                roles.add(new UserRole(groupID, role));
+            }
+        }
+
+        return new User(mID, username, firstname, lastname, image, roles, details, status);
     }
 }

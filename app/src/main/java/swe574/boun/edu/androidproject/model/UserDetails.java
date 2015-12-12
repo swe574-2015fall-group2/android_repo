@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 
 /**
  * Created by Jongaros on 11/29/2015.
@@ -21,17 +22,16 @@ public final class UserDetails implements Parcelable {
             return new UserDetails[size];
         }
     };
-    private final String mBirthDate;
+    private final Date mBirthDate;
     private final String mProfession;
     private final String mUniversity;
     private final String mProgramme;
     private final String mInterests;
     private final URL mLinkedin;
     private final URL mAcademia;
-    private final URL mImage;
 
-    public UserDetails(String mBirthDate, String mProfession, String mUniversity, String mProgramme,
-                       String mInterests, URL mLinkedin, URL mAcademia, URL mImage) {
+    public UserDetails(Date mBirthDate, String mProfession, String mUniversity, String mProgramme,
+                       String mInterests, URL mLinkedin, URL mAcademia) {
         this.mBirthDate = mBirthDate;
         this.mProfession = mProfession;
         this.mUniversity = mUniversity;
@@ -39,21 +39,19 @@ public final class UserDetails implements Parcelable {
         this.mInterests = mInterests;
         this.mLinkedin = mLinkedin;
         this.mAcademia = mAcademia;
-        this.mImage = mImage;
     }
 
     protected UserDetails(Parcel in) {
-        mBirthDate = in.readString();
+        mBirthDate = (Date) in.readSerializable();
         mProfession = in.readString();
         mUniversity = in.readString();
         mProgramme = in.readString();
         mInterests = in.readString();
         mLinkedin = (URL) in.readSerializable();
         mAcademia = (URL) in.readSerializable();
-        mImage = (URL) in.readSerializable();
     }
 
-    public String getmBirthDate() {
+    public Date getmBirthDate() {
         return mBirthDate;
     }
 
@@ -97,18 +95,6 @@ public final class UserDetails implements Parcelable {
         return url;
     }
 
-    public URL getmImage() {
-        URL url = null;
-        if (mImage != null) {
-            try {
-                url = new URL(mImage.getPath());
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-        }
-        return url;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -116,13 +102,12 @@ public final class UserDetails implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mBirthDate);
+        dest.writeSerializable(mBirthDate);
         dest.writeString(mProfession);
         dest.writeString(mUniversity);
         dest.writeString(mProgramme);
         dest.writeString(mInterests);
         dest.writeSerializable(mLinkedin);
         dest.writeSerializable(mAcademia);
-        dest.writeSerializable(mImage);
     }
 }

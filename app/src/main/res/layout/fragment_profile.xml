@@ -27,7 +27,6 @@
         android:layoutMode="opticalBounds"
         android:measureWithLargestChild="true"
         android:orientation="vertical"
-        android:scrollIndicators="none"
         android:shrinkColumns="true"
         android:stretchColumns="true">
 

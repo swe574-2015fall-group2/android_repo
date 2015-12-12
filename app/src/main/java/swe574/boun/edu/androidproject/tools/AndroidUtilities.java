@@ -50,6 +50,7 @@ public class AndroidUtilities {
         }
     }
 
+
     public native static void loadBitmap(String path, Bitmap bitmap, int scale, int width, int height, int stride);
 
 

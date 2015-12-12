@@ -311,6 +311,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         private final String mLastname;
         private final String mEmail;
         private final String mPassword;
+        private String mErrorMessage;
 
         UserRegisterTask(String name, String lastname, String email, String password) {
             mName = name;
@@ -418,6 +419,9 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             try {
                 JSONObject object = new JSONObject(responseJson);
                 boolean success = object.getString("status").equals("success");
+                if(!success){
+                    mErrorMessage = object.getString("consumerMessage");
+                }
                 return success;
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -436,7 +440,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                 setResult(RESULT_OK, resultIntent);
                 finish();
             } else {
-                Toast.makeText(RegisterActivity.this, "One of the fields you entered are invalid.", Toast.LENGTH_LONG);
+                Toast.makeText(RegisterActivity.this, mErrorMessage, Toast.LENGTH_LONG);
             }
         }
 

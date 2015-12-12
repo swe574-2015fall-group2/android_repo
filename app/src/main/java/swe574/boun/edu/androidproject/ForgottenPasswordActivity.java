@@ -374,7 +374,7 @@ public class ForgottenPasswordActivity extends AppCompatActivity implements Load
             }
             try {
                 JSONObject object = new JSONObject(responseJson);
-                boolean success = object.getBoolean("ack");
+                boolean success = object.getString("status").equals("success");
                 return success;
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -12,7 +12,6 @@ import swe574.boun.edu.androidproject.tasks.CreateGroupTask;
 
 public class NewGroupActivity extends AppCompatActivity {
     private Button mCreateButton;
-    private String mAuth;
     private EditText mGroupNameView;
     private EditText mGroupDescriptionView;
     private CreateGroupTask mTask;
@@ -21,7 +20,6 @@ public class NewGroupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_group);
-        mAuth = getIntent().getStringExtra("user");
 
         mGroupNameView = (EditText) findViewById(R.id.groupName);
         mGroupDescriptionView = (EditText) findViewById(R.id.groupDesc);
@@ -53,7 +51,7 @@ public class NewGroupActivity extends AppCompatActivity {
         }
 
         if (!cancel) {
-            mTask = new CreateGroupTask(this, this, mAuth, (ViewGroup) ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0));
+            mTask = new CreateGroupTask(this, this, (ViewGroup) ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0));
             mTask.execute((Void) null);
         } else {
             focus.requestFocus();

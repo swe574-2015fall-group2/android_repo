@@ -1,9 +1,12 @@
 package swe574.boun.edu.androidproject.tasks;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.MalformedJsonException;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -21,6 +24,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import swe574.boun.edu.androidproject.NewGroupActivity;
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.adapters.ListGroupAdapter;
 import swe574.boun.edu.androidproject.message.App;
@@ -31,6 +35,7 @@ import swe574.boun.edu.androidproject.model.User;
  * < Parametre Tipi, Progress Tipi, Return Tipi
  */
 public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
+    private static final int REQUEST_CREATE_GROUP = 1;
     private ViewGroup mView;
     private User mUser;
     private View mGroupForm;
@@ -116,7 +121,8 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
                 }
                 return results;
             } else {
-                throw new MalformedJsonException("Returned JSON String isn't fit the format.");
+                // User is not registered to any groups
+                return null;
             }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -138,6 +144,22 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
         if (mResult) {
             ListGroupAdapter adapter = new ListGroupAdapter(mView.getContext(), result, mUser);
             mMyGroup.setAdapter(adapter);
+        }
+        if (mMyGroup.getAdapter() == null) {
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(mView.getContext(), R.layout.item_nogroups, new String[]{""});
+            mMyGroup.setAdapter(adapter);
+            mMyGroup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    Intent i = new Intent(mView.getContext(), NewGroupActivity.class);
+                    mView.getContext().startActivity(i);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
         }
     }
 

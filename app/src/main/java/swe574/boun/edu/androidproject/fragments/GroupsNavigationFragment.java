@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ListView;
 
 import swe574.boun.edu.androidproject.NewGroupActivity;
 import swe574.boun.edu.androidproject.R;
@@ -28,12 +27,10 @@ import swe574.boun.edu.androidproject.tasks.FetchMyGroupsTask;
  */
 public class GroupsNavigationFragment extends HomeFragment {
     // Fragment parameters.
-    FetchMyGroupsTask mTask;
+    private FetchMyGroupsTask mMyGroupsTask;
     private int ADD_GROUP_ID;
     //UI parameters
     private Button mViewAllGroups;
-    private ListView mMyGroupView;
-    private ListView mRecGroupView;
 
     public GroupsNavigationFragment() {
         // Required empty public constructor
@@ -61,11 +58,9 @@ public class GroupsNavigationFragment extends HomeFragment {
                 startActivity(i);
             }
         });
+        mMyGroupsTask = new FetchMyGroupsTask(view, mUser);
+        mMyGroupsTask.execute();
 
-        mMyGroupView = (ListView) view.findViewById(R.id.gridViewMyGroups);
-        mRecGroupView = (ListView) view.findViewById(R.id.gridViewRecommendedGroups);
-        mTask = new FetchMyGroupsTask(view, mUser);
-        mTask.execute();
         return view;
     }
 
@@ -81,7 +76,6 @@ public class GroupsNavigationFragment extends HomeFragment {
         int id = item.getItemId();
         if (id == ADD_GROUP_ID) {
             Intent intent = new Intent(getActivity(), NewGroupActivity.class);
-            intent.putExtra("user", mUser);
             startActivity(intent);
         }
         return true;

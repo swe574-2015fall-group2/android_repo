@@ -24,21 +24,20 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import swe574.boun.edu.androidproject.R;
+import swe574.boun.edu.androidproject.message.App;
 
 public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean> {
     private final Activity mActivity;
     private final Context mContext;
-    private final String mAuth;
     private final String mName;
     private final String mDescription;
     private final View mProgressView;
     private final View mFormView;
 
-    public CreateGroupTask(Activity mActivity, Context mContext, String mAuth, ViewGroup mParent) {
+    public CreateGroupTask(Activity mActivity, Context mContext, ViewGroup mParent) {
         super();
         this.mActivity = mActivity;
         this.mContext = mContext;
-        this.mAuth = mAuth;
         this.mName = ((EditText) mParent.findViewById(R.id.groupName)).getText().toString();
         this.mDescription = ((EditText) mParent.findViewById(R.id.groupDesc)).getText().toString();
         this.mProgressView = mParent.findViewById(R.id.group_progress);
@@ -69,7 +68,7 @@ public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean> {
             httpURLConnection.setRequestProperty("Content-Type", "application/json");
             // Create JSON String
             JSONObject jsonObject = new JSONObject();
-            jsonObject.accumulate("authToken", mAuth);
+            jsonObject.accumulate("authToken", App.mAuth);
             jsonObject.accumulate("name", mName);
             jsonObject.accumulate("description", mDescription);
             String json = jsonObject.toString();

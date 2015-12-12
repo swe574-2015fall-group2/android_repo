@@ -16,7 +16,7 @@
     <string name="action_forgot_password">Forgotten Password</string>
     <string name="action_send_password">Send Password</string>
     <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_invalid_password">This password is invalid</string>
     <string name="error_invalid_name">This name is invalid</string>
     <string name="error_invalid_lastname">This lastname is invalid</string>
     <string name="error_incorrect_email">This e-mail does not exist in our system</string>

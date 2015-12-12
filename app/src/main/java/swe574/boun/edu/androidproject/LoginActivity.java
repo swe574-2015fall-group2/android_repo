@@ -7,6 +7,7 @@ import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -45,6 +46,8 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.User;
@@ -60,6 +63,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
+
+    /**
+     * Running Activity for result.
+     */
     private static final int REGISTER_REQUEST = 1;
     private static final int FORGOT_REQUEST = 2;
 
@@ -122,6 +129,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        SharedPreferences preferences = getSharedPreferences("logged", MODE_PRIVATE);
+        boolean logged = preferences.getBoolean("logged", false);
+        if(logged){
+            String username = preferences.getString("username" , "");
+            String password = preferences.getString("password" , "");
+            if(!username.equals("") && !password.equals("")){
+                mEmailView.setText(username);
+                mPasswordView.setText(password);
+                attemptLogin();
+            }
+        }
     }
 
     @Override
@@ -203,7 +222,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (TextUtils.isEmpty(password) || !isPasswordValid(password)) {
+        if (TextUtils.isEmpty(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -234,11 +253,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private boolean isEmailValid(String email) {
-        return email.contains("@");
-    }
-
-    private boolean isPasswordValid(String password) {
-        return password.length() > 4;
+        Matcher matcher = Pattern.compile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$", Pattern.CASE_INSENSITIVE).matcher(email);
+        return matcher.find();
     }
 
     /**
@@ -320,6 +336,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView.setAdapter(adapter);
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     private interface ProfileQuery {
         String[] PROJECTION = {
@@ -463,6 +488,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
+                SharedPreferences preferences = getSharedPreferences("logged", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putBoolean("logged", true);
+                editor.putString("username", mEmail);
+                editor.putString("password", mPassword);
+                editor.apply();
                 Intent intent = new Intent(LoginActivity.this, HomeDrawerActivity.class);
                 intent.putExtra("user", mUser);
                 startActivity(intent);
@@ -477,6 +508,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
         }
+
     }
 }
 

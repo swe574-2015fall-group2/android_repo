@@ -44,20 +44,9 @@
  * On an 80x86 machine using small-data memory model, these manage near heap.
  */
 
-EXTERN(void *)
-
-jpeg_get_small JPP((j_common_ptr
-cinfo,
-size_t sizeofobject
-));
-
-EXTERN(void)
-
-jpeg_free_small JPP((j_common_ptr
-cinfo,
-void *object,
-        size_t
-sizeofobject));
+EXTERN(void *) jpeg_get_small JPP((j_common_ptr cinfo, size_t sizeofobject));
+EXTERN(void) jpeg_free_small JPP((j_common_ptr cinfo, void * object,
+				  size_t sizeofobject));
 
 /*
  * These two functions are used to allocate and release large chunks of
@@ -68,22 +57,10 @@ sizeofobject));
  * in case a different allocation strategy is desirable for large chunks.
  */
 
-EXTERN(void FAR
-
-*)
-jpeg_get_large JPP((j_common_ptr
-cinfo,
-size_t sizeofobject
-));
-
-EXTERN(void)
-
-jpeg_free_large JPP((j_common_ptr
-cinfo,
-void FAR
-* object,
-size_t sizeofobject
-));
+EXTERN(void FAR *) jpeg_get_large JPP((j_common_ptr cinfo,
+				       size_t sizeofobject));
+EXTERN(void) jpeg_free_large JPP((j_common_ptr cinfo, void FAR * object,
+				  size_t sizeofobject));
 
 /*
  * The macro MAX_ALLOC_CHUNK designates the maximum number of bytes that may
@@ -97,7 +74,7 @@ size_t sizeofobject
  * size_t and will be a multiple of sizeof(align_type).
  */
 
-#ifndef MAX_ALLOC_CHUNK        /* may be overridden in jconfig.h */
+#ifndef MAX_ALLOC_CHUNK		/* may be overridden in jconfig.h */
 #define MAX_ALLOC_CHUNK  1000000000L
 #endif
 
@@ -123,14 +100,10 @@ size_t sizeofobject
  * Conversely, zero may be returned to always use the minimum amount of memory.
  */
 
-EXTERN(long)
-
-jpeg_mem_available JPP((j_common_ptr
-cinfo,
-long min_bytes_needed,
-long max_bytes_needed,
-long already_allocated
-));
+EXTERN(long) jpeg_mem_available JPP((j_common_ptr cinfo,
+				     long min_bytes_needed,
+				     long max_bytes_needed,
+				     long already_allocated));
 
 
 /*
@@ -140,10 +113,10 @@ long already_allocated
  * are private to the system-dependent backing store routines.
  */
 
-#define TEMP_NAME_LENGTH   64    /* max length of a temporary file's name */
+#define TEMP_NAME_LENGTH   64	/* max length of a temporary file's name */
 
 
-#ifdef USE_MSDOS_MEMMGR        /* DOS-specific junk */
+#ifdef USE_MSDOS_MEMMGR		/* DOS-specific junk */
 
 typedef unsigned short XMSH;	/* type of extended-memory handles */
 typedef unsigned short EMSH;	/* type of expanded-memory handles */
@@ -156,59 +129,46 @@ typedef union {
 
 #endif /* USE_MSDOS_MEMMGR */
 
-#ifdef USE_MAC_MEMMGR        /* Mac-specific junk */
+#ifdef USE_MAC_MEMMGR		/* Mac-specific junk */
 #include <Files.h>
 #endif /* USE_MAC_MEMMGR */
 
 
-typedef struct backing_store_struct *backing_store_ptr;
+typedef struct backing_store_struct * backing_store_ptr;
 
 typedef struct backing_store_struct {
-    /* Methods for reading/writing/closing this backing-store object */
-    JMETHOD(void, read_backing_store,(j_common_ptr cinfo,
-                                      backing_store_ptr info,
-                                      void FAR
+  /* Methods for reading/writing/closing this backing-store object */
+  JMETHOD(void, read_backing_store, (j_common_ptr cinfo,
+				     backing_store_ptr info,
+				     void FAR * buffer_address,
+				     long file_offset, long byte_count));
+  JMETHOD(void, write_backing_store, (j_common_ptr cinfo,
+				      backing_store_ptr info,
+				      void FAR * buffer_address,
+				      long file_offset, long byte_count));
+  JMETHOD(void, close_backing_store, (j_common_ptr cinfo,
+				      backing_store_ptr info));
 
-    * buffer_address,
-    long file_offset,
-    long byte_count
-    ));
-
-    JMETHOD(void, write_backing_store,(j_common_ptr cinfo,
-                                       backing_store_ptr info,
-                                       void FAR
-
-    * buffer_address,
-    long file_offset,
-    long byte_count
-    ));
-
-    JMETHOD(void, close_backing_store,(j_common_ptr cinfo,
-                                       backing_store_ptr info)
-
-    );
-
-    /* Private fields for system-dependent backing-store management */
+  /* Private fields for system-dependent backing-store management */
 #ifdef USE_MSDOS_MEMMGR
-    /* For the MS-DOS manager (jmemdos.c), we need: */
-    handle_union handle;		/* reference to backing-store storage object */
-    char temp_name[TEMP_NAME_LENGTH]; /* name if it's a file */
+  /* For the MS-DOS manager (jmemdos.c), we need: */
+  handle_union handle;		/* reference to backing-store storage object */
+  char temp_name[TEMP_NAME_LENGTH]; /* name if it's a file */
 #else
 #ifdef USE_MAC_MEMMGR
-    /* For the Mac manager (jmemmac.c), we need: */
-    short temp_file;		/* file reference number to temp file */
-    FSSpec tempSpec;		/* the FSSpec for the temp file */
-    char temp_name[TEMP_NAME_LENGTH]; /* name if it's a file */
+  /* For the Mac manager (jmemmac.c), we need: */
+  short temp_file;		/* file reference number to temp file */
+  FSSpec tempSpec;		/* the FSSpec for the temp file */
+  char temp_name[TEMP_NAME_LENGTH]; /* name if it's a file */
 #else
 #ifdef USE_ANDROID_ASHMEM
-    short temp_file;		/* file reference number to temp file */
-    unsigned char* addr;  /* the memory address mapped to ashmem */
-    long size;            /* the requested ashmem size */
+  short temp_file;		/* file reference number to temp file */
+  unsigned char* addr;  /* the memory address mapped to ashmem */
+  long size;            /* the requested ashmem size */
 #else
-    /* For a typical implementation with temp files, we need: */
-    FILE *temp_file;
-    /* stdio reference to temp file */
-    char temp_name[TEMP_NAME_LENGTH]; /* name of temp file */
+  /* For a typical implementation with temp files, we need: */
+  FILE * temp_file;		/* stdio reference to temp file */
+  char temp_name[TEMP_NAME_LENGTH]; /* name of temp file */
 #endif
 #endif
 #endif
@@ -223,13 +183,9 @@ typedef struct backing_store_struct {
  * just take an error exit.)
  */
 
-EXTERN(void)
-
-jpeg_open_backing_store JPP((j_common_ptr
-cinfo,
-backing_store_ptr info,
-long total_bytes_needed
-));
+EXTERN(void) jpeg_open_backing_store JPP((j_common_ptr cinfo,
+					  backing_store_ptr info,
+					  long total_bytes_needed));
 
 
 /*
@@ -244,12 +200,5 @@ long total_bytes_needed
  * all opened backing-store objects have been closed.
  */
 
-EXTERN(long)
-
-jpeg_mem_init JPP((j_common_ptr
-cinfo));
-
-EXTERN(void)
-
-jpeg_mem_term JPP((j_common_ptr
-cinfo));
+EXTERN(long) jpeg_mem_init JPP((j_common_ptr cinfo));
+EXTERN(void) jpeg_mem_term JPP((j_common_ptr cinfo));

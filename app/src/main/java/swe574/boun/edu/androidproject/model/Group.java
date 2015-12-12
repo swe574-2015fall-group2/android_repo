@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class Group implements Parcelable {
+    public static final int MY_GROUPS = 1;
+    public static final int ALL_GROUPS = 2;
     public static final Creator<Group> CREATOR = new Creator<Group>() {
         @Override
         public Group createFromParcel(Parcel in) {

@@ -1,5 +1,6 @@
 package swe574.boun.edu.androidproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -20,6 +21,7 @@ import swe574.boun.edu.androidproject.model.User;
 
 public class HomeDrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    public static final int NEW_GROUP = 1;
     int code = 0;
     private User mUser;
 
@@ -106,4 +108,10 @@ public class HomeDrawerActivity extends AppCompatActivity
         return true;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == NEW_GROUP && resultCode == RESULT_OK){
+            recreate();
+        }
+    }
 }

@@ -1,8 +1,10 @@
 package swe574.boun.edu.androidproject.tasks;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.MalformedJsonException;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -24,6 +26,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import swe574.boun.edu.androidproject.HomeDrawerActivity;
 import swe574.boun.edu.androidproject.NewGroupActivity;
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.adapters.ListGroupAdapter;
@@ -54,6 +57,7 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
     @Override
     protected void onPreExecute() {
         mMyGroup = (ListView) mView.findViewById(R.id.gridViewMyGroups);
+        mMyGroup.setAdapter(null);
         mGroupForm = mView.findViewById(R.id.group_form);
         mProgress = mView.findViewById(R.id.group_progress);
         mGroupForm.setVisibility(View.GONE);
@@ -111,6 +115,7 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
             if (object.getString("status").equals("success")) {
                 ArrayList<Group> results = new ArrayList<>();
                 mResult = true;
+                object = object.getJSONObject("result");
 
                 if (object.has("groupList")) {
                     JSONArray groupList = object.getJSONArray("groupList");
@@ -146,18 +151,17 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
             mMyGroup.setAdapter(adapter);
         }
         if (mMyGroup.getAdapter() == null) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(mView.getContext(), R.layout.item_nogroups, new String[]{""});
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(mView.getContext(), R.layout.item_nogroups,R.id.textview, new String[]{"No groups are found. Click here to create a group."});
             mMyGroup.setAdapter(adapter);
-            mMyGroup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            mMyGroup.setOnTouchListener(new View.OnTouchListener() {
                 @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    Intent i = new Intent(mView.getContext(), NewGroupActivity.class);
-                    mView.getContext().startActivity(i);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
+                public boolean onTouch(View v, MotionEvent event) {
+                    if(event.getAction() == MotionEvent.ACTION_DOWN){
+                        Intent i = new Intent(mView.getContext(), NewGroupActivity.class);
+                        Activity activity = (Activity) mView.getContext();
+                        activity.startActivityForResult(i, HomeDrawerActivity.NEW_GROUP);
+                    }
+                    return true;
                 }
             });
         }

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -67,7 +69,6 @@ public class GroupsNavigationFragment extends HomeFragment {
 
         mRecommendTask = new FetchRecommendedGroupsTask(view, mUser);
         mRecommendTask.execute();
-
         return view;
     }
 
@@ -112,4 +113,5 @@ public class GroupsNavigationFragment extends HomeFragment {
         super.onResume();
         getActivity().setTitle("Groups");
     }
+
 }

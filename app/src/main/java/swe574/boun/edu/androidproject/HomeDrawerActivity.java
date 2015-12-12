@@ -26,6 +26,8 @@ public class HomeDrawerActivity extends AppCompatActivity
     int code = 0;
     private User mUser;
 
+    private NavigationView mNavigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,14 +41,15 @@ public class HomeDrawerActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeNavigationFragment()).commit();
         }
 
         mUser = getIntent().getParcelableExtra("user");
+
     }
 
     @Override
@@ -55,8 +58,21 @@ public class HomeDrawerActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            FragmentManager manager = getSupportFragmentManager();
             super.onBackPressed();
+            HomeFragment currentFragment = (HomeFragment) manager.findFragmentById(R.id.fragment_container);
+            if (currentFragment instanceof HomeNavigationFragment) {
+                mNavigationView.getMenu().getItem(0).setChecked(true);
+            } else if (currentFragment instanceof GroupsNavigationFragment) {
+                mNavigationView.getMenu().getItem(2).setChecked(true);
+            } else if (currentFragment instanceof ProfileNavigationFragment) {
+                mNavigationView.getMenu().getItem(1).setChecked(true);
+            } else if (currentFragment instanceof MessageNavigationFragment) {
+                mNavigationView.getMenu().getItem(3).setChecked(true);
+            }
+
         }
+
     }
 
     @Override

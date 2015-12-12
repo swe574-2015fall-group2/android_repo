@@ -42,6 +42,8 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -161,7 +163,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (!TextUtils.isEmpty(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -183,19 +185,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             mLastnameView.setError(getString(R.string.error_field_required));
             focusView = mLastnameView;
             cancel = true;
-        } else if (!isLastnameValid(lastname)) {
-            mLastnameView.setError(getString(R.string.error_invalid_lastname));
-            focusView = mLastnameView;
-            cancel = true;
         }
 
         // Check for a valid name.
         if (TextUtils.isEmpty(name)) {
             mNameView.setError(getString(R.string.error_field_required));
-            focusView = mNameView;
-            cancel = true;
-        } else if (!isNameValid(name)) {
-            mNameView.setError(getString(R.string.error_invalid_name));
             focusView = mNameView;
             cancel = true;
         }
@@ -214,19 +208,8 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     }
 
     private boolean isEmailValid(String email) {
-        return email.contains("@");
-    }
-
-    private boolean isPasswordValid(String password) {
-        return password.length() > 4;
-    }
-
-    private boolean isLastnameValid(String lastname) {
-        return lastname.length() > 3;
-    }
-
-    private boolean isNameValid(String name) {
-        return name.length() > 3;
+        Matcher matcher = Pattern.compile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$").matcher(email);
+        return matcher.find();
     }
 
     /**

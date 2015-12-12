@@ -164,7 +164,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
         // Check for a valid password, if the user entered one.
         if (TextUtils.isEmpty(password)) {
-            mPasswosrdView.setError(getString(R.string.error_invalid_password));
+            mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
         }

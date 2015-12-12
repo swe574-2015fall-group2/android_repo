@@ -51,6 +51,7 @@ import java.util.regex.Pattern;
 
 import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.User;
+import swe574.boun.edu.androidproject.tasks.QuerySelfTask;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -470,7 +471,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 boolean success = object.getString("status").equals("success");
                 if (success) {
                     JSONObject result = object.getJSONObject("result");
-                    mUser = new User(result.getString("id"), null, null, null, null, null, null, null, null, null);
+                    mUser = new User(result.getString("id"), null, null, null, null, null, null, null);
                     App.mAuth = result.getString("token");
                     return true;
                 }
@@ -494,10 +495,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 editor.putString("username", mEmail);
                 editor.putString("password", mPassword);
                 editor.apply();
-                Intent intent = new Intent(LoginActivity.this, HomeDrawerActivity.class);
-                intent.putExtra("user", mUser);
-                startActivity(intent);
-                finish();
+                QuerySelfTask querySelfTask = new QuerySelfTask(LoginActivity.this);
+                querySelfTask.execute(mUser.getmID());
             } else {
                 Toast.makeText(LoginActivity.this, "Your username and/or password is incorrect", Toast.LENGTH_SHORT).show();
             }

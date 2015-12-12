@@ -203,7 +203,7 @@ public final class User implements Parcelable {
 
                 Role role = null;
                 if(userRole.has("groupRoles")){
-                    JSONObject roleObject = userRole.getJSONObject("groupRoles");
+                    JSONObject roleObject = userRole.getJSONArray("groupRoles").getJSONObject(0);
 
                     String roleID = null;
                     if(roleObject.has("id")){
@@ -220,7 +220,7 @@ public final class User implements Parcelable {
                         rolePermissions = new ArrayList<>();
                         JSONArray permissionArray = roleObject.getJSONArray("permissions");
                         for(int j = 0 ; j < permissionArray.length() ; j++){
-                            rolePermissions.add(permissionArray.getString(i));
+                            rolePermissions.add(permissionArray.getString(j));
                         }
                     }
                     role = new Role(roleID, roleName, rolePermissions);

@@ -49,7 +49,6 @@ public class HomeDrawerActivity extends AppCompatActivity
         }
 
         mUser = getIntent().getParcelableExtra("user");
-
     }
 
     @Override

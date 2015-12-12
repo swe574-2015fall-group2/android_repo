@@ -1,5 +1,6 @@
 package swe574.boun.edu.androidproject.tasks;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.MalformedJsonException;
 
@@ -16,6 +17,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import swe574.boun.edu.androidproject.HomeDrawerActivity;
+import swe574.boun.edu.androidproject.LoginActivity;
 import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.User;
 
@@ -23,6 +26,11 @@ import swe574.boun.edu.androidproject.model.User;
  * Created by Jongaros on 12/12/2015.
  */
 public class QuerySelfTask extends AsyncTask<String, Void, User> {
+    private LoginActivity mActivity;
+
+    public QuerySelfTask(LoginActivity mActivity) {
+        this.mActivity = mActivity;
+    }
 
     @Override
     protected User doInBackground(String... params) {
@@ -73,7 +81,7 @@ public class QuerySelfTask extends AsyncTask<String, Void, User> {
             httpURLConnection.disconnect();
             JSONObject object = new JSONObject(responseJson);
             if (object.getString("status").equals("success")) {
-                return User.createFromJSON(object);
+                return User.createFromJSON(id,object);
             } else {
                 throw new MalformedJsonException("Returned JSON String isn't fit the format.");
             }
@@ -85,5 +93,13 @@ public class QuerySelfTask extends AsyncTask<String, Void, User> {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(User user) {
+        Intent intent = new Intent(mActivity, HomeDrawerActivity.class);
+        intent.putExtra("user", user);
+        mActivity.startActivity(intent);
+        mActivity.finish();
     }
 }

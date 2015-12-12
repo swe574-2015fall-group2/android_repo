@@ -41,7 +41,6 @@ public class GroupsNavigationFragment extends HomeFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActivity().findViewById(R.id.search_bar_layout).setVisibility(View.GONE);
         setHasOptionsMenu(true);
     }
 

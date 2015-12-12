@@ -124,6 +124,8 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
+        } catch (IllegalStateException e){
+            e.printStackTrace();
         }
         return null;
     }

@@ -18,7 +18,9 @@ import swe574.boun.edu.androidproject.NewGroupActivity;
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.ViewAllGroupsActivity;
 import swe574.boun.edu.androidproject.model.HomeFragment;
+import swe574.boun.edu.androidproject.tasks.FetchAllGroupsTask;
 import swe574.boun.edu.androidproject.tasks.FetchMyGroupsTask;
+import swe574.boun.edu.androidproject.tasks.FetchRecommendedGroupsTask;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,6 +32,7 @@ import swe574.boun.edu.androidproject.tasks.FetchMyGroupsTask;
 public class GroupsNavigationFragment extends HomeFragment {
     // Fragment parameters.
     private FetchMyGroupsTask mMyGroupsTask;
+    private FetchRecommendedGroupsTask mRecommendTask;
     private int ADD_GROUP_ID;
     //UI parameters
     private Button mViewAllGroups;
@@ -61,6 +64,9 @@ public class GroupsNavigationFragment extends HomeFragment {
         });
         mMyGroupsTask = new FetchMyGroupsTask(view, mUser);
         mMyGroupsTask.execute();
+
+        mRecommendTask = new FetchRecommendedGroupsTask(view, mUser);
+        mRecommendTask.execute();
 
         return view;
     }

@@ -3,11 +3,9 @@ package swe574.boun.edu.androidproject.tasks;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.MalformedJsonException;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -35,10 +33,9 @@ import swe574.boun.edu.androidproject.model.Group;
 import swe574.boun.edu.androidproject.model.User;
 
 /**
- * < Parametre Tipi, Progress Tipi, Return Tipi
+ * Created by Jongaros on 12/12/2015.
  */
-public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
-    private static final int REQUEST_CREATE_GROUP = 1;
+public class FetchRecommendedGroupsTask extends AsyncTask <Void, Void, ArrayList<Group>>{
     private ViewGroup mView;
     private User mUser;
     private View mGroupForm;
@@ -46,7 +43,7 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
     private View mProgress;
     private Boolean mResult;
 
-    public FetchMyGroupsTask(ViewGroup mView, User mUser) {
+    public FetchRecommendedGroupsTask(ViewGroup mView, User mUser) {
         this.mView = mView;
         this.mUser = mUser;
     }
@@ -56,7 +53,7 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
      */
     @Override
     protected void onPreExecute() {
-        mMyGroup = (ListView) mView.findViewById(R.id.gridViewMyGroups);
+        mMyGroup = (ListView) mView.findViewById(R.id.gridViewRecommendedGroups);
         mMyGroup.setAdapter(null);
         mGroupForm = mView.findViewById(R.id.group_form);
         mProgress = mView.findViewById(R.id.group_progress);
@@ -70,7 +67,7 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
         HttpURLConnection httpURLConnection = null;
         try {
             // Create a new UrlConnection
-            URL postUrl = new URL("http://162.243.215.160:9000/v1/group/listMyGroups");
+            URL postUrl = new URL("http://162.243.215.160:9000/v1/group/listRecommended");
             // Open the created connection to server.
             httpURLConnection = (HttpURLConnection) postUrl.openConnection();
             // Set up the post parameters
@@ -110,14 +107,13 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
                 throw new IllegalStateException("Response code is not valid");
             }
             httpURLConnection.disconnect();
-            //TODO RECHECK WITH DATA
             JSONObject object = new JSONObject(responseJson);
             if (object.getString("status").equals("success")) {
                 ArrayList<Group> results = new ArrayList<>();
+                mResult = true;
                 object = object.getJSONObject("result");
 
                 if (object.has("groupList")) {
-                    mResult = true;
                     JSONArray groupList = object.getJSONArray("groupList");
                     for (int i = 0; i < groupList.length(); i++) {
                         JSONObject anGroup = groupList.getJSONObject(i);

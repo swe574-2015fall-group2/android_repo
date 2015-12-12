@@ -5,22 +5,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 
 import swe574.boun.edu.androidproject.HomeDrawerActivity;
 import swe574.boun.edu.androidproject.NewGroupActivity;
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.ViewAllGroupsActivity;
 import swe574.boun.edu.androidproject.model.HomeFragment;
-import swe574.boun.edu.androidproject.tasks.FetchAllGroupsTask;
 import swe574.boun.edu.androidproject.tasks.FetchMyGroupsTask;
 import swe574.boun.edu.androidproject.tasks.FetchRecommendedGroupsTask;
 
@@ -38,6 +38,8 @@ public class GroupsNavigationFragment extends HomeFragment {
     private int ADD_GROUP_ID;
     //UI parameters
     private Button mViewAllGroups;
+    private ListView mMyGroupListView;
+    private ListView mRecommendGroupsListView;
 
     public GroupsNavigationFragment() {
         // Required empty public constructor
@@ -64,11 +66,41 @@ public class GroupsNavigationFragment extends HomeFragment {
                 startActivity(i);
             }
         });
+        mMyGroupListView = (ListView) view.findViewById(R.id.gridViewMyGroups);
         mMyGroupsTask = new FetchMyGroupsTask(view, mUser);
         mMyGroupsTask.execute();
+        if (mMyGroupListView.getAdapter() == null) {
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.item_nogroups,R.id.textview, new String[]{"No groups are found. Click here to create a group."});
+            mMyGroupListView.setAdapter(adapter);
+            mMyGroupListView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if(event.getAction() == MotionEvent.ACTION_DOWN){
+                        Intent i = new Intent(getContext(), NewGroupActivity.class);
+                        getActivity().startActivityForResult(i, HomeDrawerActivity.NEW_GROUP);
+                    }
+                    return true;
+                }
+            });
+        }
 
+        mRecommendGroupsListView = (ListView) view.findViewById(R.id.gridViewRecommendedGroups);
         mRecommendTask = new FetchRecommendedGroupsTask(view, mUser);
         mRecommendTask.execute();
+        if (mRecommendGroupsListView.getAdapter() == null) {
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.item_nogroups,R.id.textview, new String[]{"No recommended groups are found. Click here to create a group."});
+            mRecommendGroupsListView.setAdapter(adapter);
+            mRecommendGroupsListView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if(event.getAction() == MotionEvent.ACTION_DOWN){
+                        Intent i = new Intent(getContext(), NewGroupActivity.class);
+                        getActivity().startActivityForResult(i, HomeDrawerActivity.NEW_GROUP);
+                    }
+                    return true;
+                }
+            });
+        }
         return view;
     }
 
@@ -94,6 +126,8 @@ public class GroupsNavigationFragment extends HomeFragment {
         if(requestCode == HomeDrawerActivity.NEW_GROUP && resultCode == Activity.RESULT_OK){
             mMyGroupsTask = new FetchMyGroupsTask((ViewGroup) getView(), mUser);
             mMyGroupsTask.execute();
+            mRecommendTask = new FetchRecommendedGroupsTask((ViewGroup) getView(), mUser);
+            mRecommendTask.execute();
         }
     }
 

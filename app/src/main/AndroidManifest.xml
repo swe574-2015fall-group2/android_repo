@@ -40,8 +40,7 @@
         <activity android:name=".ResourcesActivity" />
         <activity
             android:name=".NewGroupActivity"
-            android:label="@string/title_activity_new_group"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_new_group" />
         <activity
             android:name=".GroupTabbedActivity"
             android:label="@string/title_activity_group"

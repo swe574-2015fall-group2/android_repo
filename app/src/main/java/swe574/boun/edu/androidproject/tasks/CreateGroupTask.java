@@ -34,6 +34,7 @@ public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean> {
     private final String mDescription;
     private final View mProgressView;
     private final View mFormView;
+    private String mErrorMessage;
 
     public CreateGroupTask(Activity mActivity, Context mContext, ViewGroup mParent) {
         super();
@@ -98,13 +99,14 @@ public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean> {
                 // Server is down or webserver is changed.
                 throw new IllegalStateException("Response code is not valid");
             }
+            httpURLConnection.disconnect();
             JSONObject object = new JSONObject(responseJson);
             if (object.getString("status").equals("success")) {
                 result = true;
-                httpURLConnection.disconnect();
                 return result;
-            } else {
-                throw new MalformedJsonException("Returned JSON String isn't fit the format.");
+            }
+            else {
+                mErrorMessage = object.getString("consumerMessage");
             }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -112,8 +114,6 @@ public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean> {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
-        } finally {
-            httpURLConnection.disconnect();
         }
         return result;
     }
@@ -126,7 +126,7 @@ public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean> {
         if (result) {
             message = "You have successfully created group " + mName;
         } else {
-            message = "Group creation failed, please check your parameters. " + mName;
+            message = "";
         }
         Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
         if (result){

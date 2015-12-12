@@ -2,6 +2,7 @@ package swe574.boun.edu.androidproject;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -20,6 +21,7 @@ public class NewGroupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_group);
+        setTitle("New Group");
 
         mGroupNameView = (EditText) findViewById(R.id.groupName);
         mGroupDescriptionView = (EditText) findViewById(R.id.groupDesc);
@@ -43,10 +45,12 @@ public class NewGroupActivity extends AppCompatActivity {
         String name, description;
         if (!validateDescription(description = mGroupDescriptionView.getText().toString())) {
             focus = mGroupDescriptionView;
+            mGroupDescriptionView.setError("Group Description cannot be empty");
             cancel = true;
         }
         if (!validateName(name = mGroupNameView.getText().toString())) {
             focus = mGroupNameView;
+            mGroupNameView.setError("Group Name cannot be empty");
             cancel = true;
         }
 
@@ -59,12 +63,12 @@ public class NewGroupActivity extends AppCompatActivity {
     }
 
     private boolean validateName(String s) {
-        return s.length() > 4;
+        return !TextUtils.isEmpty(s);
     }
 
 
     private boolean validateDescription(String s) {
-        return s.length() > 10;
+        return !TextUtils.isEmpty(s);
     }
 
 }

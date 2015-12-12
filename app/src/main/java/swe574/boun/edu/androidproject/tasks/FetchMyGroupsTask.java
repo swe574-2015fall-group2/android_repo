@@ -150,21 +150,6 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
             ListGroupAdapter adapter = new ListGroupAdapter(mView.getContext(), result, mUser);
             mMyGroup.setAdapter(adapter);
         }
-        if (mMyGroup.getAdapter() == null) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(mView.getContext(), R.layout.item_nogroups,R.id.textview, new String[]{"No groups are found. Click here to create a group."});
-            mMyGroup.setAdapter(adapter);
-            mMyGroup.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    if(event.getAction() == MotionEvent.ACTION_DOWN){
-                        Intent i = new Intent(mView.getContext(), NewGroupActivity.class);
-                        Activity activity = (Activity) mView.getContext();
-                        activity.startActivityForResult(i, HomeDrawerActivity.NEW_GROUP);
-                    }
-                    return true;
-                }
-            });
-        }
     }
 
     @Override

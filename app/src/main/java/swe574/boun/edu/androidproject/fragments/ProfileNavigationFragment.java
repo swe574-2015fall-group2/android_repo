@@ -1,5 +1,6 @@
 package swe574.boun.edu.androidproject.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.text.TextUtils;
@@ -15,6 +17,7 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -23,13 +26,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
+import swe574.boun.edu.androidproject.HomeDrawerActivity;
 import swe574.boun.edu.androidproject.LoginActivity;
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.ResourcesActivity;
+import swe574.boun.edu.androidproject.UpdateProfileActivity;
 import swe574.boun.edu.androidproject.model.HomeFragment;
 import swe574.boun.edu.androidproject.model.Image;
+import swe574.boun.edu.androidproject.model.User;
 import swe574.boun.edu.androidproject.model.UserDetails;
 
 /**
@@ -42,6 +47,7 @@ import swe574.boun.edu.androidproject.model.UserDetails;
 public class ProfileNavigationFragment extends HomeFragment {
     // Fragment parameters.
     private int EDIT_MENU_ID;
+    private final int REQUEST_UPDATE = 2;
     // UI parameters
     private ImageView mProfileImageView;
     private TextView mProfileFullName;
@@ -191,6 +197,29 @@ public class ProfileNavigationFragment extends HomeFragment {
         super.onCreateOptionsMenu(menu, inflater);
         EDIT_MENU_ID = Menu.FIRST + 1;
         menu.add(1, EDIT_MENU_ID, 1, "Edit Profile");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == EDIT_MENU_ID){
+            Intent i = new Intent(getContext(), UpdateProfileActivity.class);
+            i.putExtra("user", mUser);
+            startActivityForResult(i, REQUEST_UPDATE);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_UPDATE && resultCode == Activity.RESULT_OK){
+            Bundle extras = data.getExtras();
+            User newUser = extras.getParcelable("user");
+            HomeDrawerActivity activity = (HomeDrawerActivity) getActivity();
+            activity.setmUser(newUser);
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.detach(this).attach(this).commit();
+        }
     }
 
     @Override

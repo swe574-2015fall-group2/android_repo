@@ -50,7 +50,8 @@
         <activity android:name=".ViewAllGroupsActivity" />
         <activity
             android:name=".NewDiscussionActivity"
-            android:label="New Discussion"></activity>
+            android:label="New Discussion" />
+        <activity android:name=".UpdateProfileActivity"></activity>
     </application>
 
 </manifest>

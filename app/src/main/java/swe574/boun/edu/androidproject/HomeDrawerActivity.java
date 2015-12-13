@@ -134,4 +134,7 @@ public class HomeDrawerActivity extends AppCompatActivity
         return true;
     }
 
+    public void setmUser(User mUser) {
+        this.mUser = mUser;
+    }
 }

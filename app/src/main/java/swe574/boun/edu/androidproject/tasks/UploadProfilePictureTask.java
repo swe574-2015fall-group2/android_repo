@@ -24,11 +24,11 @@ import swe574.boun.edu.androidproject.model.OnTaskCompleted;
 /**
  * Created by Jongaros on 12/13/2015.
  */
-public class UploadProfilePictureTask extends AsyncTask<Void, Void, Boolean>{
+public class UploadProfilePictureTask extends AsyncTask<Void, Void, Boolean> {
+    private final String TYPE = "JPG";
     private OnTaskCompleted mListener;
     private byte[] mPicture;
     private String mUserID;
-    private final String TYPE = "JPG";
 
     public UploadProfilePictureTask(OnTaskCompleted mListener, byte[] mPicture, String mUserID) {
         this.mListener = mListener;
@@ -57,8 +57,8 @@ public class UploadProfilePictureTask extends AsyncTask<Void, Void, Boolean>{
             jsonObject.accumulate("entityId", mUserID);
             jsonObject.accumulate("fileType", TYPE);
             String base64Image = null;
-            if(mPicture != null){
-                if(mPicture.length > 0){
+            if (mPicture != null) {
+                if (mPicture.length > 0) {
                     base64Image = Base64.encodeToString(mPicture, Base64.DEFAULT);
                 }
             }
@@ -94,7 +94,7 @@ public class UploadProfilePictureTask extends AsyncTask<Void, Void, Boolean>{
             if (object.getString("status").equals("success")) {
                 return true;
             } else {
-                    throw new MalformedJsonException("Returned JSON String isn't fit the format.");
+                throw new MalformedJsonException("Returned JSON String isn't fit the format.");
             }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

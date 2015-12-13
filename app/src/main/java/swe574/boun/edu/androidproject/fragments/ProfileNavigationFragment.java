@@ -28,7 +28,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.text.SimpleDateFormat;
 
 import swe574.boun.edu.androidproject.HomeDrawerActivity;
@@ -230,15 +229,15 @@ public class ProfileNavigationFragment extends HomeFragment {
             });
             task.execute(mUser.getmID());
         }
-        if(requestCode == REQUEST_PICTURE_UPLOAD && resultCode == Activity.RESULT_OK){
+        if (requestCode == REQUEST_PICTURE_UPLOAD && resultCode == Activity.RESULT_OK) {
             Uri uri = data.getData();
             String extension = "";
 
             int i = uri.getPath().lastIndexOf('.');
             if (i > 0) {
-                extension = uri.getPath().substring(i+1);
+                extension = uri.getPath().substring(i + 1);
             }
-            if(!extension.equals("jpg") && !extension.equals("png") && !extension.equals("jpeg")){
+            if (!extension.equals("jpg") && !extension.equals("png") && !extension.equals("jpeg")) {
                 Toast.makeText(getContext(), "Please select a valid picture.", Toast.LENGTH_LONG).show();
                 return;
             }
@@ -250,8 +249,8 @@ public class ProfileNavigationFragment extends HomeFragment {
             UploadProfilePictureTask task = new UploadProfilePictureTask(new OnTaskCompleted() {
                 @Override
                 public void onTaskCompleted(Bundle extras) {
-                boolean success = extras.getBoolean("success");
-                    if(success){
+                    boolean success = extras.getBoolean("success");
+                    if (success) {
                         mProfileImageView.setImageBitmap(bitmap);
                         mProfileImageView.invalidate();
                         QuerySelfTask QueryTask = new QuerySelfTask(new OnTaskCompleted() {

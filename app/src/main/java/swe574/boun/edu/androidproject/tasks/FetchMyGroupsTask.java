@@ -31,8 +31,8 @@ import swe574.boun.edu.androidproject.model.User;
  * < Parametre Tipi, Progress Tipi, Return Tipi
  */
 public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
-    private OnTaskCompleted mListener;
     private static final int REQUEST_CREATE_GROUP = 1;
+    private OnTaskCompleted mListener;
     private ViewGroup mView;
     private User mUser;
     private View mGroupForm;

@@ -180,7 +180,6 @@
                         android:background="@drawable/edittextstyle"
                         android:drawableLeft="@drawable/ic_icon_birth_date"
                         android:hint="Birth Date"
-                        android:inputType="textCapWords"
                         android:maxLines="1"
                         android:singleLine="true"
                         android:focusable="false"/>

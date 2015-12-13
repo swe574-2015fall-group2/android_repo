@@ -34,8 +34,10 @@ import swe574.boun.edu.androidproject.ResourcesActivity;
 import swe574.boun.edu.androidproject.UpdateProfileActivity;
 import swe574.boun.edu.androidproject.model.HomeFragment;
 import swe574.boun.edu.androidproject.model.Image;
+import swe574.boun.edu.androidproject.model.OnTaskCompleted;
 import swe574.boun.edu.androidproject.model.User;
 import swe574.boun.edu.androidproject.model.UserDetails;
+import swe574.boun.edu.androidproject.tasks.QuerySelfTask;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,9 +47,9 @@ import swe574.boun.edu.androidproject.model.UserDetails;
  * create an instance of this fragment.
  */
 public class ProfileNavigationFragment extends HomeFragment {
+    private final int REQUEST_UPDATE = 2;
     // Fragment parameters.
     private int EDIT_MENU_ID;
-    private final int REQUEST_UPDATE = 2;
     // UI parameters
     private ImageView mProfileImageView;
     private TextView mProfileFullName;
@@ -81,7 +83,7 @@ public class ProfileNavigationFragment extends HomeFragment {
 
         mProfileImageView = (ImageView) profilePicture.findViewById(R.id.imageViewProfilePicture);
         Image image = mUser.getmImage();
-        if(image != null){
+        if (image != null) {
             byte[] imageArray = Base64.decode(image.getmImage(), Base64.DEFAULT);
             Bitmap bitmap = BitmapFactory.decodeByteArray(imageArray, 0, imageArray.length);
             mProfileImageView.setImageBitmap(bitmap);
@@ -89,21 +91,19 @@ public class ProfileNavigationFragment extends HomeFragment {
         }
 
         mProfileFullName = (TextView) profilePicture.findViewById(R.id.textViewPersonName);
-        if(mUser.getmName() != null && mUser.getmSurname() != null){
-            if(!TextUtils.isEmpty(mUser.getmName()) && !TextUtils.isEmpty(mUser.getmSurname())){
+        if (mUser.getmName() != null && mUser.getmSurname() != null) {
+            if (!TextUtils.isEmpty(mUser.getmName()) && !TextUtils.isEmpty(mUser.getmSurname())) {
                 mProfileFullName.setText(mUser.getmName() + " " + mUser.getmSurname());
-            }
-            else{
+            } else {
                 mProfileFullName.setText("Unknown User");
             }
         }
 
         mProfileUsername = (TextView) profilePicture.findViewById(R.id.textViewPersonUsername);
-        if(mUser.getmUsername() != null){
-            if(!TextUtils.isEmpty(mUser.getmUsername())){
+        if (mUser.getmUsername() != null) {
+            if (!TextUtils.isEmpty(mUser.getmUsername())) {
                 mProfileUsername.setText(mUser.getmUsername());
-            }
-            else{
+            } else {
                 mProfileUsername.setText("");
             }
         }
@@ -119,35 +119,35 @@ public class ProfileNavigationFragment extends HomeFragment {
         mLinkedin = (TextView) viewGroup.findViewById(R.id.textViewLinkedin);
         mAcademica = (TextView) viewGroup.findViewById(R.id.textViewAcademica);
 
-        if(details != null){
-            if(details.getmProfession() != null){
+        if (details != null) {
+            if (details.getmProfession() != null) {
                 mProfession.setText(details.getmProfession());
             }
 
-            if(details.getmInterests() != null){
+            if (details.getmInterests() != null) {
                 mInterests.setText(details.getmInterests());
             }
 
-            if(details.getmUniversity() != null){
+            if (details.getmUniversity() != null) {
                 mUniversity.setText(details.getmUniversity());
             }
 
-            if(details.getmProgramme() != null){
+            if (details.getmProgramme() != null) {
                 mProgramme.setText(details.getmProgramme());
             }
 
-            if(details.getmBirthDate() != null){
+            if (details.getmBirthDate() != null) {
                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
                 String date = format.format(details.getmBirthDate());
                 mBirthDate.setText(date);
             }
 
-            if(details.getmLinkedin() != null){
+            if (details.getmLinkedin() != null) {
                 mLinkedin.setText(Html.fromHtml("<a href=\"http://" + details.getmLinkedin() + "\">" + details.getmLinkedin() + "</a> "));
                 mLinkedin.setMovementMethod(LinkMovementMethod.getInstance());
             }
 
-            if(details.getmAcademia() != null){
+            if (details.getmAcademia() != null) {
                 mAcademica.setText(Html.fromHtml("<a href=\"http://" + details.getmAcademia() + "\">" + details.getmAcademia() + "</a> "));
                 mAcademica.setMovementMethod(LinkMovementMethod.getInstance());
             }
@@ -201,7 +201,7 @@ public class ProfileNavigationFragment extends HomeFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == EDIT_MENU_ID){
+        if (item.getItemId() == EDIT_MENU_ID) {
             Intent i = new Intent(getContext(), UpdateProfileActivity.class);
             i.putExtra("user", mUser);
             startActivityForResult(i, REQUEST_UPDATE);
@@ -212,13 +212,17 @@ public class ProfileNavigationFragment extends HomeFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == REQUEST_UPDATE && resultCode == Activity.RESULT_OK){
-            Bundle extras = data.getExtras();
-            User newUser = extras.getParcelable("user");
-            HomeDrawerActivity activity = (HomeDrawerActivity) getActivity();
-            activity.setmUser(newUser);
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.detach(this).attach(this).commit();
+        if (requestCode == REQUEST_UPDATE && resultCode == Activity.RESULT_OK) {
+            QuerySelfTask task = new QuerySelfTask(new OnTaskCompleted() {
+                @Override
+                public void onTaskCompleted(Bundle extras) {
+                    User newUser = extras.getParcelable("user");
+                    HomeDrawerActivity activity = (HomeDrawerActivity) getActivity();
+                    activity.setmUser(newUser);
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.detach(ProfileNavigationFragment.this).attach(ProfileNavigationFragment.this).commit();
+                }
+            });
         }
     }
 

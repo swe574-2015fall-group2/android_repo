@@ -50,6 +50,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import swe574.boun.edu.androidproject.message.App;
+import swe574.boun.edu.androidproject.model.OnTaskCompleted;
 import swe574.boun.edu.androidproject.model.User;
 import swe574.boun.edu.androidproject.tasks.QuerySelfTask;
 
@@ -495,7 +496,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 editor.putString("username", mEmail);
                 editor.putString("password", mPassword);
                 editor.apply();
-                QuerySelfTask querySelfTask = new QuerySelfTask(LoginActivity.this);
+                QuerySelfTask querySelfTask = new QuerySelfTask(new OnTaskCompleted() {
+                    @Override
+                    public void onTaskCompleted(Bundle extras) {
+                        User user = extras.getParcelable("user");
+                        Intent intent = new Intent(LoginActivity.this, HomeDrawerActivity.class);
+                        intent.putExtra("user", user);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
                 querySelfTask.execute(mUser.getmID());
             } else {
                 Toast.makeText(LoginActivity.this, "Your username and/or password is incorrect", Toast.LENGTH_SHORT).show();

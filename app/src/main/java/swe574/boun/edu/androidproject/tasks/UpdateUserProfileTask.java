@@ -16,28 +16,47 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Date;
 
 import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.OnTaskCompleted;
-import swe574.boun.edu.androidproject.model.User;
 
 /**
- * Created by Jongaros on 12/12/2015.
+ * Created by Jongaros on 12/13/2015.
  */
-public class QuerySelfTask extends AsyncTask<String, Void, User> {
+public class UpdateUserProfileTask extends AsyncTask<Void, Void, Boolean> {
     private OnTaskCompleted mListener;
+    private String mID;
+    private String mName;
+    private String mLastName;
+    private Date mBirthDate;
+    private String mProfession;
+    private String mProgramme;
+    private String mUniversity;
+    private String mInterest;
+    private String mLinkedin;
+    private String mAcademia;
 
-    public QuerySelfTask(OnTaskCompleted mListener) {
+    public UpdateUserProfileTask(OnTaskCompleted mListener, String mID, String mName, String mLastName, Date mBirthDate, String mProfession, String mProgramme, String mUniversity, String mInterest, String mLinkedin, String mAcademia) {
         this.mListener = mListener;
+        this.mID = mID;
+        this.mName = mName;
+        this.mLastName = mLastName;
+        this.mBirthDate = mBirthDate;
+        this.mProfession = mProfession;
+        this.mProgramme = mProgramme;
+        this.mUniversity = mUniversity;
+        this.mInterest = mInterest;
+        this.mLinkedin = mLinkedin;
+        this.mAcademia = mAcademia;
     }
 
     @Override
-    protected User doInBackground(String... params) {
-        String id = params[0];
+    protected Boolean doInBackground(Void... params) {
         try {
             HttpURLConnection httpURLConnection = null;
             // Create a new UrlConnection
-            URL postUrl = new URL("http://162.243.215.160:9000/v1/user/get");
+            URL postUrl = new URL("http://162.243.215.160:9000/v1/user/update");
             // Open the created connection to server.
             httpURLConnection = (HttpURLConnection) postUrl.openConnection();
             // Set up the post parameters
@@ -50,7 +69,17 @@ public class QuerySelfTask extends AsyncTask<String, Void, User> {
             // Create JSON String
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("authToken", App.mAuth);
-            jsonObject.accumulate("id", id);
+            jsonObject.accumulate("id", mID);
+            jsonObject.accumulate("firstname", mName);
+            jsonObject.accumulate("lastname", mLastName);
+            jsonObject.accumulate("birthDate", mBirthDate);
+            jsonObject.accumulate("profession", mProfession);
+            jsonObject.accumulate("university", mUniversity);
+            jsonObject.accumulate("programme", mProgramme);
+            jsonObject.accumulate("interestedAreas", mInterest);
+            jsonObject.accumulate("linkedinProfile", mLinkedin);
+            jsonObject.accumulate("academiaProfile", mAcademia);
+
             String json = jsonObject.toString();
             // Create request output stream.
             OutputStream outputStream = httpURLConnection.getOutputStream();
@@ -80,7 +109,7 @@ public class QuerySelfTask extends AsyncTask<String, Void, User> {
             httpURLConnection.disconnect();
             JSONObject object = new JSONObject(responseJson);
             if (object.getString("status").equals("success")) {
-                return User.createFromJSON(id, object);
+                return true;
             } else {
                 throw new MalformedJsonException("Returned JSON String isn't fit the format.");
             }
@@ -91,13 +120,13 @@ public class QuerySelfTask extends AsyncTask<String, Void, User> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return null;
+        return false;
     }
 
     @Override
-    protected void onPostExecute(User user) {
+    protected void onPostExecute(Boolean check) {
         Bundle extras = new Bundle();
-        extras.putParcelable("user", user);
+        extras.putBoolean("success", check);
         mListener.onTaskCompleted(extras);
     }
 }

@@ -71,7 +71,7 @@ public class ListGroupAdapter extends BaseAdapter {
             mDescription.setText(description);
         }
         Image image = g.getmImage();
-        if(image != null) {
+        if (image != null) {
             String picture = g.getmImage().getmImage();
             if (picture != null) {
                 byte[] decodedString = Base64.decode(picture, Base64.DEFAULT);

@@ -37,7 +37,6 @@
         <activity
             android:name=".MessageActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".ResourcesActivity" />
         <activity
             android:name=".NewGroupActivity"
             android:label="@string/title_activity_new_group" />

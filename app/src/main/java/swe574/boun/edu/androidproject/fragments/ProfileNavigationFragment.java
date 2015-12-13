@@ -30,7 +30,6 @@ import java.text.SimpleDateFormat;
 import swe574.boun.edu.androidproject.HomeDrawerActivity;
 import swe574.boun.edu.androidproject.LoginActivity;
 import swe574.boun.edu.androidproject.R;
-import swe574.boun.edu.androidproject.ResourcesActivity;
 import swe574.boun.edu.androidproject.UpdateProfileActivity;
 import swe574.boun.edu.androidproject.model.HomeFragment;
 import swe574.boun.edu.androidproject.model.Image;
@@ -176,16 +175,6 @@ public class ProfileNavigationFragment extends HomeFragment {
                 });
                 builder.setCancelable(true);
                 builder.show();
-            }
-        });
-
-        Button mResources = (Button) viewGroup.findViewById(R.id.buttonResources);
-        mResources.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ResourcesActivity.class);
-                intent.putExtra("user", mUser);
-                startActivity(intent);
             }
         });
 

@@ -45,7 +45,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Placeholder"
+                android:text=""
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
@@ -68,7 +68,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Placeholder"
+                android:text=""
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
@@ -91,7 +91,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Placeholder"
+                android:text=""
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
@@ -114,7 +114,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Placeholder"
+                android:text=""
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
@@ -133,11 +133,11 @@
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                android:id="@+id/textViewJoinDate"
+                android:id="@+id/textViewBirthDate"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Placeholder"
+                android:text=""
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
@@ -160,7 +160,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Placeholder"
+                android:text=""
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
@@ -183,7 +183,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Placeholder"
+                android:text=""
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
     </TableLayout>

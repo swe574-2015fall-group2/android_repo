@@ -3,9 +3,15 @@ package swe574.boun.edu.androidproject.fragments;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.text.Html;
+import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,11 +19,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import swe574.boun.edu.androidproject.LoginActivity;
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.ResourcesActivity;
 import swe574.boun.edu.androidproject.model.HomeFragment;
+import swe574.boun.edu.androidproject.model.Image;
+import swe574.boun.edu.androidproject.model.UserDetails;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +42,17 @@ import swe574.boun.edu.androidproject.model.HomeFragment;
 public class ProfileNavigationFragment extends HomeFragment {
     // Fragment parameters.
     private int EDIT_MENU_ID;
+    // UI parameters
+    private ImageView mProfileImageView;
+    private TextView mProfileFullName;
+    private TextView mProfileUsername;
+    private TextView mProfession;
+    private TextView mInterests;
+    private TextView mUniversity;
+    private TextView mProgramme;
+    private TextView mBirthDate;
+    private TextView mLinkedin;
+    private TextView mAcademica;
 
     public ProfileNavigationFragment() {
         // Required empty public constructor
@@ -45,9 +69,83 @@ public class ProfileNavigationFragment extends HomeFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_profile, container, false);
+
         FrameLayout frameLayout = (FrameLayout) viewGroup.findViewById(R.id.profilePicture);
         ViewGroup profilePicture = (ViewGroup) inflater.inflate(R.layout.profilepicture, null, false);
+
+        mProfileImageView = (ImageView) profilePicture.findViewById(R.id.imageViewProfilePicture);
+        Image image = mUser.getmImage();
+        if(image != null){
+            byte[] imageArray = Base64.decode(image.getmImage(), Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(imageArray, 0, imageArray.length);
+            mProfileImageView.setImageBitmap(bitmap);
+            mProfileImageView.invalidate();
+        }
+
+        mProfileFullName = (TextView) profilePicture.findViewById(R.id.textViewPersonName);
+        if(mUser.getmName() != null && mUser.getmSurname() != null){
+            if(!TextUtils.isEmpty(mUser.getmName()) && !TextUtils.isEmpty(mUser.getmSurname())){
+                mProfileFullName.setText(mUser.getmName() + " " + mUser.getmSurname());
+            }
+            else{
+                mProfileFullName.setText("Unknown User");
+            }
+        }
+
+        mProfileUsername = (TextView) profilePicture.findViewById(R.id.textViewPersonUsername);
+        if(mUser.getmUsername() != null){
+            if(!TextUtils.isEmpty(mUser.getmUsername())){
+                mProfileUsername.setText(mUser.getmUsername());
+            }
+            else{
+                mProfileUsername.setText("");
+            }
+        }
+
         frameLayout.addView(profilePicture);
+
+        UserDetails details = mUser.getmDetails();
+        mProfession = (TextView) viewGroup.findViewById(R.id.textViewProfession);
+        mInterests = (TextView) viewGroup.findViewById(R.id.textViewInterests);
+        mUniversity = (TextView) viewGroup.findViewById(R.id.textViewUniversity);
+        mProgramme = (TextView) viewGroup.findViewById(R.id.textViewProgramme);
+        mBirthDate = (TextView) viewGroup.findViewById(R.id.textViewBirthDate);
+        mLinkedin = (TextView) viewGroup.findViewById(R.id.textViewLinkedin);
+        mAcademica = (TextView) viewGroup.findViewById(R.id.textViewAcademica);
+
+        if(details != null){
+            if(details.getmProfession() != null){
+                mProfession.setText(details.getmProfession());
+            }
+
+            if(details.getmInterests() != null){
+                mInterests.setText(details.getmInterests());
+            }
+
+            if(details.getmUniversity() != null){
+                mUniversity.setText(details.getmUniversity());
+            }
+
+            if(details.getmProgramme() != null){
+                mProgramme.setText(details.getmProgramme());
+            }
+
+            if(details.getmBirthDate() != null){
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                String date = format.format(details.getmBirthDate());
+                mBirthDate.setText(date);
+            }
+
+            if(details.getmLinkedin() != null){
+                mLinkedin.setText(Html.fromHtml("<a href=\"http://" + details.getmLinkedin() + "\">" + details.getmLinkedin() + "</a> "));
+                mLinkedin.setMovementMethod(LinkMovementMethod.getInstance());
+            }
+
+            if(details.getmAcademia() != null){
+                mAcademica.setText(Html.fromHtml("<a href=\"http://" + details.getmAcademia() + "\">" + details.getmAcademia() + "</a> "));
+                mAcademica.setMovementMethod(LinkMovementMethod.getInstance());
+            }
+        }
 
         Button mDeleteAccount = (Button) viewGroup.findViewById(R.id.buttonRemoveAccount);
         mDeleteAccount.setOnClickListener(new View.OnClickListener() {

@@ -26,7 +26,8 @@ C:/Users/Jongaros/AndroidStudioProjects/android_repo/app/obj/local/x86/objs/chat
  C:/Users/Jongaros/AndroidStudioProjects/android_repo/app/jni/libjpeg/jmorecfg.h \
  D:/Users/Jongaros/AppData/Local/Android/sdk/ndk-bundle/platforms/android-9/arch-x86/usr/include/android/bitmap.h \
  C:/Users/Jongaros/AndroidStudioProjects/android_repo/app/jni/./utils.h \
- D:/Users/Jongaros/AppData/Local/Android/sdk/ndk-bundle/platforms/android-9/arch-x86/usr/include/android/log.h
+ D:/Users/Jongaros/AppData/Local/Android/sdk/ndk-bundle/platforms/android-9/arch-x86/usr/include/android/log.h \
+ C:/Users/Jongaros/AndroidStudioProjects/android_repo/app/jni/./image.h
 
 D:/Users/Jongaros/AppData/Local/Android/sdk/ndk-bundle/platforms/android-9/arch-x86/usr/include/jni.h:
 
@@ -81,3 +82,5 @@ D:/Users/Jongaros/AppData/Local/Android/sdk/ndk-bundle/platforms/android-9/arch-
 C:/Users/Jongaros/AndroidStudioProjects/android_repo/app/jni/./utils.h:
 
 D:/Users/Jongaros/AppData/Local/Android/sdk/ndk-bundle/platforms/android-9/arch-x86/usr/include/android/log.h:
+
+C:/Users/Jongaros/AndroidStudioProjects/android_repo/app/jni/./image.h:

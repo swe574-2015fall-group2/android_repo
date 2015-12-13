@@ -53,7 +53,6 @@ public class AndroidUtilities {
 
     public native static void loadBitmap(String path, Bitmap bitmap, int scale, int width, int height, int stride);
 
-
     public static boolean copyFile(InputStream sourceFile, File destFile) throws IOException {
         OutputStream out = new FileOutputStream(destFile);
         byte[] buf = new byte[4096];

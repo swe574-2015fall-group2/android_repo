@@ -23,8 +23,6 @@ public class App extends Application {
 
         applicationHandler = new Handler(getInstance().getMainLooper());
 
-        System.loadLibrary("chat.4");
-
         NativeLoader.initNativeLibs(App.getInstance());
 
     }

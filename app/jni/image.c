@@ -4,6 +4,7 @@
 #include <libjpeg/jpeglib.h>
 #include <android/bitmap.h>
 #include "utils.h"
+#include "image.h"
 
 static inline uint64_t get_colors (const uint8_t *p) {
     return p[0] + (p[1] << 16) + ((uint64_t)p[2] << 32);

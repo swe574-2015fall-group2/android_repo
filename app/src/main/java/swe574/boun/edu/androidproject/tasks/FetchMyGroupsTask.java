@@ -24,12 +24,14 @@ import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.adapters.ListGroupAdapter;
 import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.Group;
+import swe574.boun.edu.androidproject.model.OnTaskCompleted;
 import swe574.boun.edu.androidproject.model.User;
 
 /**
  * < Parametre Tipi, Progress Tipi, Return Tipi
  */
 public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
+    private OnTaskCompleted mListener;
     private static final int REQUEST_CREATE_GROUP = 1;
     private ViewGroup mView;
     private User mUser;
@@ -38,9 +40,10 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
     private View mProgress;
     private Boolean mResult;
 
-    public FetchMyGroupsTask(ViewGroup mView, User mUser) {
+    public FetchMyGroupsTask(ViewGroup mView, User mUser, OnTaskCompleted mListener) {
         this.mView = mView;
         this.mUser = mUser;
+        this.mListener = mListener;
     }
 
     /**
@@ -143,6 +146,7 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
             ListGroupAdapter adapter = new ListGroupAdapter(mView.getContext(), result, mUser);
             mMyGroup.setAdapter(adapter);
         }
+        mListener.onTaskCompleted(null);
     }
 
     @Override

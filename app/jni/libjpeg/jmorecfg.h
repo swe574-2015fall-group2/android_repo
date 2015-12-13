@@ -20,8 +20,8 @@
 #define ANDROID_RGB
 
 #ifdef ANDROID_RGB
-#define PACK_SHORT_565(r,g,b)  ((((r)<<8)&0xf800)|(((g)<<3)&0x7E0)|((b)>>3))
-#define PACK_TWO_PIXELS(l,r)   ((r<<16) | l)
+#define PACK_SHORT_565(r, g, b)  ((((r)<<8)&0xf800)|(((g)<<3)&0x7E0)|((b)>>3))
+#define PACK_TWO_PIXELS(l, r)   ((r<<16) | l)
 #define PACK_NEED_ALIGNMENT(ptr) (((uintptr_t)(ptr))&3)
 #define WRITE_TWO_PIXELS(addr, pixels) do {     \
          ((INT16*)(addr))[0] = (pixels);        \
@@ -42,7 +42,7 @@
  * We do not support run-time selection of data precision, sorry.
  */
 
-#define BITS_IN_JSAMPLE  8	/* use 8 or 12 */
+#define BITS_IN_JSAMPLE  8    /* use 8 or 12 */
 
 
 /*
@@ -54,7 +54,7 @@
  * bytes of storage, whether actually used in an image or not.)
  */
 
-#define MAX_COMPONENTS  10	/* maximum number of image components */
+#define MAX_COMPONENTS  10    /* maximum number of image components */
 
 
 /*
@@ -92,8 +92,8 @@ typedef char JSAMPLE;
 
 #endif /* HAVE_UNSIGNED_CHAR */
 
-#define MAXJSAMPLE	255
-#define CENTERJSAMPLE	128
+#define MAXJSAMPLE    255
+#define CENTERJSAMPLE    128
 
 #endif /* BITS_IN_JSAMPLE == 8 */
 
@@ -173,13 +173,13 @@ typedef unsigned int UINT16;
 
 /* INT16 must hold at least the values -32768..32767. */
 
-#ifndef XMD_H			/* X11/xmd.h correctly defines INT16 */
+#ifndef XMD_H            /* X11/xmd.h correctly defines INT16 */
 typedef short INT16;
 #endif
 
 /* INT32 must hold at least signed 32-bit values. */
 
-#ifndef XMD_H			/* X11/xmd.h correctly defines INT32 */
+#ifndef XMD_H            /* X11/xmd.h correctly defines INT32 */
 typedef long INT32;
 #endif
 
@@ -203,13 +203,13 @@ typedef unsigned int JDIMENSION;
  */
 
 /* a function called through method pointers: */
-#define METHODDEF(type)		static type
+#define METHODDEF(type)        static type
 /* a function used only in its module: */
-#define LOCAL(type)		static type
+#define LOCAL(type)        static type
 /* a function referenced thru EXTERNs: */
-#define GLOBAL(type)		type
+#define GLOBAL(type)        type
 /* a reference to a GLOBAL function: */
-#define EXTERN(type)		extern type
+#define EXTERN(type)        extern type
 
 
 /* This macro is used to declare a "method", that is, a function pointer.
@@ -221,7 +221,7 @@ typedef unsigned int JDIMENSION;
 #ifdef HAVE_PROTOTYPES
 #define JMETHOD(type,methodname,arglist)  type (*methodname) arglist
 #else
-#define JMETHOD(type,methodname,arglist)  type (*methodname) ()
+#define JMETHOD(type, methodname, arglist)  type (*methodname) ()
 #endif
 
 
@@ -248,11 +248,11 @@ typedef unsigned int JDIMENSION;
 #ifndef HAVE_BOOLEAN
 typedef int boolean;
 #endif
-#ifndef FALSE			/* in case these macros already exist */
-#define FALSE	0		/* values of boolean */
+#ifndef FALSE            /* in case these macros already exist */
+#define FALSE    0        /* values of boolean */
 #endif
 #ifndef TRUE
-#define TRUE	1
+#define TRUE    1
 #endif
 
 

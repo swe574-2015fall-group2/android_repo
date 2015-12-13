@@ -21,6 +21,7 @@ import swe574.boun.edu.androidproject.NewGroupActivity;
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.ViewAllGroupsActivity;
 import swe574.boun.edu.androidproject.model.HomeFragment;
+import swe574.boun.edu.androidproject.model.OnTaskCompleted;
 import swe574.boun.edu.androidproject.tasks.FetchMyGroupsTask;
 import swe574.boun.edu.androidproject.tasks.FetchRecommendedGroupsTask;
 
@@ -85,22 +86,30 @@ public class GroupsNavigationFragment extends HomeFragment {
         }
 
         mRecommendGroupsListView = (ListView) view.findViewById(R.id.gridViewRecommendedGroups);
-        mRecommendTask = new FetchRecommendedGroupsTask(view, mUser);
-        mRecommendTask.execute();
-        if (mRecommendGroupsListView.getAdapter() == null) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.item_nogroups, R.id.textview, new String[]{"No recommended groups are found. Click here to create a group."});
-            mRecommendGroupsListView.setAdapter(adapter);
-            mRecommendGroupsListView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        Intent i = new Intent(getContext(), NewGroupActivity.class);
-                        startActivityForResult(i, HomeDrawerActivity.NEW_GROUP);
-                    }
-                    return true;
+        mRecommendTask = new FetchRecommendedGroupsTask(view, mUser, new OnTaskCompleted() {
+            @Override
+            public void onTaskCompleted(Bundle extras) {
+                if (mRecommendGroupsListView.getAdapter() == null) {
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.item_nogroups, R.id.textview, new String[]{"No recommended groups are found for you."});
+                    mRecommendGroupsListView.setAdapter(adapter);
+                    mRecommendGroupsListView.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                                Intent i = new Intent(getContext(), NewGroupActivity.class);
+                                startActivityForResult(i, HomeDrawerActivity.NEW_GROUP);
+                            }
+                            return true;
+                        }
+                    });
+                } else if (mRecommendGroupsListView.getAdapter().getCount() == 0) {
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.item_nogroups, R.id.textview, new String[]{"No recommended groups for you are found."});
+                    mRecommendGroupsListView.setAdapter(adapter);
                 }
-            });
-        }
+            }
+        });
+        mRecommendTask.execute();
+
         return view;
     }
 
@@ -126,7 +135,28 @@ public class GroupsNavigationFragment extends HomeFragment {
         if (requestCode == HomeDrawerActivity.NEW_GROUP && resultCode == Activity.RESULT_OK) {
             mMyGroupsTask = new FetchMyGroupsTask((ViewGroup) getView(), mUser);
             mMyGroupsTask.execute();
-            mRecommendTask = new FetchRecommendedGroupsTask((ViewGroup) getView(), mUser);
+            mRecommendTask = new FetchRecommendedGroupsTask((ViewGroup) getView(), mUser, new OnTaskCompleted() {
+                @Override
+                public void onTaskCompleted(Bundle extras) {
+                    if (mRecommendGroupsListView.getAdapter() == null) {
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.item_nogroups, R.id.textview, new String[]{"No recommended groups are found. Click here to create a group."});
+                        mRecommendGroupsListView.setAdapter(adapter);
+                        mRecommendGroupsListView.setOnTouchListener(new View.OnTouchListener() {
+                            @Override
+                            public boolean onTouch(View v, MotionEvent event) {
+                                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                                    Intent i = new Intent(getContext(), NewGroupActivity.class);
+                                    startActivityForResult(i, HomeDrawerActivity.NEW_GROUP);
+                                }
+                                return true;
+                            }
+                        });
+                    } else if (mRecommendGroupsListView.getAdapter().getCount() == 0) {
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.item_nogroups, R.id.textview, new String[]{"No recommended groups for you are found."});
+                        mRecommendGroupsListView.setAdapter(adapter);
+                    }
+                }
+            });
             mRecommendTask.execute();
         }
     }

@@ -12,8 +12,10 @@ extern "C" {
  * Method:    loadBitmap
  * Signature: (Ljava/lang/String;Landroid/graphics/Bitmap;IIII)V
  */
-JNIEXPORT void JNICALL Java_swe574_boun_edu_androidproject_tools_AndroidUtilities_loadBitmap
-  (JNIEnv *, jclass, jstring, jobject, jint, jint, jint, jint);
+JNIEXPORT void JNICALL
+Java_swe574_boun_edu_androidproject_tools_AndroidUtilities_loadBitmap
+(JNIEnv
+*, jclass, jstring, jobject, jint, jint, jint, jint);
 
 #ifdef __cplusplus
 }

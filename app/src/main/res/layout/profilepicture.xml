@@ -12,6 +12,7 @@
         android:background="@android:color/white"
         android:padding="10dp"
         android:src="@drawable/ic_icon_no_person" />
+
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -21,23 +22,23 @@
             android:id="@+id/textViewPersonName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:background="@android:color/white"
-            android:text="Place Holder"
             android:gravity="center"
             android:paddingBottom="30dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+            android:text="Place Holder"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
+            android:id="@+id/textViewPersonUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Place Holder"
-            android:paddingTop="30dp"
-            android:id="@+id/textViewPersonUsername"
-            android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
+            android:layout_centerVertical="true"
+            android:paddingTop="30dp"
+            android:text="Place Holder"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
     </RelativeLayout>
 
 </LinearLayout>

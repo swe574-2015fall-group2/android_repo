@@ -90,8 +90,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:background="@drawable/button_style"
-                android:textColor="@color/white"
-                android:text="Create Group" />
+                android:text="Create Group"
+                android:textColor="@color/white" />
         </LinearLayout>
     </ScrollView>
 

@@ -24,12 +24,14 @@ import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.adapters.ListGroupAdapter;
 import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.Group;
+import swe574.boun.edu.androidproject.model.OnTaskCompleted;
 import swe574.boun.edu.androidproject.model.User;
 
 /**
  * Created by Jongaros on 12/12/2015.
  */
 public class FetchRecommendedGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
+    private OnTaskCompleted mListener;
     private ViewGroup mView;
     private User mUser;
     private View mGroupForm;
@@ -37,9 +39,10 @@ public class FetchRecommendedGroupsTask extends AsyncTask<Void, Void, ArrayList<
     private View mProgress;
     private Boolean mResult;
 
-    public FetchRecommendedGroupsTask(ViewGroup mView, User mUser) {
+    public FetchRecommendedGroupsTask(ViewGroup mView, User mUser, OnTaskCompleted mListener) {
         this.mView = mView;
         this.mUser = mUser;
+        this.mListener = mListener;
     }
 
     /**
@@ -141,6 +144,7 @@ public class FetchRecommendedGroupsTask extends AsyncTask<Void, Void, ArrayList<
             ListGroupAdapter adapter = new ListGroupAdapter(mView.getContext(), result, mUser);
             mMyGroup.setAdapter(adapter);
         }
+        mListener.onTaskCompleted(null);
     }
 
     @Override

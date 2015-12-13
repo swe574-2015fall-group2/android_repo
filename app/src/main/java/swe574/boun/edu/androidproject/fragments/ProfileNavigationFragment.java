@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -24,7 +25,10 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.text.SimpleDateFormat;
 
 import swe574.boun.edu.androidproject.HomeDrawerActivity;
@@ -37,6 +41,7 @@ import swe574.boun.edu.androidproject.model.OnTaskCompleted;
 import swe574.boun.edu.androidproject.model.User;
 import swe574.boun.edu.androidproject.model.UserDetails;
 import swe574.boun.edu.androidproject.tasks.QuerySelfTask;
+import swe574.boun.edu.androidproject.tasks.UploadProfilePictureTask;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,6 +52,7 @@ import swe574.boun.edu.androidproject.tasks.QuerySelfTask;
  */
 public class ProfileNavigationFragment extends HomeFragment {
     private final int REQUEST_UPDATE = 2;
+    private final int REQUEST_PICTURE_UPLOAD = 3;
     // Fragment parameters.
     private int EDIT_MENU_ID;
     // UI parameters
@@ -88,6 +94,16 @@ public class ProfileNavigationFragment extends HomeFragment {
             mProfileImageView.setImageBitmap(bitmap);
             mProfileImageView.invalidate();
         }
+
+        mProfileImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/jpg,image/jpeg,image/png");
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                startActivityForResult(Intent.createChooser(intent, "Select a picture to upload"), REQUEST_PICTURE_UPLOAD);
+            }
+        });
 
         mProfileFullName = (TextView) profilePicture.findViewById(R.id.textViewPersonName);
         if (mUser.getmName() != null && mUser.getmSurname() != null) {
@@ -213,6 +229,46 @@ public class ProfileNavigationFragment extends HomeFragment {
                 }
             });
             task.execute(mUser.getmID());
+        }
+        if(requestCode == REQUEST_PICTURE_UPLOAD && resultCode == Activity.RESULT_OK){
+            Uri uri = data.getData();
+            String extension = "";
+
+            int i = uri.getPath().lastIndexOf('.');
+            if (i > 0) {
+                extension = uri.getPath().substring(i+1);
+            }
+            if(!extension.equals("jpg") && !extension.equals("png") && !extension.equals("jpeg")){
+                Toast.makeText(getContext(), "Please select a valid picture.", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            final Bitmap bitmap = BitmapFactory.decodeFile(uri.getPath());
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            byte[] b = stream.toByteArray();
+            UploadProfilePictureTask task = new UploadProfilePictureTask(new OnTaskCompleted() {
+                @Override
+                public void onTaskCompleted(Bundle extras) {
+                boolean success = extras.getBoolean("success");
+                    if(success){
+                        mProfileImageView.setImageBitmap(bitmap);
+                        mProfileImageView.invalidate();
+                        QuerySelfTask QueryTask = new QuerySelfTask(new OnTaskCompleted() {
+                            @Override
+                            public void onTaskCompleted(Bundle extras) {
+                                User newUser = extras.getParcelable("user");
+                                HomeDrawerActivity activity = (HomeDrawerActivity) getActivity();
+                                activity.setmUser(newUser);
+                                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                                ft.detach(ProfileNavigationFragment.this).attach(ProfileNavigationFragment.this).commit();
+                            }
+                        });
+                        QueryTask.execute(mUser.getmID());
+                    }
+                }
+            }, b, mUser.getmID());
+            task.execute();
         }
     }
 

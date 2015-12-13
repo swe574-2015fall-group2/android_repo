@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
@@ -28,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 
 import swe574.boun.edu.androidproject.HomeDrawerActivity;
@@ -231,27 +233,24 @@ public class ProfileNavigationFragment extends HomeFragment {
         }
         if (requestCode == REQUEST_PICTURE_UPLOAD && resultCode == Activity.RESULT_OK) {
             Uri uri = data.getData();
-            String extension = "";
 
-            int i = uri.getPath().lastIndexOf('.');
-            if (i > 0) {
-                extension = uri.getPath().substring(i + 1);
-            }
-            if (!extension.equals("jpg") && !extension.equals("png") && !extension.equals("jpeg")) {
-                Toast.makeText(getContext(), "Please select a valid picture.", Toast.LENGTH_LONG).show();
-                return;
+            Bitmap bitmap = null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
-            final Bitmap bitmap = BitmapFactory.decodeFile(uri.getPath());
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
             byte[] b = stream.toByteArray();
+            final Bitmap finalBitmap = bitmap;
             UploadProfilePictureTask task = new UploadProfilePictureTask(new OnTaskCompleted() {
                 @Override
                 public void onTaskCompleted(Bundle extras) {
                     boolean success = extras.getBoolean("success");
                     if (success) {
-                        mProfileImageView.setImageBitmap(bitmap);
+                        mProfileImageView.setImageBitmap(finalBitmap);
                         mProfileImageView.invalidate();
                         QuerySelfTask QueryTask = new QuerySelfTask(new OnTaskCompleted() {
                             @Override

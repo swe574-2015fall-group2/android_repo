@@ -223,6 +223,7 @@ public class ProfileNavigationFragment extends HomeFragment {
                     ft.detach(ProfileNavigationFragment.this).attach(ProfileNavigationFragment.this).commit();
                 }
             });
+            task.execute(mUser.getmID());
         }
     }
 

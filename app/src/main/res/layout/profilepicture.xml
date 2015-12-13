@@ -1,30 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/profilepictureback"
-    android:orientation="vertical">
+    android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/imageViewProfilePicture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_margin="16dp"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
         android:background="@android:color/white"
         android:padding="10dp"
-        android:src="@drawable/ic_no_person" />
+        android:src="@drawable/ic_icon_no_person" />
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2.5">
 
-    <TextView
-        android:id="@+id/textViewPersonName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imageViewProfilePicture"
-        android:layout_marginBottom="12dp"
-        android:layout_marginLeft="16dp"
-        android:layout_toEndOf="@+id/imageViewProfilePicture"
-        android:background="@android:color/white"
-        android:text="Place Holder"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-</RelativeLayout>
+        <TextView
+            android:id="@+id/textViewPersonName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:text="Place Holder"
+            android:gravity="center"
+            android:paddingBottom="30dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Place Holder"
+            android:paddingTop="30dp"
+            android:id="@+id/textViewPersonUsername"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+    </RelativeLayout>
+
+</LinearLayout>

@@ -10,19 +10,15 @@
         android:id="@+id/profilePicture"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
         android:layout_weight="3"
-        android:background="@drawable/background_form" />
+        android:background="@color/white" />
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="16dp"
+        android:layout_marginTop="8dp"
         android:layout_weight="5"
-        android:background="@drawable/background_form"
+        android:background="@color/white"
         android:baselineAligned="false"
         android:layoutMode="opticalBounds"
         android:measureWithLargestChild="true"
@@ -33,6 +29,54 @@
         <TableRow
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Profession:"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/textViewProfession"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Placeholder"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Interests:"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/textViewInterests"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Placeholder"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:layout_weight="1">
 
             <TextView
@@ -54,6 +98,8 @@
         <TableRow
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:layout_weight="1">
 
             <TextView
@@ -75,13 +121,15 @@
         <TableRow
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:layout_weight="1">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Join Date:"
+                android:text="Birth Date:"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
@@ -96,6 +144,8 @@
         <TableRow
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:layout_weight="1">
 
             <TextView
@@ -117,6 +167,8 @@
         <TableRow
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:layout_weight="1">
 
             <TextView
@@ -134,35 +186,14 @@
                 android:text="Placeholder"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
-
-        <TableRow
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="Total Contribution:"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <TextView
-                android:id="@+id/textViewContribution"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="Placeholder"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </TableRow>
     </TableLayout>
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="16dp"
-        android:layout_weight="4.5"
-        android:background="@drawable/background_form"
+        android:layout_marginTop="8dp"
+        android:layout_weight="4"
+        android:background="@color/white"
         android:measureWithLargestChild="true"
         android:orientation="vertical"
         android:shrinkColumns="true"
@@ -177,7 +208,7 @@
                 android:id="@+id/buttonPrivacy"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_margin="16dp"
+                android:layout_margin="12dp"
                 android:layout_weight="1"
                 android:background="@drawable/button_style"
                 android:text="Privacy Settings"
@@ -187,7 +218,7 @@
                 android:id="@+id/buttonResources"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_margin="16dp"
+                android:layout_margin="12dp"
                 android:layout_weight="1"
                 android:background="@drawable/button_style"
                 android:text="Manage Resources"
@@ -203,7 +234,7 @@
                 android:id="@+id/buttonRemoveAccount"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_margin="16dp"
+                android:layout_margin="12dp"
                 android:layout_weight="1"
                 android:background="@drawable/button_style"
                 android:text="Archive Account"

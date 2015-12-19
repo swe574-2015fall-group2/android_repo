@@ -113,8 +113,8 @@ public class FetchRecommendedGroupsTask extends AsyncTask<Void, Void, ArrayList<
                 if (object.has("groupList")) {
                     JSONArray groupList = object.getJSONArray("groupList");
                     for (int i = 0; i < groupList.length(); i++) {
-                        JSONObject anGroup = groupList.getJSONObject(i);
-                        results.add(new Group(null, anGroup.getString("name"), anGroup.getString("description"), anGroup.getString("id"), null, anGroup.getBoolean("joined")));
+                        Group group = Group.fromJsonString(groupList.getJSONObject(i));
+                        results.add(group);
                     }
                 }
                 return results;

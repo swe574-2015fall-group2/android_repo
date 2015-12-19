@@ -62,11 +62,11 @@ public final class User implements Parcelable {
         mStatus = in.readString();
     }
 
-    public static User createFromJSON(String mID, JSONObject object) throws JSONException, MalformedURLException {
-        if (!object.has("result")) {
-            throw new IllegalArgumentException("The JSON is invalid.");
+    public static User createFromJSON(String mID, JSONObject object) throws JSONException {
+        JSONObject result = object;
+        if (object.has("result")) {
+            result = (JSONObject) object.get("result");
         }
-        JSONObject result = (JSONObject) object.get("result");
 
         String username = null;
         if (result.has("username")) {
@@ -148,7 +148,6 @@ public final class User implements Parcelable {
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 resized.compress(Bitmap.CompressFormat.JPEG, 50, bos);
                 bitmap = BitmapFactory.decodeByteArray(bos.toByteArray(), 0, bos.toByteArray().length);
-
             }
             image = new Image(type, bitmap);
         }

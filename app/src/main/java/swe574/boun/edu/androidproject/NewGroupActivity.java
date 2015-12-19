@@ -55,7 +55,8 @@ public class NewGroupActivity extends AppCompatActivity {
         }
 
         if (!cancel) {
-            mTask = new CreateGroupTask(this, this, (ViewGroup) ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0));
+            // TODO IMPLEMENT TAGS
+            mTask = new CreateGroupTask(this, (ViewGroup) ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0), null);
             mTask.execute((Void) null);
         } else {
             focus.requestFocus();

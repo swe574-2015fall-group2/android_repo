@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,23 +22,25 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.message.App;
+import swe574.boun.edu.androidproject.model.Tag;
 
 public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean> {
     private final Activity mActivity;
-    private final Context mContext;
     private final String mName;
     private final String mDescription;
     private final View mProgressView;
     private final View mFormView;
+    private final List<Tag> mTags;
     private String mErrorMessage;
 
-    public CreateGroupTask(Activity mActivity, Context mContext, ViewGroup mParent) {
+    public CreateGroupTask(Activity mActivity, ViewGroup mParent, List<Tag> mTags) {
         super();
         this.mActivity = mActivity;
-        this.mContext = mContext;
+        this.mTags = mTags;
         this.mName = ((EditText) mParent.findViewById(R.id.groupName)).getText().toString();
         this.mDescription = ((EditText) mParent.findViewById(R.id.groupDesc)).getText().toString();
         this.mProgressView = mParent.findViewById(R.id.group_progress);
@@ -71,6 +74,11 @@ public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean> {
             jsonObject.accumulate("authToken", App.mAuth);
             jsonObject.accumulate("name", mName);
             jsonObject.accumulate("description", mDescription);
+            JSONArray jsonArray = new JSONArray();
+            for(Tag t : mTags){
+                jsonArray.put(t.toJson());
+            }
+            jsonObject.accumulate("tagList", jsonArray);
             String json = jsonObject.toString();
             // Create request output stream.
             OutputStream outputStream = httpURLConnection.getOutputStream();
@@ -125,7 +133,7 @@ public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean> {
         } else {
             message = mErrorMessage;
         }
-        Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
+        Toast.makeText(mActivity, message, Toast.LENGTH_LONG).show();
         if (result) {
             mActivity.setResult(Activity.RESULT_OK);
             mActivity.finish();

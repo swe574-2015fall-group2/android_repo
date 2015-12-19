@@ -72,11 +72,9 @@ public class ListGroupAdapter extends BaseAdapter {
         }
         Image image = g.getmImage();
         if (image != null) {
-            String picture = g.getmImage().getmImage();
+            Bitmap picture = g.getmImage().getmImage();
             if (picture != null) {
-                byte[] decodedString = Base64.decode(picture, Base64.DEFAULT);
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                mImage.setImageBitmap(decodedByte);
+                mImage.setImageBitmap(picture);
             }
         }
 

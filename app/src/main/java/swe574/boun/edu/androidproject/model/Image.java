@@ -1,5 +1,6 @@
 package swe574.boun.edu.androidproject.model;
 
+import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -7,6 +8,19 @@ import android.os.Parcelable;
  * Created by Jongaros on 12/12/2015.
  */
 public final class Image implements Parcelable {
+    private final String mType;
+    private final Bitmap mImage;
+
+    public Image(String mType, Bitmap mImage) {
+        this.mType = mType;
+        this.mImage = mImage;
+    }
+
+    protected Image(Parcel in) {
+        mType = in.readString();
+        mImage = in.readParcelable(Bitmap.class.getClassLoader());
+    }
+
     public static final Creator<Image> CREATOR = new Creator<Image>() {
         @Override
         public Image createFromParcel(Parcel in) {
@@ -18,24 +32,12 @@ public final class Image implements Parcelable {
             return new Image[size];
         }
     };
-    private final String mType;
-    private final String mImage;
-
-    public Image(String mType, String mImage) {
-        this.mType = mType;
-        this.mImage = mImage;
-    }
-
-    protected Image(Parcel in) {
-        mType = in.readString();
-        mImage = in.readString();
-    }
 
     public String getmType() {
         return mType;
     }
 
-    public String getmImage() {
+    public Bitmap getmImage() {
         return mImage;
     }
 
@@ -47,6 +49,6 @@ public final class Image implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mType);
-        dest.writeString(mImage);
+        dest.writeParcelable(mImage, flags);
     }
 }

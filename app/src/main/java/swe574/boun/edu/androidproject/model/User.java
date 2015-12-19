@@ -1,12 +1,16 @@
 package swe574.boun.edu.androidproject.model;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Base64;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -134,11 +138,19 @@ public final class User implements Parcelable {
                 type = imageObject.getString("type");
             }
 
-            String base64Image = null;
+            String base64Image;
+            Bitmap bitmap = null;
             if (imageObject.has("base64Image")) {
                 base64Image = imageObject.getString("base64Image");
+                byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+                Bitmap original = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                Bitmap resized = Bitmap.createScaledBitmap(original, 200, 200, true);
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                resized.compress(Bitmap.CompressFormat.JPEG, 50, bos);
+                bitmap = BitmapFactory.decodeByteArray(bos.toByteArray(), 0, bos.toByteArray().length);
+
             }
-            image = new Image(type, base64Image);
+            image = new Image(type, bitmap);
         }
 
         List<UserRole> roles = null;

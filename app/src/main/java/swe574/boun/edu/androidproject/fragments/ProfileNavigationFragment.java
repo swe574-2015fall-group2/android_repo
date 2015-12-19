@@ -90,8 +90,7 @@ public class ProfileNavigationFragment extends HomeFragment {
         mProfileImageView = (ImageView) profilePicture.findViewById(R.id.imageViewProfilePicture);
         Image image = mUser.getmImage();
         if (image != null) {
-            byte[] imageArray = Base64.decode(image.getmImage(), Base64.DEFAULT);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(imageArray, 0, imageArray.length);
+            Bitmap bitmap = image.getmImage();
             mProfileImageView.setImageBitmap(bitmap);
             mProfileImageView.invalidate();
         }

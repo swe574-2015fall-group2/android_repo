@@ -52,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <EditText
+                <swe574.boun.edu.androidproject.ui.TagsCompletionView
                     android:id="@+id/groupTags"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

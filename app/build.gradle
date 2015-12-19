@@ -33,6 +33,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:design:23.0.1'
     compile 'com.android.support:support-annotations:+'
+    compile "com.splitwise:tokenautocomplete:2.0.2@aar"
+    compile 'com.mcxiaoke.volley:library:1.0.19'
 }
 
 repositories {

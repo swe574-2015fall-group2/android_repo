@@ -76,7 +76,12 @@ public class ApplyGroupTask extends AsyncTask<Void, Void, Boolean> {
                 }
             } else {
                 // Server is down or webserver is changed.
-                throw new IllegalStateException("Response code is not valid " + response);
+                String line = "";
+                BufferedReader reader = new BufferedReader(new InputStreamReader(httpURLConnection.getErrorStream()));
+                while ((line = reader.readLine()) != null) {
+                    responseJson += line;
+                }
+                throw new IllegalStateException("Response code is not valid " + response + " RESPOnSE JSON \n" + responseJson);
             }
             httpURLConnection.disconnect();
             JSONObject object = new JSONObject(responseJson);

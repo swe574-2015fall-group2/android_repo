@@ -82,9 +82,17 @@ public class GetGroupCalendarTask extends AsyncTask<Void, Void, ArrayList<Meetin
                 while ((line = reader.readLine()) != null) {
                     responseJson += line;
                 }
-            } else {
+            }
+            // TODO THIS IS HACK. FIX IT AFTER BACKHAND PROBLEM IS HANDLED
+            else {
+                //Response is okay
+                String line = "";
+                BufferedReader reader = new BufferedReader(new InputStreamReader(httpURLConnection.getErrorStream()));
+                while ((line = reader.readLine()) != null) {
+                    responseJson += line;
+                }
                 // Server is down or webserver is changed.
-                throw new IllegalStateException("Response code is not valid");
+                // throw new IllegalStateException("Response code is not valid");
             }
             httpURLConnection.disconnect();
             JSONObject object = new JSONObject(responseJson);

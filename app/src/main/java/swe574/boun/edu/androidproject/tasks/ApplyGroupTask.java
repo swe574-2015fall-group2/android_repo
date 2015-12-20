@@ -2,6 +2,7 @@ package swe574.boun.edu.androidproject.tasks;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.MalformedJsonException;
 import android.widget.Toast;
 
@@ -20,19 +21,19 @@ import java.net.URL;
 
 import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.Group;
+import swe574.boun.edu.androidproject.model.OnTaskCompleted;
 import swe574.boun.edu.androidproject.model.User;
 
 /**
  * Created by Jongaros on 12/4/2015.
  */
 public class ApplyGroupTask extends AsyncTask<Void, Void, Boolean> {
-    private Context mContext;
-    private User mUser;
+    private OnTaskCompleted mListener;
     private Group mGroup;
 
-    public ApplyGroupTask(User mUser, Group mGroup) {
-        this.mUser = mUser;
+    public ApplyGroupTask(Group mGroup, OnTaskCompleted mListener) {
         this.mGroup = mGroup;
+        this.mListener = mListener;
     }
 
     @Override
@@ -100,12 +101,8 @@ public class ApplyGroupTask extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean bool) {
-        String message;
-        if (bool) {
-            message = "You have been successfully applied to the group";
-        } else {
-            message = "There is a problem with the server, please try again later";
-        }
-        Toast.makeText(mContext, message, Toast.LENGTH_LONG);
+        Bundle result = new Bundle();
+        result.putBoolean("success", bool);
+        mListener.onTaskCompleted(result);
     }
 }

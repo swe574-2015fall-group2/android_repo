@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -22,6 +24,7 @@ import swe574.boun.edu.androidproject.GroupTabbedActivity;
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.model.Group;
 import swe574.boun.edu.androidproject.model.Image;
+import swe574.boun.edu.androidproject.model.OnTaskCompleted;
 import swe574.boun.edu.androidproject.model.User;
 import swe574.boun.edu.androidproject.tasks.ApplyGroupTask;
 
@@ -93,7 +96,19 @@ public class ListGroupAdapter extends BaseAdapter {
                     builder.setPositiveButton("Apply", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            ApplyGroupTask mTask = new ApplyGroupTask(mUser, g);
+                            ApplyGroupTask mTask = new ApplyGroupTask(g, new OnTaskCompleted() {
+                                @Override
+                                public void onTaskCompleted(Bundle extras) {
+                                    String message;
+                                    boolean bool = extras.getBoolean("success");
+                                    if (bool) {
+                                        message = "You have been successfully applied to the group";
+                                    } else {
+                                        message = "There is a problem with the server, please try again later";
+                                    }
+                                    Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
+                                }
+                            });
                             mTask.execute();
                         }
                     });

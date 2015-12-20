@@ -97,6 +97,11 @@ public final class Group implements Parcelable {
             description = result.getString("description");
         }
 
+        boolean joined = false;
+        if(result.has("joined")){
+            joined = result.getBoolean("joined");
+        }
+
         Image image = null;
         if(result.has("image")){
             JSONObject jsonObject = result.getJSONObject("image");
@@ -141,7 +146,7 @@ public final class Group implements Parcelable {
                 users.add(user);
             }
         }
-
+        group = new Group(image, name, description, id, tags, joined , users);
         return group;
     }
 }

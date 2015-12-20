@@ -1,6 +1,7 @@
 package swe574.boun.edu.androidproject.adapters;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -105,6 +106,8 @@ public class ListGroupAdapter extends BaseAdapter {
                                         message = "There is a problem with the server, please try again later";
                                     }
                                     Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
+                                    Activity activity = (Activity) mContext;
+                                    activity.finish();
                                 }
                             });
                             mTask.execute();

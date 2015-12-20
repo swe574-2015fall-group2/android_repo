@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -137,7 +138,10 @@ public final class Meeting implements Parcelable {
 
         Date date = null;
         if (result.has("datetime")) {
-            date = (Date) result.get("datetime");
+            String[] datestring = result.getString("datetime").split("-");
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Integer.parseInt(datestring[0]), Integer.parseInt(datestring[1]), Integer.parseInt(datestring[2]));
+            date = calendar.getTime();
         }
 
         String timezone = null;

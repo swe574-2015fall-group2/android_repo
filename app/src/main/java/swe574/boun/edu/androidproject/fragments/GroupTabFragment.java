@@ -52,6 +52,7 @@ public class GroupTabFragment extends ModelFragment {
         for(Tag t: mGroup.getmTags()){
             tagText += "#" + t.getmLabel() + ", ";
         }
+        if(!tagText.equals("") && tagText.length() >= 2)
         tags.setText(tagText.substring(0, tagText.length() - 2));
 
         Button leaveButton = (Button) rootView.findViewById(R.id.button_leave);

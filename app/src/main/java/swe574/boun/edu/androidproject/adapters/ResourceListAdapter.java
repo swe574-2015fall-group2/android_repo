@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import swe574.boun.edu.androidproject.R;
-import swe574.boun.edu.androidproject.beans.Resource;
+import swe574.boun.edu.androidproject.model.Resource;
 
 public class ResourceListAdapter extends BaseAdapter {
     private Context mContext;
@@ -48,11 +48,11 @@ public class ResourceListAdapter extends BaseAdapter {
         Resource resource = mResources.get(position);
 
         if (mSize != null) {
-            mSize.setText(resource.getmSize());
+            //mSize.setText(resource.getmSize());
         }
 
         if (mFormat != null) {
-            mFormat.setText(resource.getmFormat());
+            //mFormat.setText(resource.getmFormat());
         }
 
         return viewGroup;

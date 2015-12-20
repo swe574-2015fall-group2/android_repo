@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -93,7 +94,10 @@ public final class User implements Parcelable {
 
             Date birthDate = null;
             if (userDetail.has("birthDate")) {
-                birthDate = (Date) userDetail.get("birthDate");
+                String[] date = userDetail.getString("birthDate").split("-");
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Integer.parseInt(date[0]), Integer.parseInt(date[1]), Integer.parseInt(date[2]));
+                birthDate = calendar.getTime();
             }
 
             String profession = null;

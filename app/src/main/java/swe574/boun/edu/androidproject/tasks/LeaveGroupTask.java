@@ -19,6 +19,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import swe574.boun.edu.androidproject.HomeDrawerActivity;
 import swe574.boun.edu.androidproject.LoginActivity;
 import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.Group;
@@ -106,11 +107,8 @@ public class LeaveGroupTask extends AsyncTask<Void, Void, Boolean> {
             message = "There is a problem with the server, please try again later";
         }
 
-        Toast.makeText(mActivity, message, Toast.LENGTH_LONG);
-        Intent intent = new Intent(mActivity, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        Toast.makeText(mActivity, message, Toast.LENGTH_LONG).show();
         if (bool)
-            mActivity.startActivity(intent);
+            mActivity.finish();
     }
 }

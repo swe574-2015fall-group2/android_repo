@@ -229,8 +229,7 @@ public class ProfileNavigationFragment extends HomeFragment {
                     User newUser = extras.getParcelable("user");
                     HomeDrawerActivity activity = (HomeDrawerActivity) getActivity();
                     activity.setmUser(newUser);
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.detach(ProfileNavigationFragment.this).attach(ProfileNavigationFragment.this).commit();
+                    updateViews(newUser);
                 }
             });
             task.execute(mUser.getmID());
@@ -262,8 +261,7 @@ public class ProfileNavigationFragment extends HomeFragment {
                                 User newUser = extras.getParcelable("user");
                                 HomeDrawerActivity activity = (HomeDrawerActivity) getActivity();
                                 activity.setmUser(newUser);
-                                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                                ft.detach(ProfileNavigationFragment.this).attach(ProfileNavigationFragment.this).commit();
+                                updateViews(newUser);
                             }
                         });
                         QueryTask.execute(mUser.getmID());
@@ -271,6 +269,51 @@ public class ProfileNavigationFragment extends HomeFragment {
                 }
             }, b, mUser.getmID());
             task.execute();
+        }
+    }
+
+    private void updateViews(User newUser) {
+        if (newUser.getmName() != null && newUser.getmSurname() != null) {
+            if (!TextUtils.isEmpty(newUser.getmName()) && !TextUtils.isEmpty(newUser.getmSurname())) {
+                mProfileFullName.setText(newUser.getmName() + " " + newUser.getmSurname());
+            } else {
+                mProfileFullName.setText("Unknown User");
+            }
+        }
+
+        UserDetails details = newUser.getmDetails();
+        if (details != null) {
+            if (details.getmProfession() != null) {
+                mProfession.setText(details.getmProfession());
+            }
+
+            if (details.getmInterests() != null) {
+                mInterests.setText(details.getmInterests());
+            }
+
+            if (details.getmUniversity() != null) {
+                mUniversity.setText(details.getmUniversity());
+            }
+
+            if (details.getmProgramme() != null) {
+                mProgramme.setText(details.getmProgramme());
+            }
+
+            if (details.getmBirthDate() != null) {
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                String date = format.format(details.getmBirthDate());
+                mBirthDate.setText(date);
+            }
+
+            if (details.getmLinkedin() != null) {
+                mLinkedin.setText(Html.fromHtml("<a href=\"http://" + details.getmLinkedin() + "\">" + details.getmLinkedin() + "</a> "));
+                mLinkedin.setMovementMethod(LinkMovementMethod.getInstance());
+            }
+
+            if (details.getmAcademia() != null) {
+                mAcademica.setText(Html.fromHtml("<a href=\"http://" + details.getmAcademia() + "\">" + details.getmAcademia() + "</a> "));
+                mAcademica.setMovementMethod(LinkMovementMethod.getInstance());
+            }
         }
     }
 

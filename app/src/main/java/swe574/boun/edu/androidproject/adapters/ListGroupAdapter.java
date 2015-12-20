@@ -90,7 +90,7 @@ public class ListGroupAdapter extends BaseAdapter {
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                     builder.setTitle("Join " + g.getmName());
-                    builder.setMessage("Do you want to apply ot the group " + g.getmName() + " ?");
+                    builder.setMessage("Do you want to apply to the group " + g.getmName() + " ?");
                     builder.setPositiveButton("Apply", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

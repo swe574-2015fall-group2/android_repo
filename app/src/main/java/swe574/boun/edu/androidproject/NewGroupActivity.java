@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -75,7 +77,10 @@ public class NewGroupActivity extends AppCompatActivity implements TokenComplete
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String[] splitted = ((SpannableStringBuilder) s).toString().split(",");
                 RequestQueue requestQueue = Volley.newRequestQueue(NewGroupActivity.this);
+                Toast.makeText(NewGroupActivity.this , splitted[splitted.length - 1] , Toast.LENGTH_LONG).show();
+
 
             }
 

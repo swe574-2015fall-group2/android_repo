@@ -16,6 +16,7 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import swe574.boun.edu.androidproject.message.App;
@@ -72,7 +73,7 @@ public class UpdateUserProfileTask extends AsyncTask<Void, Void, Boolean> {
             jsonObject.accumulate("id", mID);
             jsonObject.accumulate("firstname", mName);
             jsonObject.accumulate("lastname", mLastName);
-            jsonObject.accumulate("birthDate", mBirthDate);
+            jsonObject.accumulate("birthDate", App.mDefaultFormatter.format(mBirthDate));
             jsonObject.accumulate("profession", mProfession);
             jsonObject.accumulate("university", mUniversity);
             jsonObject.accumulate("programme", mProgramme);

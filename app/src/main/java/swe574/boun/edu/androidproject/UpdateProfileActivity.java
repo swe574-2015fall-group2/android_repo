@@ -15,9 +15,11 @@ import java.util.Calendar;
 
 import swe574.boun.edu.androidproject.model.OnTaskCompleted;
 import swe574.boun.edu.androidproject.model.User;
+import swe574.boun.edu.androidproject.model.UserDetails;
 import swe574.boun.edu.androidproject.tasks.UpdateUserProfileTask;
 
 public class UpdateProfileActivity extends AppCompatActivity {
+    private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
     private Button mUpdateButtonView;
     private AutoCompleteTextView mBirthDateView;
     private UpdateUserProfileTask mTask;
@@ -31,9 +33,12 @@ public class UpdateProfileActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         mUser = extras.getParcelable("user");
+        final Calendar calendar = Calendar.getInstance();
 
         final TextView nameTextView = (TextView) findViewById(R.id.first_name);
+        nameTextView.setText(mUser.getmName());
         final TextView surnameTextView = (TextView) findViewById(R.id.last_name);
+        surnameTextView.setText(mUser.getmSurname());
         final TextView professionTextView = (TextView) findViewById(R.id.textViewProfession);
         final TextView interestTextView = (TextView) findViewById(R.id.textViewInterests);
         final TextView universityTextView = (TextView) findViewById(R.id.textViewUniversity);
@@ -42,14 +47,29 @@ public class UpdateProfileActivity extends AppCompatActivity {
         final TextView linkedinTextView = (TextView) findViewById(R.id.textViewLinkedin);
         final TextView academiaTextView = (TextView) findViewById(R.id.textViewAcademica);
 
-        final Calendar calendar = Calendar.getInstance();
+
+        if(mUser.getmDetails() != null){
+            UserDetails details = mUser.getmDetails();
+
+            if(details.getmBirthDate() != null){
+                calendar.setTime(details.getmBirthDate());
+                birthDateTextView.setText(format.format(calendar.getTime()));
+            }
+
+            professionTextView.setText(details.getmProfession());
+            interestTextView.setText(details.getmInterests());
+            universityTextView.setText(details.getmUniversity());
+            programmeTextView.setText(details.getmProgramme());
+            linkedinTextView.setText(details.getmLinkedin());
+            academiaTextView.setText(details.getmAcademia());
+        }
+
         final DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, monthOfYear);
                 calendar.set(Calendar.DAY_OF_MONTH, monthOfYear);
-                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
                 mBirthDateView.setText(format.format(calendar.getTime()));
             }
         };

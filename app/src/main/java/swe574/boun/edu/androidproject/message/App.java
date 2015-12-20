@@ -3,10 +3,12 @@ package swe574.boun.edu.androidproject.message;
 import android.app.Application;
 import android.os.Handler;
 
+import java.text.SimpleDateFormat;
+
 import swe574.boun.edu.androidproject.tools.NativeLoader;
 
 public class App extends Application {
-
+    public static SimpleDateFormat mDefaultFormatter = new SimpleDateFormat("yyyy-MM-dd");
     public static volatile Handler applicationHandler = null;
     public static String mAuth;
     private static App Instance;

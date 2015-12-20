@@ -42,4 +42,8 @@ public class TagData implements Serializable {
     public static TagData fromTag(Tag tag){
         return new TagData(tag.getmLabel(), tag.getmDescription(), tag.getmClass());
     }
+
+    public Tag toTag(){
+        return new Tag(mLabel, mDescription, mClass);
+    }
 }

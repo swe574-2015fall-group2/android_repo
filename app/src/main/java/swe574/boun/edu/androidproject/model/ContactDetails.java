@@ -7,6 +7,17 @@ import android.os.Parcelable;
  * Created by Jongaros on 12/20/2015.
  */
 public final class ContactDetails implements Parcelable{
+    public static final Creator<ContactDetails> CREATOR = new Creator<ContactDetails>() {
+        @Override
+        public ContactDetails createFromParcel(Parcel in) {
+            return new ContactDetails(in);
+        }
+
+        @Override
+        public ContactDetails[] newArray(int size) {
+            return new ContactDetails[size];
+        }
+    };
     private final String mName;
     private final String mSurname;
     private final String mMail;
@@ -25,18 +36,6 @@ public final class ContactDetails implements Parcelable{
         mMail = in.readString();
         mPhone = in.readString();
     }
-
-    public static final Creator<ContactDetails> CREATOR = new Creator<ContactDetails>() {
-        @Override
-        public ContactDetails createFromParcel(Parcel in) {
-            return new ContactDetails(in);
-        }
-
-        @Override
-        public ContactDetails[] newArray(int size) {
-            return new ContactDetails[size];
-        }
-    };
 
     public String getmName() {
         return mName;

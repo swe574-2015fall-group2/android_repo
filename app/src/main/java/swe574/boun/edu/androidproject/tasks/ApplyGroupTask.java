@@ -1,10 +1,8 @@
 package swe574.boun.edu.androidproject.tasks;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.MalformedJsonException;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,7 +20,6 @@ import java.net.URL;
 import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.Group;
 import swe574.boun.edu.androidproject.model.OnTaskCompleted;
-import swe574.boun.edu.androidproject.model.User;
 
 /**
  * Created by Jongaros on 12/4/2015.

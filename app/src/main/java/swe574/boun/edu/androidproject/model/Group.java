@@ -17,7 +17,17 @@ import java.util.List;
 public final class Group implements Parcelable {
     public static final int MY_GROUPS = 1;
     public static final int ALL_GROUPS = 2;
+    public static final Creator<Group> CREATOR = new Creator<Group>() {
+        @Override
+        public Group createFromParcel(Parcel in) {
+            return new Group(in);
+        }
 
+        @Override
+        public Group[] newArray(int size) {
+            return new Group[size];
+        }
+    };
     private final Image mImage;
     private final String mName;
     private final String mDescription;
@@ -44,58 +54,6 @@ public final class Group implements Parcelable {
         mTags = in.createTypedArrayList(Tag.CREATOR);
         mUsers = in.createTypedArrayList(User.CREATOR);
         mJoined = in.readByte() != 0;
-    }
-
-    public static final Creator<Group> CREATOR = new Creator<Group>() {
-        @Override
-        public Group createFromParcel(Parcel in) {
-            return new Group(in);
-        }
-
-        @Override
-        public Group[] newArray(int size) {
-            return new Group[size];
-        }
-    };
-
-    public Image getmImage() {
-        return mImage;
-    }
-
-    public String getmName() {
-        return mName;
-    }
-
-    public String getmDescription() {
-        return mDescription;
-    }
-
-    public List<Tag> getmTags() {
-        return mTags;
-    }
-
-    public String getmID() {
-        return mID;
-    }
-
-    public boolean ismJoined() {
-        return mJoined;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(mImage, flags);
-        dest.writeString(mName);
-        dest.writeString(mDescription);
-        dest.writeString(mID);
-        dest.writeTypedList(mTags);
-        dest.writeTypedList(mUsers);
-        dest.writeByte((byte) (mJoined ? 1 : 0));
     }
 
     public static Group fromJsonString(JSONObject json) throws JSONException {
@@ -171,5 +129,45 @@ public final class Group implements Parcelable {
         }
         group = new Group(image, name, description, id, tags, joined , users);
         return group;
+    }
+
+    public Image getmImage() {
+        return mImage;
+    }
+
+    public String getmName() {
+        return mName;
+    }
+
+    public String getmDescription() {
+        return mDescription;
+    }
+
+    public List<Tag> getmTags() {
+        return mTags;
+    }
+
+    public String getmID() {
+        return mID;
+    }
+
+    public boolean ismJoined() {
+        return mJoined;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(mImage, flags);
+        dest.writeString(mName);
+        dest.writeString(mDescription);
+        dest.writeString(mID);
+        dest.writeTypedList(mTags);
+        dest.writeTypedList(mUsers);
+        dest.writeByte((byte) (mJoined ? 1 : 0));
     }
 }

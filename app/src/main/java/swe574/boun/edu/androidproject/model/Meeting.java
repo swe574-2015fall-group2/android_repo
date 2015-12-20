@@ -15,6 +15,17 @@ import java.util.List;
  * Created by Jongaros on 11/29/2015.
  */
 public final class Meeting implements Parcelable {
+    public static final Creator<Meeting> CREATOR = new Creator<Meeting>() {
+        @Override
+        public Meeting createFromParcel(Parcel in) {
+            return new Meeting(in);
+        }
+
+        @Override
+        public Meeting[] newArray(int size) {
+            return new Meeting[size];
+        }
+    };
     private final String mID;
     private final String mCreatorID;
     private final String mGroupID;
@@ -90,18 +101,6 @@ public final class Meeting implements Parcelable {
         mTentative = in.createStringArrayList();
         mTags = in.createTypedArrayList(Tag.CREATOR);
     }
-
-    public static final Creator<Meeting> CREATOR = new Creator<Meeting>() {
-        @Override
-        public Meeting createFromParcel(Parcel in) {
-            return new Meeting(in);
-        }
-
-        @Override
-        public Meeting[] newArray(int size) {
-            return new Meeting[size];
-        }
-    };
 
     public static Meeting createFromJSON(JSONObject o) throws JSONException {
         Meeting meeting = null;

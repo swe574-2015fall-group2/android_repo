@@ -15,32 +15,32 @@ public class TagData implements Serializable {
         this.mClass = mClass;
     }
 
+    public static TagData fromTag(Tag tag){
+        return new TagData(tag.getmLabel(), tag.getmDescription(), tag.getmClass());
+    }
+
     public String getmLabel() {
         return mLabel;
-    }
-
-    public String getmDescription() {
-        return mDescription;
-    }
-
-    public String getmClass() {
-        return mClass;
     }
 
     public void setmLabel(String mLabel) {
         this.mLabel = mLabel;
     }
 
+    public String getmDescription() {
+        return mDescription;
+    }
+
     public void setmDescription(String mDescription) {
         this.mDescription = mDescription;
     }
 
-    public void setmClass(String mClass) {
-        this.mClass = mClass;
+    public String getmClass() {
+        return mClass;
     }
 
-    public static TagData fromTag(Tag tag){
-        return new TagData(tag.getmLabel(), tag.getmDescription(), tag.getmClass());
+    public void setmClass(String mClass) {
+        this.mClass = mClass;
     }
 
     public Tag toTag(){

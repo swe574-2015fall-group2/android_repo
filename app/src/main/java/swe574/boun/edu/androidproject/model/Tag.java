@@ -10,6 +10,17 @@ import org.json.JSONObject;
  * Created by Jongaros on 12/19/2015.
  */
 public final class Tag implements Parcelable{
+    public static final Creator<Tag> CREATOR = new Creator<Tag>() {
+        @Override
+        public Tag createFromParcel(Parcel in) {
+            return new Tag(in);
+        }
+
+        @Override
+        public Tag[] newArray(int size) {
+            return new Tag[size];
+        }
+    };
     private final String mLabel;
     private final String mClass;
     private final String mDescription;
@@ -26,17 +37,27 @@ public final class Tag implements Parcelable{
         mDescription = in.readString();
     }
 
-    public static final Creator<Tag> CREATOR = new Creator<Tag>() {
-        @Override
-        public Tag createFromParcel(Parcel in) {
-            return new Tag(in);
+    public static Tag fromJsonObject(JSONObject jsonObject) throws JSONException {
+        Tag tag = null;
+
+        String label = null;
+        if(jsonObject.has("tag")){
+            label = jsonObject.getString("tag");
         }
 
-        @Override
-        public Tag[] newArray(int size) {
-            return new Tag[size];
+        String _class = null;
+        if(jsonObject.has("clazz")){
+            _class = jsonObject.getString("clazz");
         }
-    };
+
+        String description = null;
+        if(jsonObject.has("description")){
+            description = jsonObject.getString("description");
+        }
+
+        tag = new Tag(label, _class, description);
+        return tag;
+    }
 
     public String getmLabel() {
         return mLabel;
@@ -67,27 +88,5 @@ public final class Tag implements Parcelable{
         object.put("tag", mLabel);
         object.put("clazz", mClass);
         return object;
-    }
-
-    public static Tag fromJsonObject(JSONObject jsonObject) throws JSONException {
-        Tag tag = null;
-
-        String label = null;
-        if(jsonObject.has("tag")){
-            label = jsonObject.getString("tag");
-        }
-
-        String _class = null;
-        if(jsonObject.has("clazz")){
-            _class = jsonObject.getString("clazz");
-        }
-
-        String description = null;
-        if(jsonObject.has("description")){
-            description = jsonObject.getString("description");
-        }
-
-        tag = new Tag(label, _class, description);
-        return tag;
     }
 }

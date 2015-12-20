@@ -1,7 +1,6 @@
 package swe574.boun.edu.androidproject.tasks;
 
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.util.MalformedJsonException;
 import android.widget.ListView;
 

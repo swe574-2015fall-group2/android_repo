@@ -1,7 +1,6 @@
 package swe574.boun.edu.androidproject.tasks;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.MalformedJsonException;
 import android.widget.Toast;
@@ -19,8 +18,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import swe574.boun.edu.androidproject.HomeDrawerActivity;
-import swe574.boun.edu.androidproject.LoginActivity;
 import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.Group;
 

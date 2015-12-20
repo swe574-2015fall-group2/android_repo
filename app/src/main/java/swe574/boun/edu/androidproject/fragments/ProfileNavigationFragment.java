@@ -191,6 +191,14 @@ public class ProfileNavigationFragment extends HomeFragment {
             }
         });
 
+        Button mPrivacyButton = (Button) viewGroup.findViewById(R.id.buttonPrivacy);
+        mPrivacyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().beginTransaction().replace(((ViewGroup) getView().getParent()).getId(), new ProfilePrivacyFragment()).addToBackStack("profile").commit();
+            }
+        });
+
         return viewGroup;
     }
 

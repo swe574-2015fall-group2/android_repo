@@ -29,9 +29,7 @@ public class GroupTabFragment extends ModelFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_group_home, null, false);
-
-        TextView groupName = (TextView) rootView.findViewById(R.id.groupName);
-        groupName.setText(mGroup.getmName());
+        getActivity().setTitle(mGroup.getmName());
 
         final ListView list = (ListView) rootView.findViewById(R.id.group_calendar);
         GetGroupCalendarTask mCalendarTask = new GetGroupCalendarTask(mGroup, mUser, list, new OnTaskCompleted() {

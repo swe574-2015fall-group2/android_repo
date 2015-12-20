@@ -38,7 +38,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
         final TextView interestTextView = (TextView) findViewById(R.id.textViewInterests);
         final TextView universityTextView = (TextView) findViewById(R.id.textViewUniversity);
         final TextView programmeTextView = (TextView) findViewById(R.id.textViewProgramme);
-        TextView birthDateTextView = (TextView) findViewById(R.id.textViewBirthDate);
+        final TextView birthDateTextView = (TextView) findViewById(R.id.textViewBirthDate);
         final TextView linkedinTextView = (TextView) findViewById(R.id.textViewLinkedin);
         final TextView academiaTextView = (TextView) findViewById(R.id.textViewAcademica);
 
@@ -58,6 +58,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 new DatePickerDialog(UpdateProfileActivity.this, dateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+                birthDateTextView.setText(calendar.toString());
             }
         });
 

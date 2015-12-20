@@ -8,9 +8,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class ViewMeetingActivity extends AppCompatActivity {
+import swe574.boun.edu.androidproject.model.Meeting;
+import swe574.boun.edu.androidproject.model.User;
 
-    private ViewMeetingTask mMeetingTask;
+public class ViewMeetingActivity extends AppCompatActivity {
+    private User mUser;
+    private Meeting mMeeting;
     private TextView mMeetingTags;
     private TextView mMeetingLocation;
     private TextView mMeetingDay;
@@ -23,6 +26,9 @@ public class ViewMeetingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_meeting);
+        Intent i = getIntent();
+        mUser = i.getParcelableExtra("user");
+        mMeeting = i.getParcelableExtra("meeting");
 
         Button mFindPeople = (Button) findViewById(R.id.meetingPeople);
         mFindPeople.setOnClickListener(new View.OnClickListener() {
@@ -33,28 +39,7 @@ public class ViewMeetingActivity extends AppCompatActivity {
             }
         });
 
-        mMeetingTask = null;
-    }
 
-    private class ViewMeetingTask extends AsyncTask<Void, Void, Void> {
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            mMeetingAgenda = (TextView) findViewById(R.id.meetingAgenda);
-            mMeetingDay = (TextView) findViewById(R.id.MeetingDay);
-            mMeetingLocation = (TextView) findViewById(R.id.MeetingLocation);
-            mMeetingMonth = (TextView) findViewById(R.id.MeetingMonth);
-            mMeetingTags = (TextView) findViewById(R.id.meetingTags);
-            mMeetingToDo = (TextView) findViewById(R.id.meetingToDo);
-            mMeetingYear = (TextView) findViewById(R.id.MeetingYear);
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            //TODO Implement webservice
-            return null;
-        }
     }
 }

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import swe574.boun.edu.androidproject.HomeDrawerActivity;
 import swe574.boun.edu.androidproject.NewGroupActivity;
@@ -27,6 +28,7 @@ import swe574.boun.edu.androidproject.tasks.FetchMyGroupsTask;
  */
 public class HomeNavigationFragment extends HomeFragment {
     private ListView mMyGroupsListView;
+    boolean first = true;
 
     public HomeNavigationFragment() {
         // Required empty public constructor
@@ -78,5 +80,29 @@ public class HomeNavigationFragment extends HomeFragment {
     public void onResume() {
         super.onResume();
         getActivity().setTitle("Home");
+        ViewGroup view = (ViewGroup) ((ViewGroup) getActivity().findViewById(android.R.id.content)).getChildAt(0);
+        if(!first){
+            FetchMyGroupsTask mTask = new FetchMyGroupsTask(view, mUser, new OnTaskCompleted() {
+                @Override
+                public void onTaskCompleted(Bundle extras) {
+                    if (mMyGroupsListView.getAdapter() == null) {
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.item_nogroups, R.id.textview, new String[]{"No groups are found. Click here to create a group."});
+                        mMyGroupsListView.setAdapter(adapter);
+                        mMyGroupsListView.setOnTouchListener(new View.OnTouchListener() {
+                            @Override
+                            public boolean onTouch(View v, MotionEvent event) {
+                                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                                    Intent i = new Intent(getContext(), NewGroupActivity.class);
+                                    startActivityForResult(i, HomeDrawerActivity.NEW_GROUP);
+                                }
+                                return true;
+                            }
+                        });
+                    }
+                }
+            });
+            mTask.execute();
+        }
+        first = false;
     }
 }

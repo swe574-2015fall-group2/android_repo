@@ -15,6 +15,82 @@ import java.util.List;
  * Created by Jongaros on 11/29/2015.
  */
 public final class Meeting implements Parcelable {
+    private final String mID;
+    private final String mCreatorID;
+    private final String mGroupID;
+    private final String mName;
+    private final Date mDate;
+    private final String mTimeZone;
+    private final List<String> mAgenda;
+    private final List<String> mToDo;
+    private final String mStartHour;
+    private final String mEndHour;
+    private final long mActual;
+    private final String mLocation;
+    private final String mDescription;
+    private final String mStatus;
+    private final String mType;
+    private final boolean isPin;
+    private final ContactDetails mDetails;
+    private final List<String> mInvited;
+    private final List<String> mAttended;
+    private final List<String> mRejected;
+    private final List<String> mTentative;
+    private final List<Tag> mTags;
+
+    public Meeting(String mID, String mCreatorID, String mGroupID, String mName, Date mDate, String mTimeZone, List<String> mAgenda,
+                   List<String> mToDo, String mStartHour, String mEndHour, long mActual, String mLocation, String mDescription,
+                   String mStatus, String mType, boolean isPin, ContactDetails mDetails, List<String> mInvited, List<String> mAttended,
+                   List<String> mRejected, List<String> mTentative, List<Tag> mTags) {
+        this.mID = mID;
+        this.mCreatorID = mCreatorID;
+        this.mGroupID = mGroupID;
+        this.mName = mName;
+        this.mDate = mDate;
+        this.mTimeZone = mTimeZone;
+        this.mAgenda = mAgenda;
+        this.mToDo = mToDo;
+        this.mStartHour = mStartHour;
+        this.mEndHour = mEndHour;
+        this.mActual = mActual;
+        this.mLocation = mLocation;
+        this.mDescription = mDescription;
+        this.mStatus = mStatus;
+        this.mType = mType;
+        this.isPin = isPin;
+        this.mDetails = mDetails;
+        this.mInvited = mInvited;
+        this.mAttended = mAttended;
+        this.mRejected = mRejected;
+        this.mTentative = mTentative;
+        this.mTags = mTags;
+    }
+
+    protected Meeting(Parcel in) {
+        mID = in.readString();
+        mCreatorID = in.readString();
+        mGroupID = in.readString();
+        mName = in.readString();
+        mDate = (Date) in.readSerializable();
+        mTimeZone = in.readString();
+        mAgenda = in.createStringArrayList();
+        mToDo = in.createStringArrayList();
+        mStartHour = in.readString();
+        mEndHour = in.readString();
+        mActual = in.readLong();
+        mLocation = in.readString();
+        mDescription = in.readString();
+        mStatus = in.readString();
+        mType = in.readString();
+        isPin = in.readByte() != 0;
+        mDetails = in.readParcelable(ContactDetails.class.getClassLoader());
+        mInvited = in.createStringArrayList();
+        mAttended = in.createStringArrayList();
+        mRejected = in.createStringArrayList();
+        mTentative = in.createStringArrayList();
+        mTags = in.createTypedArrayList(Tag.CREATOR);
+    }
+
     public static final Creator<Meeting> CREATOR = new Creator<Meeting>() {
         @Override
         public Meeting createFromParcel(Parcel in) {
@@ -26,64 +102,53 @@ public final class Meeting implements Parcelable {
             return new Meeting[size];
         }
     };
-    private final String mID;
-    private final Date mDate;
-    private final List<String> mAgenda;
-    private final List<String> mToDo;
-    private final long mEstimate;
-    private final long mActual;
-    private final String mLocation;
-    private final String mDescription;
-    private final String mStatus;
-    private final String mType;
-    private final List<User> mInvited;
-    private final List<User> mAttended;
-
-    public Meeting(String mID, Date mDate, List<String> mAgenda, List<String> mToDo, long mEstimate, long mActual, String mLocation,
-                   String mDescription, String mStatus, String mType, List<User> mInvited, List<User> mAttended) {
-        this.mID = mID;
-        this.mDate = mDate;
-        this.mAgenda = mAgenda;
-        this.mToDo = mToDo;
-        this.mEstimate = mEstimate;
-        this.mActual = mActual;
-        this.mLocation = mLocation;
-        this.mDescription = mDescription;
-        this.mStatus = mStatus;
-        this.mType = mType;
-        this.mInvited = mInvited;
-        this.mAttended = mAttended;
-    }
-
-    protected Meeting(Parcel in) {
-        mID = in.readString();
-        mDate = (Date) in.readSerializable();
-        mAgenda = in.createStringArrayList();
-        mToDo = in.createStringArrayList();
-        mEstimate = in.readLong();
-        mActual = in.readLong();
-        mLocation = in.readString();
-        mDescription = in.readString();
-        mStatus = in.readString();
-        mType = in.readString();
-        mInvited = in.createTypedArrayList(User.CREATOR);
-        mAttended = in.createTypedArrayList(User.CREATOR);
-    }
 
     public static Meeting createFromJSON(JSONObject o) throws JSONException {
         Meeting meeting = null;
-        if (!o.has("id"))
-            throw new IllegalArgumentException("Meeting object is invalidated.");
-        String id = o.getString("id");
-        Date date = null;
+        JSONObject result = o;
+        if(o.has("result")){
+            result = o.getJSONObject("result");
+        }
+        if(o.has("meeting")){
+            result = o.getJSONObject("meeting");
+        }
+        if(result.has("meeting")){
+            result = result.getJSONObject("meeting");
+        }
 
-        if (o.has("datetime")) {
-            date = (Date) o.get("datetime");
+        String id = null;
+        if(result.has("id")){
+            id = result.getString("id");
+        }
+
+        String creator = null;
+        if(result.has("creatorId")){
+            creator = result.getString("creatorId");
+        }
+
+        String group = null;
+        if(result.has("groupId")){
+            group = result.getString("groupId");
+        }
+
+        String name = null;
+        if(result.has("name")){
+            name = result.getString("name");
+        }
+
+        Date date = null;
+        if (result.has("datetime")) {
+            date = (Date) result.get("datetime");
+        }
+
+        String timezone = null;
+        if(result.has("timezone")){
+            timezone = result.getString("timezone");
         }
 
         List<String> agenda = null;
-        if (o.has("agendaSet")) {
-            JSONArray agendaset = o.getJSONArray("agendaSet");
+        if (result.has("agendaSet")) {
+            JSONArray agendaset = result.getJSONArray("agendaSet");
             if (agendaset != null) {
                 agenda = new ArrayList<>();
                 for (int i = 0; i < agendaset.length(); i++) {
@@ -93,8 +158,8 @@ public final class Meeting implements Parcelable {
         }
 
         List<String> todo = null;
-        if (o.has("todoSet")) {
-            JSONArray todoset = o.getJSONArray("todoSet");
+        if (result.has("todoSet")) {
+            JSONArray todoset = result.getJSONArray("todoSet");
             if (todoset != null) {
                 todo = new ArrayList<>();
                 for (int i = 0; i < todoset.length(); i++) {
@@ -103,66 +168,185 @@ public final class Meeting implements Parcelable {
             }
         }
 
-        long esti = 0;
-        if (o.has("estimatedDuration")) {
-            esti = o.getInt("estimatedDuration");
+        String starthour = null;
+        if (result.has("startHour")){
+            starthour = result.getString("startHour");
         }
 
-        long act = 0;
-        if (o.has("actualDuration")) {
-            act = o.getInt("actualDuration");
+        String endhour = null;
+        if (result.has("endHour")){
+            endhour = result.getString("endHour");
         }
 
-        String loc = null;
-        if (o.has("location")) {
-            loc = o.getString("location");
+        long actual = 0;
+        if (result.has("actualDuration")) {
+            actual = o.getLong("actualDuration");
+        }
+
+        String location = null;
+        if (result.has("location")) {
+            location = result.getString("location");
         }
 
         String desc = null;
-        if (o.has("description")) {
-            desc = o.getString("description");
+        if (result.has("description")) {
+            desc = result.getString("description");
         }
 
         String status = null;
-        if (o.has("status")) {
-            status = o.getString("status");
+        if (result.has("status")) {
+            status = result.getString("status");
         }
 
         String type = null;
-        if (o.has("type")) {
-            type = o.getString("type");
+        if (result.has("type")) {
+            type = result.getString("type");
         }
 
-        List<User> invited = null;
-        if (o.has("invitedUserSet")) {
-            JSONArray inviset = o.getJSONArray("invitedUserSet");
+        boolean pin = false;
+        if( result.has("isPinned")){
+            pin = result.getBoolean("isPinned");
+        }
+
+        ContactDetails details = null;
+        if(result.has("contactDetails")){
+            JSONObject object = result.getJSONObject("contactDetails");
+
+            String cname = null;
+            if(object.has("name")){
+                cname = object.getString("name");
+            }
+
+            String csurname = null;
+            if(object.has("surname")){
+                csurname = object.getString("surname");
+            }
+
+            String cmail = null;
+            if(object.has("email")){
+                cmail = object.getString("email");
+            }
+
+            String cphone = null;
+            if(object.has("phoneNumber")){
+                cphone = object.getString("phoneNumber");
+            }
+
+            details = new ContactDetails(cname, csurname, cmail, cphone);
+        }
+
+        List<String> invited = null;
+        if (result.has("invitedUserSet")) {
+            JSONArray inviset = result.getJSONArray("invitedUserSet");
             if (inviset != null) {
                 invited = new ArrayList<>();
                 for (int i = 0; i < inviset.length(); i++) {
-                    // invited.add(((JSONObject) inviset.get(i)).toString());
+                    invited.add(inviset.get(i).toString());
                 }
             }
         }
 
-        List<User> attended = null;
-        if (o.has("attandedUserSet")) {
-            JSONArray attset = o.getJSONArray("attandedUserSet");
+        List<String> attended = null;
+        if (result.has("attandedUserSet")) {
+            JSONArray attset = result.getJSONArray("attandedUserSet");
             if (attset != null) {
                 attended = new ArrayList<>();
                 for (int i = 0; i < attset.length(); i++) {
-                    // attended.add(((JSONObject) attset.get(i)).toString());
+                    attended.add(attset.get(i).toString());
                 }
             }
         }
-        return new Meeting(id, date, agenda, todo, esti, act, loc, desc, status, type, invited, attended);
+
+        List<String> rejected = null;
+        if (result.has("rejectedUserSet")) {
+            JSONArray attset = result.getJSONArray("rejectedUserSet");
+            if (attset != null) {
+                rejected = new ArrayList<>();
+                for (int i = 0; i < attset.length(); i++) {
+                    rejected.add(attset.get(i).toString());
+                }
+            }
+        }
+
+        List<String> tentitive = null;
+        if (result.has("tentativeUserSet")) {
+            JSONArray attset = result.getJSONArray("tentativeUserSet");
+            if (attset != null) {
+                tentitive = new ArrayList<>();
+                for (int i = 0; i < attset.length(); i++) {
+                    tentitive.add(attset.get(i).toString());
+                }
+            }
+        }
+
+        List<Tag> tags = null;
+        if(result.has("tagList")){
+            tags = new ArrayList<>();
+            JSONArray array = result.getJSONArray("tagList");
+
+            for(int i = 0 ; i < array.length() ; i++){
+                Tag tag = Tag.fromJsonObject(array.getJSONObject(i));
+                tags.add(tag);
+            }
+        }
+
+        meeting = new Meeting(id, creator, group, name, date, timezone, agenda, todo, starthour, endhour, actual, location, desc, status, type, pin, details, invited, attended, rejected, tentitive, tags);
+        return meeting;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mID);
+        dest.writeString(mCreatorID);
+        dest.writeString(mGroupID);
+        dest.writeString(mName);
+        dest.writeSerializable(mDate);
+        dest.writeString(mTimeZone);
+        dest.writeStringList(mAgenda);
+        dest.writeStringList(mToDo);
+        dest.writeString(mStartHour);
+        dest.writeString(mEndHour);
+        dest.writeLong(mActual);
+        dest.writeString(mLocation);
+        dest.writeString(mDescription);
+        dest.writeString(mStatus);
+        dest.writeString(mType);
+        dest.writeByte((byte) (isPin ? 1 : 0));
+        dest.writeParcelable(mDetails, flags);
+        dest.writeStringList(mInvited);
+        dest.writeStringList(mAttended);
+        dest.writeStringList(mRejected);
+        dest.writeStringList(mTentative);
+        dest.writeTypedList(mTags);
     }
 
     public String getmID() {
         return mID;
     }
 
+    public String getmCreatorID() {
+        return mCreatorID;
+    }
+
+    public String getmGroupID() {
+        return mGroupID;
+    }
+
+    public String getmName() {
+        return mName;
+    }
+
     public Date getmDate() {
         return mDate;
+    }
+
+    public String getmTimeZone() {
+        return mTimeZone;
     }
 
     public List<String> getmAgenda() {
@@ -173,8 +357,12 @@ public final class Meeting implements Parcelable {
         return mToDo;
     }
 
-    public long getmEstimate() {
-        return mEstimate;
+    public String getmStartHour() {
+        return mStartHour;
+    }
+
+    public String getmEndHour() {
+        return mEndHour;
     }
 
     public long getmActual() {
@@ -197,32 +385,31 @@ public final class Meeting implements Parcelable {
         return mType;
     }
 
-    public List<User> getmInvited() {
+    public boolean isPin() {
+        return isPin;
+    }
+
+    public ContactDetails getmDetails() {
+        return mDetails;
+    }
+
+    public List<String> getmInvited() {
         return mInvited;
     }
 
-    public List<User> getmAttended() {
+    public List<String> getmAttended() {
         return mAttended;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public List<String> getmRejected() {
+        return mRejected;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mID);
-        dest.writeSerializable(mDate);
-        dest.writeList(mAgenda);
-        dest.writeList(mToDo);
-        dest.writeLong(mEstimate);
-        dest.writeLong(mActual);
-        dest.writeString(mLocation);
-        dest.writeString(mDescription);
-        dest.writeString(mStatus);
-        dest.writeString(mType);
-        dest.writeList(mInvited);
-        dest.writeList(mAttended);
+    public List<String> getmTentative() {
+        return mTentative;
+    }
+
+    public List<Tag> getmTags() {
+        return mTags;
     }
 }

@@ -3,17 +3,23 @@ package swe574.boun.edu.androidproject.fragments;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import swe574.boun.edu.androidproject.HomeDrawerActivity;
+import swe574.boun.edu.androidproject.NewGroupActivity;
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.model.ModelFragment;
+import swe574.boun.edu.androidproject.model.OnTaskCompleted;
 import swe574.boun.edu.androidproject.tasks.GetGroupCalendarTask;
 import swe574.boun.edu.androidproject.tasks.LeaveGroupTask;
 
@@ -31,8 +37,16 @@ public class GroupTabFragment extends ModelFragment {
         TextView groupName = (TextView) rootView.findViewById(R.id.groupName);
         groupName.setText(mGroup.getmName());
 
-        ListView list = (ListView) rootView.findViewById(R.id.group_calendar);
-        GetGroupCalendarTask mCalendarTask = new GetGroupCalendarTask(mGroup, mUser, list);
+        final ListView list = (ListView) rootView.findViewById(R.id.group_calendar);
+        GetGroupCalendarTask mCalendarTask = new GetGroupCalendarTask(mGroup, mUser, list, new OnTaskCompleted() {
+            @Override
+            public void onTaskCompleted(Bundle extras) {
+                if (list.getAdapter() == null) {
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.item_nogroups, R.id.textview, new String[]{"No planned meetings are found."});
+                    list.setAdapter(adapter);
+                }
+            }
+        });
         mCalendarTask.execute();
 
         Button leaveButton = (Button) rootView.findViewById(R.id.button_leave);

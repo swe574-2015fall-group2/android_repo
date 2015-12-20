@@ -36,6 +36,28 @@ public final class Group implements Parcelable {
         this.mUsers = mUsers;
     }
 
+    protected Group(Parcel in) {
+        mImage = in.readParcelable(Image.class.getClassLoader());
+        mName = in.readString();
+        mDescription = in.readString();
+        mID = in.readString();
+        mTags = in.createTypedArrayList(Tag.CREATOR);
+        mUsers = in.createTypedArrayList(User.CREATOR);
+        mJoined = in.readByte() != 0;
+    }
+
+    public static final Creator<Group> CREATOR = new Creator<Group>() {
+        @Override
+        public Group createFromParcel(Parcel in) {
+            return new Group(in);
+        }
+
+        @Override
+        public Group[] newArray(int size) {
+            return new Group[size];
+        }
+    };
+
     public Image getmImage() {
         return mImage;
     }
@@ -72,6 +94,7 @@ public final class Group implements Parcelable {
         dest.writeString(mDescription);
         dest.writeString(mID);
         dest.writeTypedList(mTags);
+        dest.writeTypedList(mUsers);
         dest.writeByte((byte) (mJoined ? 1 : 0));
     }
 

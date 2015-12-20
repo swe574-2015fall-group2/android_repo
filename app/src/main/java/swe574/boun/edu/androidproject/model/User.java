@@ -56,10 +56,10 @@ public final class User implements Parcelable {
         mUsername = in.readString();
         mName = in.readString();
         mSurname = in.readString();
+        mStatus = in.readString();
         mImage = in.readParcelable(Image.class.getClassLoader());
         mRoles = in.createTypedArrayList(UserRole.CREATOR);
         mDetails = in.readParcelable(UserDetails.class.getClassLoader());
-        mStatus = in.readString();
     }
 
     public static User createFromJSON(String mID, JSONObject object) throws JSONException {
@@ -238,9 +238,9 @@ public final class User implements Parcelable {
         dest.writeString(mUsername);
         dest.writeString(mName);
         dest.writeString(mSurname);
+        dest.writeString(mStatus);
         dest.writeParcelable(mImage, flags);
         dest.writeTypedList(mRoles);
         dest.writeParcelable(mDetails, flags);
-        dest.writeString(mStatus);
     }
 }

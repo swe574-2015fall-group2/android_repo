@@ -1,6 +1,7 @@
 package swe574.boun.edu.androidproject.tasks;
 
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.MalformedJsonException;
 import android.widget.ListView;
 
@@ -23,21 +24,29 @@ import swe574.boun.edu.androidproject.adapters.ListMeetingAdapter;
 import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.Group;
 import swe574.boun.edu.androidproject.model.Meeting;
+import swe574.boun.edu.androidproject.model.OnTaskCompleted;
 import swe574.boun.edu.androidproject.model.User;
 
 /**
  * Created by Jongaros on 11/29/2015.
  */
 public class GetGroupCalendarTask extends AsyncTask<Void, Void, ArrayList<Meeting>> {
+    private OnTaskCompleted mListener;
     private ListView mParent;
     private User mUser;
     private Group mGroup;
     private boolean mResult;
 
-    public GetGroupCalendarTask(Group mGroup, User mUser, ListView mParent) {
+    public GetGroupCalendarTask(Group mGroup, User mUser, ListView mParent, OnTaskCompleted mListener) {
         this.mGroup = mGroup;
         this.mUser = mUser;
         this.mParent = mParent;
+        this.mListener = mListener;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        mParent.setAdapter(null);
     }
 
     @Override
@@ -124,9 +133,11 @@ public class GetGroupCalendarTask extends AsyncTask<Void, Void, ArrayList<Meetin
 
     @Override
     protected void onPostExecute(ArrayList<Meeting> result) {
-        if (mResult) {
+        if (mResult && result.size() > 0) {
+            mParent.setOnTouchListener(null);
             ListMeetingAdapter adapter = new ListMeetingAdapter(mUser, mParent.getContext(), result);
             mParent.setAdapter(adapter);
         }
+        mListener.onTaskCompleted(null);
     }
 }

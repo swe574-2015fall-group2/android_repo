@@ -78,24 +78,5 @@ public class HomeNavigationFragment extends HomeFragment {
     public void onResume() {
         super.onResume();
         getActivity().setTitle("Home");
-        FetchMyGroupsTask mTask = new FetchMyGroupsTask(mMyGroupsListView, mUser, new OnTaskCompleted() {
-            @Override
-            public void onTaskCompleted(Bundle extras) {
-                if (mMyGroupsListView.getAdapter() == null) {
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.item_nogroups, R.id.textview, new String[]{"No groups are found. Click here to create a group."});
-                    mMyGroupsListView.setAdapter(adapter);
-                    mMyGroupsListView.setOnTouchListener(new View.OnTouchListener() {
-                        @Override
-                        public boolean onTouch(View v, MotionEvent event) {
-                            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                                Intent i = new Intent(getContext(), NewGroupActivity.class);
-                                startActivityForResult(i, HomeDrawerActivity.NEW_GROUP);
-                            }
-                            return true;
-                        }
-                    });
-                }
-            }
-        });
     }
 }

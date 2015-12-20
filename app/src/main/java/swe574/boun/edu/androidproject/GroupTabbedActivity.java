@@ -50,7 +50,7 @@ public class GroupTabbedActivity extends AppCompatActivity {
         User user = intent.getParcelableExtra("user");
         Group group = intent.getParcelableExtra("group");
         mTitles = new ArrayList<>();
-        mTitles.addAll(Arrays.asList("Home", "Meetings", "Discussions", "Notes"));
+        mTitles.addAll(Arrays.asList("Group", "Meetings", "Discussions", "Notes"));
         mSectionsPagerAdapter = new GroupTabPagerAdapter(getSupportFragmentManager(), mTitles, 4, user, group);
 
         // Set up the ViewPager with the sections adapter.

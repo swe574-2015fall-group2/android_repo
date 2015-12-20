@@ -2,6 +2,7 @@ package swe574.boun.edu.androidproject.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,7 +42,10 @@ public final class Tag implements Parcelable{
         Tag tag = null;
 
         String label = null;
-        if(jsonObject.has("tag")){
+        if(jsonObject.has("label")){
+            label = jsonObject.getString("label");
+        }
+        else if(jsonObject.has("tag")){
             label = jsonObject.getString("tag");
         }
 
@@ -86,7 +90,11 @@ public final class Tag implements Parcelable{
     public JSONObject toJson() throws JSONException {
         JSONObject object = new JSONObject();
         object.put("tag", mLabel);
-        object.put("clazz", mClass);
+        if(mClass.equals("null") || mClass == null || TextUtils.isEmpty(mClass))
+        object.put("clazz", null);
+        else{
+            object.put("clazz", mClass);
+        }
         return object;
     }
 }

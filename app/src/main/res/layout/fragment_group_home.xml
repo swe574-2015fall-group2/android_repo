@@ -34,7 +34,7 @@
                 android:layout_toStartOf="@+id/button_leave"
                 android:text="No Description"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:maxLines="5"/>
+                android:maxLines="3"/>
 
             <Button
                 android:id="@+id/button_leave"

@@ -19,7 +19,6 @@ import java.net.URL;
 
 import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.Group;
-import swe574.boun.edu.androidproject.model.OnTaskCompleted;
 
 /**
  * Created by Jongaros on 12/4/2015.

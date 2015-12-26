@@ -23,9 +23,9 @@ import swe574.boun.edu.androidproject.GroupTabbedActivity;
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.model.Group;
 import swe574.boun.edu.androidproject.model.Image;
-import swe574.boun.edu.androidproject.model.OnTaskCompleted;
 import swe574.boun.edu.androidproject.model.User;
 import swe574.boun.edu.androidproject.tasks.ApplyGroupTask;
+import swe574.boun.edu.androidproject.tasks.OnTaskCompleted;
 
 public class ListGroupAdapter extends BaseAdapter {
     private final ArrayList<Group> mGroups;

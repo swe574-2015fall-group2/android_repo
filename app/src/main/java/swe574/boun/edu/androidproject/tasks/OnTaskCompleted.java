@@ -1,4 +1,4 @@
-package swe574.boun.edu.androidproject.model;
+package swe574.boun.edu.androidproject.tasks;
 
 import android.os.Bundle;
 

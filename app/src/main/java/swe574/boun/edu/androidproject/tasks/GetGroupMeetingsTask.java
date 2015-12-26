@@ -23,7 +23,6 @@ import swe574.boun.edu.androidproject.adapters.ListMeetingAdapter;
 import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.Group;
 import swe574.boun.edu.androidproject.model.Meeting;
-import swe574.boun.edu.androidproject.model.OnTaskCompleted;
 import swe574.boun.edu.androidproject.model.User;
 
 /**
@@ -106,12 +105,15 @@ public class GetGroupMeetingsTask extends AsyncTask<Void, Void, ArrayList<Meetin
             JSONObject object = new JSONObject(responseJson);
             if (object.getString("status").equals("success")) {
                 ArrayList<Meeting> meetings = new ArrayList<>();
-                if (object.has("meetingList")) {
-                    JSONArray array = object.getJSONObject("result").getJSONArray("meetingList");
-                    int limit = array.length();
-                    for (int i = 0; i < limit; i++) {
-                        JSONObject o = array.getJSONObject(i);
-                        meetings.add(Meeting.createFromJSON(o));
+                if (object.has("result")) {
+                    object = object.getJSONObject("result");
+                    if (object.has("meetingList")) {
+                        JSONArray array = object.getJSONArray("meetingList");
+                        int limit = array.length();
+                        for (int i = 0; i < limit; i++) {
+                            JSONObject o = array.getJSONObject(i);
+                            meetings.add(Meeting.createFromJSON(o));
+                        }
                     }
                 }
                 mResult = true;

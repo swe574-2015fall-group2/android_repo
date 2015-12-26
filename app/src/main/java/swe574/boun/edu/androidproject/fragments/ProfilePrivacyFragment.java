@@ -31,8 +31,7 @@ public class ProfilePrivacyFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked == true) {
                     privacyText.setText("Everyone can send you messages.");
-                }
-                else {
+                } else {
                     privacyText.setText("Noone can send you messages.");
                 }
             }

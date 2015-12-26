@@ -50,8 +50,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import swe574.boun.edu.androidproject.message.App;
-import swe574.boun.edu.androidproject.model.OnTaskCompleted;
 import swe574.boun.edu.androidproject.model.User;
+import swe574.boun.edu.androidproject.tasks.OnTaskCompleted;
 import swe574.boun.edu.androidproject.tasks.QuerySelfTask;
 
 import static android.Manifest.permission.READ_CONTACTS;

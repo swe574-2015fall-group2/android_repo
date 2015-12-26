@@ -15,7 +15,7 @@ public class TagData implements Serializable {
         this.mClass = mClass;
     }
 
-    public static TagData fromTag(Tag tag){
+    public static TagData fromTag(Tag tag) {
         return new TagData(tag.getmLabel(), tag.getmDescription(), tag.getmClass());
     }
 
@@ -43,7 +43,7 @@ public class TagData implements Serializable {
         this.mClass = mClass;
     }
 
-    public Tag toTag(){
+    public Tag toTag() {
         return new Tag(mLabel, mDescription, mClass);
     }
 }

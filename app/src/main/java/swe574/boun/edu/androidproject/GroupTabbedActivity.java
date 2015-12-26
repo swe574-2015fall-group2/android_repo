@@ -92,7 +92,7 @@ public class GroupTabbedActivity extends AppCompatActivity {
             return true;
         }
 
-        if(id == R.id.action_list_members){
+        if (id == R.id.action_list_members) {
             // TODO IMPLEMENT
         }
 

@@ -3,12 +3,21 @@ package swe574.boun.edu.androidproject.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
-import java.net.URL;
 import java.util.Date;
 import java.util.List;
 
-public final class Resource implements Parcelable{
+public final class Resource implements Parcelable {
+    public static final Creator<Resource> CREATOR = new Creator<Resource>() {
+        @Override
+        public Resource createFromParcel(Parcel in) {
+            return new Resource(in);
+        }
+
+        @Override
+        public Resource[] newArray(int size) {
+            return new Resource[size];
+        }
+    };
     private final String mID;
     private final List<Tag> mTags;
     private final String mDescription;
@@ -42,18 +51,6 @@ public final class Resource implements Parcelable{
         mDate = (Date) in.readSerializable();
         mCreator = in.readParcelable(User.class.getClassLoader());
     }
-
-    public static final Creator<Resource> CREATOR = new Creator<Resource>() {
-        @Override
-        public Resource createFromParcel(Parcel in) {
-            return new Resource(in);
-        }
-
-        @Override
-        public Resource[] newArray(int size) {
-            return new Resource[size];
-        }
-    };
 
     public String getmID() {
         return mID;

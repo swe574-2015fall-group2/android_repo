@@ -15,10 +15,10 @@ import android.widget.TextView;
 
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.model.ModelFragment;
-import swe574.boun.edu.androidproject.model.OnTaskCompleted;
 import swe574.boun.edu.androidproject.model.Tag;
 import swe574.boun.edu.androidproject.tasks.GetGroupCalendarTask;
 import swe574.boun.edu.androidproject.tasks.LeaveGroupTask;
+import swe574.boun.edu.androidproject.tasks.OnTaskCompleted;
 
 public class GroupTabFragment extends ModelFragment {
 
@@ -49,11 +49,11 @@ public class GroupTabFragment extends ModelFragment {
 
         TextView tags = (TextView) rootView.findViewById(R.id.group_tags);
         String tagText = "";
-        for(Tag t: mGroup.getmTags()){
+        for (Tag t : mGroup.getmTags()) {
             tagText += "#" + t.getmLabel() + ", ";
         }
-        if(!tagText.equals("") && tagText.length() >= 2)
-        tags.setText(tagText.substring(0, tagText.length() - 2));
+        if (!tagText.equals("") && tagText.length() >= 2)
+            tags.setText(tagText.substring(0, tagText.length() - 2));
 
         Button leaveButton = (Button) rootView.findViewById(R.id.button_leave);
         leaveButton.setOnClickListener(new View.OnClickListener() {

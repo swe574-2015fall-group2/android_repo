@@ -74,7 +74,7 @@ public final class CreateGroupTask extends AsyncTask<Void, Void, Boolean> {
             jsonObject.accumulate("name", mName);
             jsonObject.accumulate("description", mDescription);
             JSONArray jsonArray = new JSONArray();
-            for(Tag t : mTags){
+            for (Tag t : mTags) {
                 jsonArray.put(t.toJson());
             }
             jsonObject.accumulate("tagList", jsonArray);

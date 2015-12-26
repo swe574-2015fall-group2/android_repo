@@ -13,9 +13,9 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import swe574.boun.edu.androidproject.model.OnTaskCompleted;
 import swe574.boun.edu.androidproject.model.User;
 import swe574.boun.edu.androidproject.model.UserDetails;
+import swe574.boun.edu.androidproject.tasks.OnTaskCompleted;
 import swe574.boun.edu.androidproject.tasks.UpdateUserProfileTask;
 
 public class UpdateProfileActivity extends AppCompatActivity {
@@ -48,10 +48,10 @@ public class UpdateProfileActivity extends AppCompatActivity {
         final TextView academiaTextView = (TextView) findViewById(R.id.textViewAcademica);
 
 
-        if(mUser.getmDetails() != null){
+        if (mUser.getmDetails() != null) {
             UserDetails details = mUser.getmDetails();
 
-            if(details.getmBirthDate() != null){
+            if (details.getmBirthDate() != null) {
                 calendar.setTime(details.getmBirthDate());
                 birthDateTextView.setText(format.format(calendar.getTime()));
             }

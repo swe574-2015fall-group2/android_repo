@@ -8,7 +8,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -106,190 +105,285 @@ public final class Meeting implements Parcelable {
     public static Meeting createFromJSON(JSONObject o) throws JSONException {
         Meeting meeting = null;
         JSONObject result = o;
-        if(o.has("result")){
+        if (o.has("result")) {
             result = o.getJSONObject("result");
         }
-        if(o.has("meeting")){
+        if (o.has("meeting")) {
             result = o.getJSONObject("meeting");
         }
-        if(result.has("meeting")){
+        if (result.has("meeting")) {
             result = result.getJSONObject("meeting");
         }
 
         String id = null;
-        if(result.has("id")){
-            id = result.getString("id");
+        if (result.has("id")) {
+            Object object = result.get("id");
+            if (object instanceof String) {
+                if ((id = (String) object).equals("null"))
+                    id = null;
+            }
         }
 
         String creator = null;
-        if(result.has("creatorId")){
-            creator = result.getString("creatorId");
+        if (result.has("creatorId")) {
+            Object object = result.get("creatorId");
+            if (object instanceof String) {
+                if ((creator = (String) object).equals("null"))
+                    creator = null;
+            }
         }
 
         String group = null;
-        if(result.has("groupId")){
-            group = result.getString("groupId");
+        if (result.has("groupId")) {
+            Object object = result.get("groupId");
+            if (object instanceof String) {
+                if ((group = (String) object).equals("null"))
+                    group = null;
+            }
         }
 
         String name = null;
-        if(result.has("name")){
-            name = result.getString("name");
+        if (result.has("name")) {
+            Object object = result.get("name");
+            if (object instanceof String) {
+                if ((name = (String) object).equals("null"))
+                    name = null;
+            }
         }
 
         Date date = null;
         if (result.has("datetime")) {
-            String[] datestring = result.getString("datetime").split("-");
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(Integer.parseInt(datestring[0]), Integer.parseInt(datestring[1]), Integer.parseInt(datestring[2]));
-            date = calendar.getTime();
+            Object object = result.get("datetime");
+            if (object instanceof Long) {
+                long time = (long) object;
+                if (time != 0) {
+                    date = new Date(time);
+                }
+            }
         }
 
         String timezone = null;
-        if(result.has("timezone")){
-            timezone = result.getString("timezone");
+        if (result.has("timezone")) {
+            Object object = result.get("timezone");
+            if (object instanceof String) {
+                if ((timezone = (String) object).equals("null"))
+                    timezone = null;
+            }
         }
 
         List<String> agenda = null;
         if (result.has("agendaSet")) {
-            JSONArray agendaset = result.getJSONArray("agendaSet");
-            if (agendaset != null) {
-                agenda = new ArrayList<>();
-                for (int i = 0; i < agendaset.length(); i++) {
-                    agenda.add(agendaset.get(i).toString());
+            Object object = result.get("agendaSet");
+            if (object instanceof JSONArray) {
+                JSONArray agendaset = (JSONArray) object;
+                if (agendaset != null) {
+                    agenda = new ArrayList<>();
+                    for (int i = 0; i < agendaset.length(); i++) {
+                        agenda.add(agendaset.get(i).toString());
+                    }
                 }
             }
         }
 
         List<String> todo = null;
         if (result.has("todoSet")) {
-            JSONArray todoset = result.getJSONArray("todoSet");
-            if (todoset != null) {
-                todo = new ArrayList<>();
-                for (int i = 0; i < todoset.length(); i++) {
-                    todo.add(todoset.get(i).toString());
+            Object object = result.get("todoSet");
+            if (object instanceof JSONArray) {
+                JSONArray todoset = (JSONArray) object;
+                if (todoset != null) {
+                    todo = new ArrayList<>();
+                    for (int i = 0; i < todoset.length(); i++) {
+                        todo.add(todoset.get(i).toString());
+                    }
                 }
             }
         }
 
         String starthour = null;
-        if (result.has("startHour")){
-            starthour = result.getString("startHour");
+        if (result.has("startHour")) {
+            Object object = result.get("startHour");
+            if (object instanceof String) {
+                if ((starthour = (String) object).equals("null"))
+                    starthour = null;
+            }
         }
 
         String endhour = null;
-        if (result.has("endHour")){
-            endhour = result.getString("endHour");
+        if (result.has("endHour")) {
+            Object object = result.get("endHour");
+            if (object instanceof String) {
+                if ((endhour = (String) object).equals("null"))
+                    endhour = null;
+            }
         }
 
         long actual = 0;
         if (result.has("actualDuration")) {
-            actual = o.getLong("actualDuration");
+            Object object = result.get("endHour");
+            if (object instanceof Long) {
+                actual = (long) object;
+            }
         }
 
         String location = null;
         if (result.has("location")) {
-            location = result.getString("location");
+            Object object = result.get("location");
+            if (object instanceof String) {
+                if ((location = (String) object).equals("null"))
+                    location = null;
+            }
         }
 
         String desc = null;
         if (result.has("description")) {
-            desc = result.getString("description");
+            Object object = result.get("description");
+            if (object instanceof String) {
+                if ((desc = (String) object).equals("null"))
+                    desc = null;
+            }
         }
 
         String status = null;
         if (result.has("status")) {
-            status = result.getString("status");
+            Object object = result.get("status");
+            if (object instanceof String) {
+                if ((status = (String) object).equals("null"))
+                    status = null;
+            }
         }
 
         String type = null;
         if (result.has("type")) {
-            type = result.getString("type");
+            Object object = result.get("type");
+            if (object instanceof String) {
+                if ((type = (String) object).equals("null"))
+                    type = null;
+            }
         }
 
         boolean pin = false;
-        if( result.has("isPinned")){
-            pin = result.getBoolean("isPinned");
+        if (result.has("isPinned")) {
+            Object object = result.get("isPinned");
+            if (object instanceof Boolean) {
+                pin = (boolean) object;
+            }
         }
 
         ContactDetails details = null;
-        if(result.has("contactDetails")){
-            JSONObject object = result.getJSONObject("contactDetails");
+        if (result.has("contactDetails")) {
+            Object object = result.get("contactDetails");
+            if (object instanceof JSONObject) {
+                JSONObject jsonObject = (JSONObject) object;
+                if (jsonObject.keys().hasNext()) {
 
-            String cname = null;
-            if(object.has("name")){
-                cname = object.getString("name");
+                    String cname = null;
+                    if (jsonObject.has("name")) {
+                        object = jsonObject.get("name");
+                        if (object instanceof String) {
+                            if ((cname = (String) object).equals("null"))
+                                cname = null;
+                        }
+                    }
+
+                    String csurname = null;
+                    if (jsonObject.has("surname")) {
+                        object = jsonObject.get("surname");
+                        if (object instanceof String) {
+                            if ((csurname = (String) object).equals("null"))
+                                csurname = null;
+                        }
+                    }
+
+                    String cmail = null;
+                    if (jsonObject.has("email")) {
+                        object = jsonObject.get("email");
+                        if (object instanceof String) {
+                            if ((cmail = (String) object).equals("null"))
+                                cmail = null;
+                        }
+                    }
+
+                    String cphone = null;
+                    if (jsonObject.has("phoneNumber")) {
+                        object = jsonObject.get("phoneNumber");
+                        if (object instanceof String) {
+                            if ((cphone = (String) object).equals("null"))
+                                cphone = null;
+                        }
+                    }
+
+                    details = new ContactDetails(cname, csurname, cmail, cphone);
+                }
             }
-
-            String csurname = null;
-            if(object.has("surname")){
-                csurname = object.getString("surname");
-            }
-
-            String cmail = null;
-            if(object.has("email")){
-                cmail = object.getString("email");
-            }
-
-            String cphone = null;
-            if(object.has("phoneNumber")){
-                cphone = object.getString("phoneNumber");
-            }
-
-            details = new ContactDetails(cname, csurname, cmail, cphone);
         }
 
         List<String> invited = null;
         if (result.has("invitedUserSet")) {
-            JSONArray inviset = result.getJSONArray("invitedUserSet");
-            if (inviset != null) {
-                invited = new ArrayList<>();
-                for (int i = 0; i < inviset.length(); i++) {
-                    invited.add(inviset.get(i).toString());
+            Object object = result.get("invitedUserSet");
+            if ((object instanceof JSONArray)) {
+                JSONArray inviset = (JSONArray) object;
+                if (inviset != null) {
+                    invited = new ArrayList<>();
+                    for (int i = 0; i < inviset.length(); i++) {
+                        invited.add(inviset.get(i).toString());
+                    }
                 }
             }
         }
 
         List<String> attended = null;
         if (result.has("attandedUserSet")) {
-            JSONArray attset = result.getJSONArray("attandedUserSet");
-            if (attset != null) {
-                attended = new ArrayList<>();
-                for (int i = 0; i < attset.length(); i++) {
-                    attended.add(attset.get(i).toString());
+            Object object = result.get("attandedUserSet");
+            if ((object instanceof JSONArray)) {
+                JSONArray attset = result.getJSONArray("attandedUserSet");
+                if (attset != null) {
+                    attended = new ArrayList<>();
+                    for (int i = 0; i < attset.length(); i++) {
+                        attended.add(attset.get(i).toString());
+                    }
                 }
             }
         }
 
         List<String> rejected = null;
         if (result.has("rejectedUserSet")) {
-            JSONArray attset = result.getJSONArray("rejectedUserSet");
-            if (attset != null) {
-                rejected = new ArrayList<>();
-                for (int i = 0; i < attset.length(); i++) {
-                    rejected.add(attset.get(i).toString());
+            Object object = result.get("rejectedUserSet");
+            if ((object instanceof JSONArray)) {
+                JSONArray attset = result.getJSONArray("rejectedUserSet");
+                if (attset != null) {
+                    rejected = new ArrayList<>();
+                    for (int i = 0; i < attset.length(); i++) {
+                        rejected.add(attset.get(i).toString());
+                    }
                 }
             }
         }
 
         List<String> tentitive = null;
         if (result.has("tentativeUserSet")) {
-            JSONArray attset = result.getJSONArray("tentativeUserSet");
-            if (attset != null) {
-                tentitive = new ArrayList<>();
-                for (int i = 0; i < attset.length(); i++) {
-                    tentitive.add(attset.get(i).toString());
+            Object object = result.get("tentativeUserSet");
+            if ((object instanceof JSONArray)) {
+                JSONArray attset = result.getJSONArray("tentativeUserSet");
+                if (attset != null) {
+                    tentitive = new ArrayList<>();
+                    for (int i = 0; i < attset.length(); i++) {
+                        tentitive.add(attset.get(i).toString());
+                    }
                 }
             }
         }
 
         List<Tag> tags = null;
-        if(result.has("tagList")){
-            tags = new ArrayList<>();
-            JSONArray array = result.getJSONArray("tagList");
+        if (result.has("tagList")) {
+            Object object = result.get("tagList");
+            if ((object instanceof JSONArray)) {
+                tags = new ArrayList<>();
+                JSONArray array = result.getJSONArray("tagList");
 
-            for(int i = 0 ; i < array.length() ; i++){
-                Tag tag = Tag.fromJsonObject(array.getJSONObject(i));
-                tags.add(tag);
+                for (int i = 0; i < array.length(); i++) {
+                    Tag tag = Tag.fromJsonObject(array.getJSONObject(i));
+                    tags.add(tag);
+                }
             }
         }
 

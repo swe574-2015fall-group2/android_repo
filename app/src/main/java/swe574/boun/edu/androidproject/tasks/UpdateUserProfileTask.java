@@ -16,11 +16,9 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import swe574.boun.edu.androidproject.message.App;
-import swe574.boun.edu.androidproject.model.OnTaskCompleted;
 
 /**
  * Created by Jongaros on 12/13/2015.

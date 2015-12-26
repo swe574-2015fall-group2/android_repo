@@ -10,7 +10,7 @@ import org.json.JSONObject;
 /**
  * Created by Jongaros on 12/19/2015.
  */
-public final class Tag implements Parcelable{
+public final class Tag implements Parcelable {
     public static final Creator<Tag> CREATOR = new Creator<Tag>() {
         @Override
         public Tag createFromParcel(Parcel in) {
@@ -42,20 +42,19 @@ public final class Tag implements Parcelable{
         Tag tag = null;
 
         String label = null;
-        if(jsonObject.has("label")){
+        if (jsonObject.has("label")) {
             label = jsonObject.getString("label");
-        }
-        else if(jsonObject.has("tag")){
+        } else if (jsonObject.has("tag")) {
             label = jsonObject.getString("tag");
         }
 
         String _class = null;
-        if(jsonObject.has("clazz")){
+        if (jsonObject.has("clazz")) {
             _class = jsonObject.getString("clazz");
         }
 
         String description = null;
-        if(jsonObject.has("description")){
+        if (jsonObject.has("description")) {
             description = jsonObject.getString("description");
         }
 
@@ -90,9 +89,9 @@ public final class Tag implements Parcelable{
     public JSONObject toJson() throws JSONException {
         JSONObject object = new JSONObject();
         object.put("tag", mLabel);
-        if(mClass.equals("null") || mClass == null || TextUtils.isEmpty(mClass))
-        object.put("clazz", null);
-        else{
+        if (mClass.equals("null") || mClass == null || TextUtils.isEmpty(mClass))
+            object.put("clazz", null);
+        else {
             object.put("clazz", mClass);
         }
         return object;

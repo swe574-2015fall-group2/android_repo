@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by Jongaros on 12/20/2015.
  */
-public final class ContactDetails implements Parcelable{
+public final class ContactDetails implements Parcelable {
     public static final Creator<ContactDetails> CREATOR = new Creator<ContactDetails>() {
         @Override
         public ContactDetails createFromParcel(Parcel in) {

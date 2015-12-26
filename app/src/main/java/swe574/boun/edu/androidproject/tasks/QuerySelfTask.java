@@ -18,7 +18,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import swe574.boun.edu.androidproject.message.App;
-import swe574.boun.edu.androidproject.model.OnTaskCompleted;
 import swe574.boun.edu.androidproject.model.User;
 
 /**

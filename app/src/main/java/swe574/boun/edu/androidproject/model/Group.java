@@ -59,41 +59,41 @@ public final class Group implements Parcelable {
     public static Group fromJsonString(JSONObject json) throws JSONException {
         Group group = null;
         JSONObject result = json;
-        if(json.has("result")){
+        if (json.has("result")) {
             result = json.getJSONObject("result");
         }
 
         String id = null;
-        if(result.has("id")){
+        if (result.has("id")) {
             id = result.getString("id");
         }
 
         String name = null;
-        if(result.has("name")){
+        if (result.has("name")) {
             name = result.getString("name");
         }
 
         String description = null;
-        if(result.has("description")){
+        if (result.has("description")) {
             description = result.getString("description");
         }
 
         boolean joined = false;
-        if(result.has("joined")){
+        if (result.has("joined")) {
             joined = result.getBoolean("joined");
         }
 
         Image image = null;
-        if(result.has("image")){
+        if (result.has("image")) {
             JSONObject jsonObject = result.getJSONObject("image");
 
             String type = null;
-            if(jsonObject.has("type")){
+            if (jsonObject.has("type")) {
                 type = jsonObject.getString("type");
             }
 
             Bitmap bitmap = null;
-            if(jsonObject.has("base64Image")){
+            if (jsonObject.has("base64Image")) {
                 String base64Image = jsonObject.getString("base64Image");
                 byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
                 Bitmap original = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
@@ -107,27 +107,27 @@ public final class Group implements Parcelable {
         }
 
         List<Tag> tags = null;
-        if(result.has("tagList")){
+        if (result.has("tagList")) {
             tags = new ArrayList<>();
             JSONArray array = result.getJSONArray("tagList");
 
-            for(int i = 0 ; i < array.length() ; i++){
+            for (int i = 0; i < array.length(); i++) {
                 Tag tag = Tag.fromJsonObject(array.getJSONObject(i));
                 tags.add(tag);
             }
         }
 
         List<User> users = null;
-        if(result.has("userList")){
+        if (result.has("userList")) {
             users = new ArrayList<>();
             JSONArray array = result.getJSONArray("userList");
 
-            for(int i = 0 ; i < array.length() ; i++){
+            for (int i = 0; i < array.length(); i++) {
                 User user = User.createFromJSON(null, array.getJSONObject(i));
                 users.add(user);
             }
         }
-        group = new Group(image, name, description, id, tags, joined , users);
+        group = new Group(image, name, description, id, tags, joined, users);
         return group;
     }
 

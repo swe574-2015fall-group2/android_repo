@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.text.TextUtils;
@@ -35,9 +34,9 @@ import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.UpdateProfileActivity;
 import swe574.boun.edu.androidproject.model.HomeFragment;
 import swe574.boun.edu.androidproject.model.Image;
-import swe574.boun.edu.androidproject.model.OnTaskCompleted;
 import swe574.boun.edu.androidproject.model.User;
 import swe574.boun.edu.androidproject.model.UserDetails;
+import swe574.boun.edu.androidproject.tasks.OnTaskCompleted;
 import swe574.boun.edu.androidproject.tasks.QuerySelfTask;
 import swe574.boun.edu.androidproject.tasks.UploadProfilePictureTask;
 

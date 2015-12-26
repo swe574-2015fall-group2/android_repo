@@ -6,10 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.TextView;
 
-import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
@@ -57,13 +56,14 @@ public class ListMeetingAdapter extends BaseAdapter {
             meetingDate.setTime(meeting.getmDate());
 
             TextView mDay = (TextView) viewGroup.findViewById(R.id.meeting_day);
-            mDay.setText(meetingDate.get(Calendar.DATE));
+            mDay.setText((String.valueOf(meetingDate.get(Calendar.DATE))));
 
             TextView mMonth = (TextView) viewGroup.findViewById(R.id.meeting_month);
-            mMonth.setText(DateFormatSymbols.getInstance().getMonths()[meetingDate.get(Calendar.MONTH)]);
+            SimpleDateFormat monthName = new SimpleDateFormat("MMM");
+            mMonth.setText(monthName.format(meetingDate.getTime()));
 
             TextView mYear = (TextView) viewGroup.findViewById(R.id.meeting_year);
-            mYear.setText(meetingDate.get(Calendar.YEAR));
+            mYear.setText(String.valueOf(meetingDate.get(Calendar.YEAR)));
         }
 
         TextView mDesc = (TextView) viewGroup.findViewById(R.id.meeting_description);
@@ -87,7 +87,6 @@ public class ListMeetingAdapter extends BaseAdapter {
         });
 
         viewGroup.setBackground(mContext.getResources().getDrawable(R.drawable.style_groupitem));
-        viewGroup.setLayoutParams(new GridView.LayoutParams(GridView.AUTO_FIT, 200));
 
         return viewGroup;
     }

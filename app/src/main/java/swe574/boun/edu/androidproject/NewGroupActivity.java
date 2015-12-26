@@ -9,14 +9,12 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -34,7 +32,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.Tag;
@@ -43,7 +40,7 @@ import swe574.boun.edu.androidproject.ui.TagData;
 import swe574.boun.edu.androidproject.ui.TagsCompletionView;
 
 
-public class NewGroupActivity extends AppCompatActivity implements TokenCompleteTextView.TokenListener{
+public class NewGroupActivity extends AppCompatActivity implements TokenCompleteTextView.TokenListener {
     private Button mCreateButton;
     private EditText mGroupNameView;
     private EditText mGroupDescriptionView;
@@ -67,17 +64,16 @@ public class NewGroupActivity extends AppCompatActivity implements TokenComplete
             public View getView(int position, View convertView, ViewGroup parent) {
                 if (convertView == null) {
 
-                    LayoutInflater l = (LayoutInflater)getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+                    LayoutInflater l = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
                     convertView = l.inflate(R.layout.tag_layout, parent, false);
                 }
 
                 final TagData tagData = getItem(position);
-                ((TextView)convertView.findViewById(R.id.label)).setText(tagData.getmLabel());
-                if(tagData.getmDescription() == null || tagData.getmDescription().equals("null")){
-                    ((TextView)convertView.findViewById(R.id.description)).setText("");
-                }
-                else {
-                    ((TextView)convertView.findViewById(R.id.description)).setText(tagData.getmDescription());
+                ((TextView) convertView.findViewById(R.id.label)).setText(tagData.getmLabel());
+                if (tagData.getmDescription() == null || tagData.getmDescription().equals("null")) {
+                    ((TextView) convertView.findViewById(R.id.description)).setText("");
+                } else {
+                    ((TextView) convertView.findViewById(R.id.description)).setText(tagData.getmDescription());
                 }
 
                 return convertView;
@@ -97,6 +93,7 @@ public class NewGroupActivity extends AppCompatActivity implements TokenComplete
         mTagsCompletionView.setTokenClickStyle(TokenCompleteTextView.TokenClickStyle.Select);
         TextWatcher textWatcher = new TextWatcher() {
             int counter;
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 String[] splitted = ((SpannableStringBuilder) s).toString().split(",");
@@ -108,17 +105,17 @@ public class NewGroupActivity extends AppCompatActivity implements TokenComplete
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String[] splitted = ((SpannableStringBuilder) s).toString().split(",");
                 String tag = splitted[splitted.length - 1];
-                if(counter > (splitted.length) / 3){
+                if (counter > (splitted.length) / 3) {
                     mTags.remove(mTags.size() - 1);
                 }
-                if(tag.length() < 2){
+                if (tag.length() < 2) {
                     return;
                 }
 
                 final JSONObject object = new JSONObject();
                 try {
-                    object.accumulate("authToken" , App.mAuth);
-                    object.accumulate("queryString" , tag);
+                    object.accumulate("authToken", App.mAuth);
+                    object.accumulate("queryString", tag);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -130,14 +127,13 @@ public class NewGroupActivity extends AppCompatActivity implements TokenComplete
                         Log.v("RESPONSE", response);
                         try {
                             JSONObject result = new JSONObject(response);
-                            if(result.has("result")){
+                            if (result.has("result")) {
                                 result = result.getJSONObject("result");
-                            }
-                            else{
+                            } else {
                                 return;
                             }
                             JSONArray array = result.getJSONArray("dataList");
-                            for(int i = 0 ; i < array.length() ; i++){
+                            for (int i = 0; i < array.length(); i++) {
                                 JSONObject tagObject = array.getJSONObject(i);
                                 tagList.add(TagData.fromTag(Tag.fromJsonObject(tagObject)));
                             }
@@ -179,7 +175,7 @@ public class NewGroupActivity extends AppCompatActivity implements TokenComplete
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TagData data = mAdapter.getItem(position);
                 mTags.add(data.toTag());
-                Log.v("TAG" , data.getmLabel());
+                Log.v("TAG", data.getmLabel());
             }
         });
 

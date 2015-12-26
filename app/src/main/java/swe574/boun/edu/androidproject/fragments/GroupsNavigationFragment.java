@@ -21,9 +21,9 @@ import swe574.boun.edu.androidproject.NewGroupActivity;
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.ViewAllGroupsActivity;
 import swe574.boun.edu.androidproject.model.HomeFragment;
-import swe574.boun.edu.androidproject.model.OnTaskCompleted;
 import swe574.boun.edu.androidproject.tasks.FetchMyGroupsTask;
 import swe574.boun.edu.androidproject.tasks.FetchRecommendedGroupsTask;
+import swe574.boun.edu.androidproject.tasks.OnTaskCompleted;
 
 /**
  * A simple {@link Fragment} subclass.

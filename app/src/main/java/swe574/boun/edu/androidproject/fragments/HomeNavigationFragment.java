@@ -10,14 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import swe574.boun.edu.androidproject.HomeDrawerActivity;
 import swe574.boun.edu.androidproject.NewGroupActivity;
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.model.HomeFragment;
-import swe574.boun.edu.androidproject.model.OnTaskCompleted;
 import swe574.boun.edu.androidproject.tasks.FetchMyGroupsTask;
+import swe574.boun.edu.androidproject.tasks.OnTaskCompleted;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,8 +26,8 @@ import swe574.boun.edu.androidproject.tasks.FetchMyGroupsTask;
  * create an instance of this fragment.
  */
 public class HomeNavigationFragment extends HomeFragment {
-    private ListView mMyGroupsListView;
     boolean first = true;
+    private ListView mMyGroupsListView;
 
     public HomeNavigationFragment() {
         // Required empty public constructor
@@ -81,7 +80,7 @@ public class HomeNavigationFragment extends HomeFragment {
         super.onResume();
         getActivity().setTitle("Home");
         ViewGroup view = (ViewGroup) ((ViewGroup) getActivity().findViewById(android.R.id.content)).getChildAt(0);
-        if(!first){
+        if (!first) {
             FetchMyGroupsTask mTask = new FetchMyGroupsTask(view, mUser, new OnTaskCompleted() {
                 @Override
                 public void onTaskCompleted(Bundle extras) {

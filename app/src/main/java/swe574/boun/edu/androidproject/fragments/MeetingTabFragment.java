@@ -11,8 +11,8 @@ import android.widget.ListView;
 
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.model.ModelFragment;
-import swe574.boun.edu.androidproject.model.OnTaskCompleted;
 import swe574.boun.edu.androidproject.tasks.GetGroupMeetingsTask;
+import swe574.boun.edu.androidproject.tasks.OnTaskCompleted;
 
 public class MeetingTabFragment extends ModelFragment {
     public MeetingTabFragment() {

@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import swe574.boun.edu.androidproject.R;
+import swe574.boun.edu.androidproject.ViewMeetingActivity;
 import swe574.boun.edu.androidproject.model.Meeting;
 import swe574.boun.edu.androidproject.model.User;
 
@@ -79,7 +80,7 @@ public class ListMeetingAdapter extends BaseAdapter {
         viewGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent();
+                Intent i = new Intent(mContext, ViewMeetingActivity.class);
                 i.putExtra("user", mUser);
                 i.putExtra("meeting", meeting);
                 mContext.startActivity(i);

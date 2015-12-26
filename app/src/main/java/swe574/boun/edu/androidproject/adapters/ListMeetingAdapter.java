@@ -67,9 +67,9 @@ public class ListMeetingAdapter extends BaseAdapter {
             mYear.setText(String.valueOf(meetingDate.get(Calendar.YEAR)));
         }
 
-        TextView mDesc = (TextView) viewGroup.findViewById(R.id.meeting_description);
-        if (meeting.getmDescription() != null) {
-            mDesc.setText(meeting.getmDescription());
+        TextView mName = (TextView) viewGroup.findViewById(R.id.meeting_name);
+        if (meeting.getmName() != null) {
+            mName.setText(meeting.getmName());
         }
 
         TextView mLocation = (TextView) viewGroup.findViewById(R.id.meeting_location);

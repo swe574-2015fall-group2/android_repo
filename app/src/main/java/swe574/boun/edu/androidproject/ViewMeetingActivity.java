@@ -56,6 +56,7 @@ public class ViewMeetingActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                setTitle(mMeeting.getmName());
             }
         }, new Response.ErrorListener() {
             @Override

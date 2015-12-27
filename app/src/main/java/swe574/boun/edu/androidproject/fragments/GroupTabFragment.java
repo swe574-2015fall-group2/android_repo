@@ -50,7 +50,7 @@ public class GroupTabFragment extends ModelFragment {
         TextView tags = (TextView) rootView.findViewById(R.id.group_tags);
         String tagText = "";
         for (Tag t : mGroup.getmTags()) {
-            tagText += "#" + t.getmLabel() + ", ";
+            tagText += "#" + t.getLabel() + ", ";
         }
         if (!tagText.equals("") && tagText.length() >= 2)
             tags.setText(tagText.substring(0, tagText.length() - 2));

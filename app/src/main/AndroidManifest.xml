@@ -52,7 +52,8 @@
         <activity
             android:name=".NewDiscussionActivity"
             android:label="New Discussion" />
-        <activity android:name=".UpdateProfileActivity"></activity>
+        <activity android:name=".UpdateProfileActivity" />
+        <activity android:name=".ViewDiscussionActivity"></activity>
     </application>
 
 </manifest>

@@ -10,7 +10,7 @@ import org.json.JSONObject;
 /**
  * Created by Jongaros on 12/19/2015.
  */
-public final class Tag implements Parcelable {
+public class Tag implements Parcelable {
     public static final Creator<Tag> CREATOR = new Creator<Tag>() {
         @Override
         public Tag createFromParcel(Parcel in) {
@@ -22,20 +22,23 @@ public final class Tag implements Parcelable {
             return new Tag[size];
         }
     };
-    private final String mLabel;
-    private final String mClass;
-    private final String mDescription;
+    private String label;
+    private String clazz;
+    private String description;
 
-    public Tag(String mLabel, String mClass, String mDescription) {
-        this.mLabel = mLabel;
-        this.mClass = mClass;
-        this.mDescription = mDescription;
+    public Tag() {
+    }
+
+    public Tag(String label, String clazz, String description) {
+        this.label = label;
+        this.clazz = clazz;
+        this.description = description;
     }
 
     protected Tag(Parcel in) {
-        mLabel = in.readString();
-        mClass = in.readString();
-        mDescription = in.readString();
+        label = in.readString();
+        clazz = in.readString();
+        description = in.readString();
     }
 
     public static Tag fromJsonObject(JSONObject jsonObject) throws JSONException {
@@ -62,16 +65,28 @@ public final class Tag implements Parcelable {
         return tag;
     }
 
-    public String getmLabel() {
-        return mLabel;
+    public String getLabel() {
+        return label;
     }
 
-    public String getmClass() {
-        return mClass;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
-    public String getmDescription() {
-        return mDescription;
+    public String getClazz() {
+        return clazz;
+    }
+
+    public void setClazz(String clazz) {
+        this.clazz = clazz;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
@@ -81,18 +96,18 @@ public final class Tag implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mLabel);
-        dest.writeString(mClass);
-        dest.writeString(mDescription);
+        dest.writeString(label);
+        dest.writeString(clazz);
+        dest.writeString(description);
     }
 
     public JSONObject toJson() throws JSONException {
         JSONObject object = new JSONObject();
-        object.put("tag", mLabel);
-        if (mClass.equals("null") || mClass == null || TextUtils.isEmpty(mClass))
+        object.put("tag", label);
+        if (clazz.equals("null") || clazz == null || TextUtils.isEmpty(clazz))
             object.put("clazz", null);
         else {
-            object.put("clazz", mClass);
+            object.put("clazz", clazz);
         }
         return object;
     }

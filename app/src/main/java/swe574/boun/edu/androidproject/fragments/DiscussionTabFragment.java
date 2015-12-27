@@ -71,18 +71,13 @@ public class DiscussionTabFragment extends ModelFragment {
                                 }
                                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, adapterHolder);
                                 mDiscussionListView.setAdapter(arrayAdapter);
-                                mDiscussionListView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                mDiscussionListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
-                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                         Discussion discussion = mDiscussionList.get(position);
                                         Intent intent = new Intent(getContext(), ViewDiscussionActivity.class);
                                         intent.putExtra("discussion", discussion);
                                         startActivityForResult(intent, 2);
-                                    }
-
-                                    @Override
-                                    public void onNothingSelected(AdapterView<?> parent) {
-
                                     }
                                 });
                             }
@@ -93,17 +88,11 @@ public class DiscussionTabFragment extends ModelFragment {
                 }
                 if (mDiscussionListView.getAdapter() == null) {
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.item_nogroups, R.id.textview, new String[]{"No discussions are are found. Press here to create a discussion."});
-                    mDiscussionListView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    mDiscussionListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            ;
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             Intent intent = new Intent(getContext(), NewDiscussionActivity.class);
                             startActivityForResult(intent, 1);
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
-
                         }
                     });
                     mDiscussionListView.setAdapter(adapter);

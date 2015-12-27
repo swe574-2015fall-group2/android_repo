@@ -88,18 +88,13 @@ public class NoteTabFragment extends ModelFragment {
                                 }
                                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, adapterHolder);
                                 mNotesListView.setAdapter(arrayAdapter);
-                                mNotesListView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                mNotesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
-                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                         Note note = mNotesList.get(position);
                                         Intent intent = new Intent(getContext(), ViewNoteActivity.class);
                                         intent.putExtra("note", note);
                                         startActivityForResult(intent, 2);
-                                    }
-
-                                    @Override
-                                    public void onNothingSelected(AdapterView<?> parent) {
-
                                     }
                                 });
                             }
@@ -113,7 +108,6 @@ public class NoteTabFragment extends ModelFragment {
                     mNotesListView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            ;
                             Intent intent = new Intent(getContext(), NewNoteActivity.class);
                             startActivityForResult(intent, 1);
                         }

@@ -54,6 +54,7 @@
             android:label="New Discussion" />
         <activity android:name=".UpdateProfileActivity" />
         <activity android:name=".ViewDiscussionActivity"></activity>
+        <activity android:name=".ViewNoteActivity" />
     </application>
 
 </manifest>

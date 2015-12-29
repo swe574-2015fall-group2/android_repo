@@ -38,6 +38,7 @@ import swe574.boun.edu.androidproject.model.Tag;
 import swe574.boun.edu.androidproject.tasks.CreateGroupTask;
 import swe574.boun.edu.androidproject.ui.TagData;
 import swe574.boun.edu.androidproject.ui.TagsCompletionView;
+import swe574.boun.edu.androidproject.ui.TokenTextWatcher;
 
 
 public class NewGroupActivity extends AppCompatActivity implements TokenCompleteTextView.TokenListener {

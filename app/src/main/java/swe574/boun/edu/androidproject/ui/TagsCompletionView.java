@@ -3,9 +3,11 @@ package swe574.boun.edu.androidproject.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -44,5 +46,25 @@ public class TagsCompletionView extends TokenCompleteTextView<TagData> {
         } else {
             return new TagData(completionText, completionText, completionText);
         }
+    }
+
+    public void configurate(TagsArrayAdapter adapter, TokenListener listener, final TokenTextWatcher watcher){
+        if(adapter != null)
+        setAdapter(adapter);
+        if(listener != null)
+        setTokenListener(listener);
+        if(watcher != null)
+            addTextChangedListener(watcher);
+        setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TagData data = (TagData) parent.getAdapter().getItem(position);
+                watcher.addTag(data);
+            }
+        });
+        setTokenClickStyle(TokenClickStyle.Select);
+
+
+
     }
 }

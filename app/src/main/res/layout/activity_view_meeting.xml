@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_login"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -10,31 +11,23 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="swe574.boun.edu.androidproject.ViewMeetingActivity">
 
-    <ProgressBar
-        android:id="@+id/meeting_progress"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="false"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/background_form"
-        android:visibility="gone" />
-
     <RelativeLayout
         android:id="@+id/meeting_form"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2">
+        android:layout_weight="3"
+        android:background="@drawable/background_form"
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/meetingTags"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:text="PlaceHolder"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:maxLines="3"
+            android:nestedScrollingEnabled="true"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/MeetingLocation"
@@ -42,14 +35,16 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/meetingTags"
-            android:text="PlaceHolder" />
+            android:maxLines="1"
+            android:text="" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/MeetingLocation"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="40dp"
             android:layout_toEndOf="@+id/meetingTags"
             android:orientation="vertical">
 
@@ -59,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
-                android:text="Placeholder" />
+                android:text="" />
 
             <TextView
                 android:id="@+id/MeetingMonth"
@@ -67,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
-                android:text="PlaceHolder"
+                android:text=""
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
@@ -76,44 +71,83 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
-                android:text="Placeholder" />
+                android:text="" />
         </LinearLayout>
 
     </RelativeLayout>
 
-    <ScrollView
-        android:id="@+id/scrollView"
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3">
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/MeetingLocation"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="4.5"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/meetingAgenda"
-            style="@style/Base.TextAppearance.AppCompat.Medium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Placeholder" />
-    </ScrollView>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
-    <ScrollView
-        android:id="@+id/scrollView2"
+            <ListView
+                android:id="@+id/MeetingTodoListView"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/background_form"/>
+
+            <ListView
+                android:id="@+id/MeetingAgendaListView"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/background_form"/>
+        </TableRow>
+    </TableLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3">
+        android:layout_weight="2.5"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
+        android:background="@drawable/background_form">
 
-        <TextView
-            android:id="@+id/meetingToDo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Placeholder"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </ScrollView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/MeetingResourcesRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2">
+        </android.support.v7.widget.RecyclerView>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text=""
+                android:id="@+id/MeetingContactDetailsTextView" />
+        </RelativeLayout>
+    </LinearLayout>
 
     <Button
         android:id="@+id/meetingPeople"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="View People" />
+        android:background="@drawable/button_style"
+        android:text="View People"
+        android:textColor="@color/white" />
 
 </LinearLayout>

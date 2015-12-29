@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 
 import swe574.boun.edu.androidproject.fragments.GroupsNavigationFragment;
 import swe574.boun.edu.androidproject.fragments.HomeNavigationFragment;
@@ -27,6 +28,7 @@ public class HomeDrawerActivity extends AppCompatActivity
     private User mUser;
 
     private NavigationView mNavigationView;
+    private EditText mSearchEditTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,10 @@ public class HomeDrawerActivity extends AppCompatActivity
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         mUser = extras.getParcelable("user");
+
+        mSearchEditTextView = (EditText) findViewById(R.id.search_bar);
+
+
     }
 
     @Override

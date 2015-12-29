@@ -43,6 +43,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -367,10 +368,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         private final String mEmail;
         private final String mPassword;
         private User mUser;
+        private String mError;
 
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
+            mError = "Your username and/or password is incorrect";
         }
 
         @Override
@@ -402,6 +405,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
 
+
             httpURLConnection.setDoInput(true);
             httpURLConnection.setDoOutput(true);
             httpURLConnection.setRequestProperty("Content-Type", "application/json");
@@ -424,6 +428,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 e.printStackTrace();
                 return false;
             }
+
             // Create a writer to write on the output stream.
             BufferedWriter writer = null;
             try {
@@ -432,6 +437,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 e.printStackTrace();
                 return false;
             }
+
             // Send the post request
             try {
                 writer.write(json);
@@ -441,6 +447,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 httpURLConnection.connect();
             } catch (IOException e) {
                 e.printStackTrace();
+                if(e instanceof SocketTimeoutException){
+                    mError = "The server is in maintaince, please try again later.";
+                }
                 return false;
             }
             // Get response code
@@ -508,7 +517,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 });
                 querySelfTask.execute(mUser.getmID());
             } else {
-                Toast.makeText(LoginActivity.this, "Your username and/or password is incorrect", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, mError, Toast.LENGTH_SHORT).show();
             }
         }
 

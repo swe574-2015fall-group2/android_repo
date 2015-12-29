@@ -3,7 +3,6 @@ package swe574.boun.edu.androidproject.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,7 @@ import com.tokenautocomplete.TokenCompleteTextView;
 
 import swe574.boun.edu.androidproject.R;
 
-public class TagsCompletionView extends TokenCompleteTextView<TagData> {
+public abstract class TagsCompletionView extends TokenCompleteTextView<TagData> {
     public TagsCompletionView(Context context) {
         super(context);
     }
@@ -48,6 +47,8 @@ public class TagsCompletionView extends TokenCompleteTextView<TagData> {
         }
     }
 
+    public abstract void setUp();
+
     public void configurate(TagsArrayAdapter adapter, TokenListener listener, final TokenTextWatcher watcher){
         if(adapter != null)
         setAdapter(adapter);
@@ -59,12 +60,11 @@ public class TagsCompletionView extends TokenCompleteTextView<TagData> {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TagData data = (TagData) parent.getAdapter().getItem(position);
-                watcher.addTag(data);
+                if (watcher != null)
+                    watcher.addTag(data);
             }
         });
         setTokenClickStyle(TokenClickStyle.Select);
-
-
-
+        setUp();
     }
 }

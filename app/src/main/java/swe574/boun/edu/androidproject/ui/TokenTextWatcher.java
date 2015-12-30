@@ -1,25 +1,10 @@
 package swe574.boun.edu.androidproject.ui;
 
 import android.text.Editable;
-import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
-import android.util.Log;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import swe574.boun.edu.androidproject.message.App;
-import swe574.boun.edu.androidproject.model.Tag;
 
 /**
  * Created by Jongaros on 12/29/2015.
@@ -54,8 +39,8 @@ public abstract class TokenTextWatcher implements TextWatcher {
 
     }
 
-    public void addTag(TagData tagData){
-        if(mTags == null){
+    public void addTag(TagData tagData) {
+        if (mTags == null) {
             mTags = new ArrayList<>();
         }
         mTags.add(tagData);

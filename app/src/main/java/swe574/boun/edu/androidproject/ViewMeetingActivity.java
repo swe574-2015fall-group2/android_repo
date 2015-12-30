@@ -64,7 +64,7 @@ public class ViewMeetingActivity extends AppCompatActivity {
         mMeetingToDo = (ListView) findViewById(R.id.MeetingTodoListView);
         mMeetingDetails = (TextView) findViewById(R.id.MeetingContactDetailsTextView);
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        JSONRequest meetingRequest = new JSONRequest("http://162.243.215.160:9000/v1/meeting/get", new Response.Listener<String>() {
+        JSONRequest meetingRequest = new JSONRequest("http://162.243.18.170:9000/v1/meeting/get", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -83,29 +83,29 @@ public class ViewMeetingActivity extends AppCompatActivity {
                 mMeetingDay.setText(calendar.get(Calendar.DATE));
                 mMeetingMonth.setText(new SimpleDateFormat("MMM").format(mMeeting.getmDate()));
                 mMeetingYear.setText(calendar.get(Calendar.YEAR));
-                if(mMeeting.getmAgenda() != null) {
+                if (mMeeting.getmAgenda() != null) {
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(ViewMeetingActivity.this, android.R.layout.simple_list_item_1, mMeeting.getmAgenda());
                     mMeetingAgenda.setAdapter(adapter);
                 }
-                if(mMeeting.getmToDo() != null){
+                if (mMeeting.getmToDo() != null) {
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(ViewMeetingActivity.this, android.R.layout.simple_list_item_1, mMeeting.getmToDo());
                     mMeetingToDo.setAdapter(adapter);
                 }
-                if(mMeeting.getmDetails() != null){
+                if (mMeeting.getmDetails() != null) {
                     stringBuilder = new StringBuilder();
                     ContactDetails contactDetails = mMeeting.getmDetails();
-                    if(contactDetails.getmName() != null){
+                    if (contactDetails.getmName() != null) {
                         stringBuilder.append(contactDetails.getmName()).append(" ");
                     }
-                    if(contactDetails.getmSurname() != null){
+                    if (contactDetails.getmSurname() != null) {
                         stringBuilder.append(contactDetails.getmSurname()).append(" ");
                     }
                     stringBuilder.deleteCharAt(stringBuilder.length() - 1);
                     stringBuilder.append("\n");
-                    if(contactDetails.getmMail() != null){
+                    if (contactDetails.getmMail() != null) {
                         stringBuilder.append(contactDetails.getmMail()).append(" ");
                     }
-                    if(contactDetails.getmPhone() != null){
+                    if (contactDetails.getmPhone() != null) {
                         stringBuilder.append(contactDetails.getmPhone()).append(" ");
                     }
                     stringBuilder.deleteCharAt(stringBuilder.length() - 1);

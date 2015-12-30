@@ -10,6 +10,17 @@ import java.util.List;
  * Created by Jongaros on 12/27/2015.
  */
 public class Note implements Parcelable {
+    public static final Creator<Note> CREATOR = new Creator<Note>() {
+        @Override
+        public Note createFromParcel(Parcel in) {
+            return new Note(in);
+        }
+
+        @Override
+        public Note[] newArray(int size) {
+            return new Note[size];
+        }
+    };
     private String id;
     private String title;
     private String text;
@@ -34,18 +45,6 @@ public class Note implements Parcelable {
         createdAt = (Date) in.readSerializable();
         tagList = in.createTypedArrayList(Tag.CREATOR);
     }
-
-    public static final Creator<Note> CREATOR = new Creator<Note>() {
-        @Override
-        public Note createFromParcel(Parcel in) {
-            return new Note(in);
-        }
-
-        @Override
-        public Note[] newArray(int size) {
-            return new Note[size];
-        }
-    };
 
     public String getId() {
         return id;

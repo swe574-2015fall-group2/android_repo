@@ -37,7 +37,7 @@ public class ApplyGroupTask extends AsyncTask<Void, Void, Boolean> {
         try {
             HttpURLConnection httpURLConnection = null;
             // Create a new UrlConnection
-            URL postUrl = new URL("http://162.243.215.160:9000/v1/group/join");
+            URL postUrl = new URL("http://162.243.18.170:9000/v1/group/join");
             // Open the created connection to server.
             httpURLConnection = (HttpURLConnection) postUrl.openConnection();
             // Set up the post parameters

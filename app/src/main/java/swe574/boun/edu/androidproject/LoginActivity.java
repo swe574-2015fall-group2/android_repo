@@ -381,7 +381,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Create a new UrlConnection
             URL postUrl = null;
             try {
-                postUrl = new URL("http://162.243.215.160:9000/v1/user/login");
+                postUrl = new URL("http://162.243.18.170:9000/v1/user/login");
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
@@ -447,7 +447,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 httpURLConnection.connect();
             } catch (IOException e) {
                 e.printStackTrace();
-                if(e instanceof SocketTimeoutException){
+                if (e instanceof SocketTimeoutException) {
                     mError = "The server is in maintaince, please try again later.";
                 }
                 return false;

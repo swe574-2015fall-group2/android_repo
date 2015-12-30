@@ -53,7 +53,7 @@ public class GetGroupCalendarTask extends AsyncTask<Void, Void, ArrayList<Meetin
         try {
             HttpURLConnection httpURLConnection = null;
             // Create a new UrlConnection
-            URL postUrl = new URL("http://162.243.215.160:9000/v1/meeting/queryByGroup");
+            URL postUrl = new URL("http://162.243.18.170:9000/v1/meeting/queryByGroup");
             // Open the created connection to server.
             httpURLConnection = (HttpURLConnection) postUrl.openConnection();
             // Set up the post parameters

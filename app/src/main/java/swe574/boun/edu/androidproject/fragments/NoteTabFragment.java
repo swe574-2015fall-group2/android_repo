@@ -32,13 +32,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import swe574.boun.edu.androidproject.NewDiscussionActivity;
 import swe574.boun.edu.androidproject.NewNoteActivity;
 import swe574.boun.edu.androidproject.R;
-import swe574.boun.edu.androidproject.ViewDiscussionActivity;
 import swe574.boun.edu.androidproject.ViewNoteActivity;
 import swe574.boun.edu.androidproject.message.App;
-import swe574.boun.edu.androidproject.model.Discussion;
 import swe574.boun.edu.androidproject.model.ModelFragment;
 import swe574.boun.edu.androidproject.model.Note;
 import swe574.boun.edu.androidproject.network.JSONRequest;
@@ -61,7 +58,7 @@ public class NoteTabFragment extends ModelFragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        JSONRequest jsonRequest = new JSONRequest("http://162.243.215.160:9000/v1/note/queryByGroup", new Response.Listener<String>() {
+        JSONRequest jsonRequest = new JSONRequest("http://162.243.18.170:9000/v1/note/queryByGroup", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {

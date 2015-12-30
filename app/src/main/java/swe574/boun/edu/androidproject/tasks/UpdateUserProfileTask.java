@@ -55,7 +55,7 @@ public class UpdateUserProfileTask extends AsyncTask<Void, Void, Boolean> {
         try {
             HttpURLConnection httpURLConnection = null;
             // Create a new UrlConnection
-            URL postUrl = new URL("http://162.243.215.160:9000/v1/user/update");
+            URL postUrl = new URL("http://162.243.18.170:9000/v1/user/update");
             // Open the created connection to server.
             httpURLConnection = (HttpURLConnection) postUrl.openConnection();
             // Set up the post parameters

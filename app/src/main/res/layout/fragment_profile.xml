@@ -37,8 +37,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1.5"
-                android:text="Profession:"
                 android:gravity="left"
+                android:text="Profession:"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
@@ -46,8 +46,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="4"
-                android:text=""
                 android:singleLine="true"
+                android:text=""
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </TableRow>
 
@@ -71,8 +71,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="4"
-                android:text=""
                 android:singleLine="true"
+                android:text=""
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </TableRow>
 
@@ -96,8 +96,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="4"
-                android:text=""
                 android:singleLine="true"
+                android:text=""
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </TableRow>
 
@@ -121,8 +121,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="4"
-                android:text=""
                 android:singleLine="true"
+                android:text=""
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </TableRow>
 
@@ -146,8 +146,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="4"
-                android:text=""
                 android:singleLine="true"
+                android:text=""
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </TableRow>
 
@@ -171,8 +171,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="4"
-                android:text=""
                 android:singleLine="true"
+                android:text=""
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </TableRow>
 
@@ -196,8 +196,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="4"
-                android:text=""
                 android:singleLine="true"
+                android:text=""
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </TableRow>
     </TableLayout>

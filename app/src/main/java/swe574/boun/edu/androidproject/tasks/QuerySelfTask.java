@@ -36,7 +36,7 @@ public class QuerySelfTask extends AsyncTask<String, Void, User> {
         try {
             HttpURLConnection httpURLConnection = null;
             // Create a new UrlConnection
-            URL postUrl = new URL("http://162.243.215.160:9000/v1/user/get");
+            URL postUrl = new URL("http://162.243.18.170:9000/v1/user/get");
             // Open the created connection to server.
             httpURLConnection = (HttpURLConnection) postUrl.openConnection();
             // Set up the post parameters

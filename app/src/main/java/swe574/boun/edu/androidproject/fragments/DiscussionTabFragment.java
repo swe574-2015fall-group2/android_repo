@@ -50,7 +50,7 @@ public class DiscussionTabFragment extends ModelFragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        JSONRequest jsonRequest = new JSONRequest("http://162.243.215.160:9000/v1/discussion/list", new Response.Listener<String>() {
+        JSONRequest jsonRequest = new JSONRequest("http://162.243.18.170:9000/v1/discussion/list", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {

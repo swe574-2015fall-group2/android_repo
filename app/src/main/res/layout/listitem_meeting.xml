@@ -58,8 +58,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Eating bananas"
                 android:maxLines="1"
+                android:text="Eating bananas"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
@@ -67,8 +67,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="Online"
                 android:maxLines="1"
+                android:text="Online"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </LinearLayout>
     </LinearLayout>

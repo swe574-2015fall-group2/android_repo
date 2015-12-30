@@ -38,7 +38,6 @@ import swe574.boun.edu.androidproject.model.Tag;
 import swe574.boun.edu.androidproject.tasks.CreateGroupTask;
 import swe574.boun.edu.androidproject.ui.TagData;
 import swe574.boun.edu.androidproject.ui.TagsCompletionView;
-import swe574.boun.edu.androidproject.ui.TokenTextWatcher;
 
 
 public class NewGroupActivity extends AppCompatActivity implements TokenCompleteTextView.TokenListener {
@@ -87,7 +86,7 @@ public class NewGroupActivity extends AppCompatActivity implements TokenComplete
 
         };
         final RequestQueue requestQueue = Volley.newRequestQueue(NewGroupActivity.this);
-        final String url = "http://162.243.215.160:9000/v1/semantic/queryLabel";
+        final String url = "http://162.243.18.170:9000/v1/semantic/queryLabel";
 
         mTagsCompletionView.setAdapter(mAdapter);
         mTagsCompletionView.setTokenListener(this);

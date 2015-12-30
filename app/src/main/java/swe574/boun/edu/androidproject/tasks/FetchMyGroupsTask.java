@@ -64,7 +64,7 @@ public class FetchMyGroupsTask extends AsyncTask<Void, Void, ArrayList<Group>> {
         HttpURLConnection httpURLConnection = null;
         try {
             // Create a new UrlConnection
-            URL postUrl = new URL("http://162.243.215.160:9000/v1/group/listMyGroups");
+            URL postUrl = new URL("http://162.243.18.170:9000/v1/group/listMyGroups");
             // Open the created connection to server.
             httpURLConnection = (HttpURLConnection) postUrl.openConnection();
             // Set up the post parameters

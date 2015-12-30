@@ -49,12 +49,12 @@ public abstract class TagsCompletionView extends TokenCompleteTextView<TagData> 
 
     public abstract void setUp();
 
-    public void configurate(TagsArrayAdapter adapter, TokenListener listener, final TokenTextWatcher watcher){
-        if(adapter != null)
-        setAdapter(adapter);
-        if(listener != null)
-        setTokenListener(listener);
-        if(watcher != null)
+    public void configurate(TagsArrayAdapter adapter, TokenListener listener, final TokenTextWatcher watcher) {
+        if (adapter != null)
+            setAdapter(adapter);
+        if (listener != null)
+            setTokenListener(listener);
+        if (watcher != null)
             addTextChangedListener(watcher);
         setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

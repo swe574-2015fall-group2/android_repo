@@ -32,9 +32,9 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="10dp"
                 android:layout_toStartOf="@+id/button_leave"
+                android:maxLines="3"
                 android:text="No Description"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:maxLines="3"/>
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <Button
                 android:id="@+id/button_leave"
@@ -53,9 +53,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
+                android:layout_below="@id/button_leave"
                 android:layout_margin="10dp"
                 android:background="@drawable/button_style"
-                android:layout_below="@id/button_leave"
                 android:text="Update Group"
                 android:textColor="@color/white" />
 
@@ -70,18 +70,18 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="10dp"
                 android:layout_toStartOf="@+id/button_leave"
+                android:maxLines="3"
                 android:text="No Tags"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:maxLines="3"/>
+                android:textAppearance="?android:attr/textAppearanceSmall" />
         </RelativeLayout>
 
         <FrameLayout
             android:id="@+id/pinnedResources"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginBottom="15dp"
             android:layout_weight="0.8"
-            android:background="@color/white"
-            android:layout_marginBottom="15dp"/>
+            android:background="@color/white" />
 
         <FrameLayout
             android:id="@+id/meetingCalendar"

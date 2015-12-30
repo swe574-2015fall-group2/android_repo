@@ -1,0 +1,277 @@
+package swe574.boun.edu.androidproject;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.tokenautocomplete.FilteredArrayAdapter;
+import com.tokenautocomplete.TokenCompleteTextView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import swe574.boun.edu.androidproject.message.App;
+import swe574.boun.edu.androidproject.model.Group;
+import swe574.boun.edu.androidproject.model.Tag;
+import swe574.boun.edu.androidproject.network.JSONRequest;
+import swe574.boun.edu.androidproject.tasks.CreateGroupTask;
+import swe574.boun.edu.androidproject.ui.TagData;
+import swe574.boun.edu.androidproject.ui.TagsCompletionView;
+
+
+public class UpdateGroupActivity extends AppCompatActivity implements TokenCompleteTextView.TokenListener {
+    private Group mGroup;
+    private Button mCreateButton;
+    private EditText mGroupNameView;
+    private EditText mGroupDescriptionView;
+    private TagsCompletionView mTagsCompletionView;
+    private FilteredArrayAdapter<TagData> mAdapter;
+    private List<Tag> mTags;
+    private RequestQueue mRequestQueue;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_new_group);
+        setTitle("New Group");
+
+        Intent intent = getIntent();
+        mGroup = intent.getParcelableExtra("group");
+
+        mGroupNameView = (EditText) findViewById(R.id.groupName);
+        mGroupNameView.setMovementMethod(new ScrollingMovementMethod());
+        mGroupNameView.setText(mGroup.getmName());
+        mGroupDescriptionView = (EditText) findViewById(R.id.groupDesc);
+        mGroupDescriptionView.setMovementMethod(new ScrollingMovementMethod());
+        mGroupDescriptionView.setText(mGroup.getmDescription());
+
+        mTagsCompletionView = (TagsCompletionView) findViewById(R.id.groupTags);
+        mTagsCompletionView.setMovementMethod(new ScrollingMovementMethod());
+        StringBuilder stringBuilder = new StringBuilder();
+        for(int i = 0 ; i < mGroup.getmTags().size() ; i++){
+            stringBuilder.append(mGroup.getmTags().get(i).getLabel()).append(",");
+        }
+        mTagsCompletionView.setText(stringBuilder.toString().substring(0, stringBuilder.length() - 2));
+        mTags = mGroup.getmTags();
+        mAdapter = new FilteredArrayAdapter<TagData>(this, R.layout.tag_layout, new ArrayList<TagData>()) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                if (convertView == null) {
+
+                    LayoutInflater l = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+                    convertView = l.inflate(R.layout.tag_layout, parent, false);
+                }
+
+                final TagData tagData = getItem(position);
+                ((TextView) convertView.findViewById(R.id.label)).setText(tagData.getmLabel());
+                if (tagData.getmDescription() == null || tagData.getmDescription().equals("null")) {
+                    ((TextView) convertView.findViewById(R.id.description)).setText("");
+                } else {
+                    ((TextView) convertView.findViewById(R.id.description)).setText(tagData.getmDescription());
+                }
+
+                return convertView;
+            }
+
+            @Override
+            protected boolean keepObject(TagData obj, String mask) {
+                return true;
+            }
+
+        };
+        mRequestQueue = Volley.newRequestQueue(UpdateGroupActivity.this);
+        final String url = "http://162.243.18.170:9000/v1/semantic/queryLabel";
+
+        mTagsCompletionView.setAdapter(mAdapter);
+        mTagsCompletionView.setTokenListener(this);
+        mTagsCompletionView.setTokenClickStyle(TokenCompleteTextView.TokenClickStyle.Select);
+        TextWatcher textWatcher = new TextWatcher() {
+            int counter;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                String[] splitted = ((SpannableStringBuilder) s).toString().split(",");
+                String tag = splitted[splitted.length - 1];
+                counter = (splitted.length) / 3;
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String[] splitted = ((SpannableStringBuilder) s).toString().split(",");
+                String tag = splitted[splitted.length - 1];
+                if (counter > (splitted.length) / 3) {
+                    mTags.remove(mTags.size() - 1);
+                }
+                if (tag.length() < 2) {
+                    return;
+                }
+
+                final JSONObject object = new JSONObject();
+                try {
+                    object.accumulate("authToken", App.mAuth);
+                    object.accumulate("queryString", tag);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        List<TagData> tagList = new ArrayList<>();
+                        Log.v("RESPONSE", response);
+                        try {
+                            JSONObject result = new JSONObject(response);
+                            if (result.has("result")) {
+                                result = result.getJSONObject("result");
+                            } else {
+                                return;
+                            }
+                            JSONArray array = result.getJSONArray("dataList");
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject tagObject = array.getJSONObject(i);
+                                tagList.add(TagData.fromTag(Tag.fromJsonObject(tagObject)));
+                            }
+                            mAdapter.clear();
+                            mAdapter.addAll(tagList);
+                            mAdapter.notifyDataSetChanged();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("ERROR", error.toString());
+                    }
+                }) {
+                    @Override
+                    public byte[] getBody() throws AuthFailureError {
+                        return object.toString().getBytes();
+                    }
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/json";
+                    }
+                };
+                mRequestQueue.add(request);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        };
+        mTags = new ArrayList<>();
+        mTagsCompletionView.addTextChangedListener(textWatcher);
+        mTagsCompletionView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TagData data = mAdapter.getItem(position);
+                mTags.add(data.toTag());
+                Log.v("TAG", data.getmLabel());
+            }
+        });
+
+        mCreateButton = (Button) findViewById(R.id.create_group);
+        mCreateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                attemptCreate();
+            }
+        });
+    }
+
+    private void attemptCreate() {
+        boolean cancel = false;
+        View focus = null;
+        String name, description;
+        if (!validateDescription(description = mGroupDescriptionView.getText().toString())) {
+            focus = mGroupDescriptionView;
+            mGroupDescriptionView.setError("Group Description cannot be empty");
+            cancel = true;
+        }
+        if (!validateName(name = mGroupNameView.getText().toString())) {
+            focus = mGroupNameView;
+            mGroupNameView.setError("Group Name cannot be empty");
+            cancel = true;
+        }
+
+        if (!cancel) {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.accumulate("authToken", App.mAuth);
+                jsonObject.accumulate("name", mGroupNameView.getText().toString());
+                jsonObject.accumulate("description", mGroupDescriptionView.getText().toString());
+                JSONArray jsonArray = new JSONArray();
+                for (Tag t : mTags) {
+                    jsonArray.put(t.toJson());
+                }
+                jsonObject.accumulate("tagList", jsonArray);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            JSONRequest jsonRequest = new JSONRequest("http://162.243.18.170:9000/v1/group/update", new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Toast.makeText(UpdateGroupActivity.this, "You have successfully updated your group.", Toast.LENGTH_SHORT).show();
+                    setResult(RESULT_OK);
+                    finish();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            }, jsonObject);
+            mRequestQueue.add(jsonRequest);
+        } else {
+            focus.requestFocus();
+        }
+    }
+
+    private boolean validateName(String s) {
+        return !TextUtils.isEmpty(s);
+    }
+
+
+    private boolean validateDescription(String s) {
+        return !TextUtils.isEmpty(s);
+    }
+
+    @Override
+    public void onTokenAdded(Object token) {
+
+    }
+
+    @Override
+    public void onTokenRemoved(Object token) {
+
+    }
+}

@@ -1,8 +1,10 @@
 package swe574.boun.edu.androidproject.fragments;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -13,14 +15,26 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import swe574.boun.edu.androidproject.R;
+import swe574.boun.edu.androidproject.UpdateGroupActivity;
+import swe574.boun.edu.androidproject.message.App;
+import swe574.boun.edu.androidproject.model.Group;
 import swe574.boun.edu.androidproject.model.ModelFragment;
 import swe574.boun.edu.androidproject.model.Tag;
+import swe574.boun.edu.androidproject.network.JSONRequest;
 import swe574.boun.edu.androidproject.tasks.GetGroupCalendarTask;
 import swe574.boun.edu.androidproject.tasks.LeaveGroupTask;
 import swe574.boun.edu.androidproject.tasks.OnTaskCompleted;
 
 public class GroupTabFragment extends ModelFragment {
+    private final int UPDATE_GROUP = 1;
 
     public GroupTabFragment() {
         // Required empty public constructor
@@ -77,7 +91,59 @@ public class GroupTabFragment extends ModelFragment {
             }
         });
 
+        Button updateButton = (Button) rootView.findViewById(R.id.update_button);
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), UpdateGroupActivity.class);
+                intent.putExtra("user", mUser);
+                intent.putExtra("group", mGroup);
+                startActivityForResult(intent, UPDATE_GROUP);
+            }
+        });
+
         return rootView;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == UPDATE_GROUP && resultCode == Activity.RESULT_OK){
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.accumulate("authToken", App.mAuth);
+                jsonObject.accumulate("id", mGroup.getmID());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            JSONRequest jsonRequest = new JSONRequest("http://162.243.18.170:9000/v1/group/query", new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        Group g = Group.fromJsonString(new JSONObject(response));
+                        getActivity().setTitle(g.getmName());
+                        ViewGroup rootView = (ViewGroup) getView();
+                        TextView description = (TextView) rootView.findViewById(R.id.group_description);
+                        description.setText(mGroup.getmDescription());
+
+                        TextView tags = (TextView) rootView.findViewById(R.id.group_tags);
+                        String tagText = "";
+                        for (Tag t : mGroup.getmTags()) {
+                            tagText += "#" + t.getLabel() + ", ";
+                        }
+                        if (!tagText.equals("") && tagText.length() >= 2)
+                            tags.setText(tagText.substring(0, tagText.length() - 2));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            }, jsonObject);
+            Volley.newRequestQueue(getContext()).add(jsonRequest);
+        }
     }
 
     @Override

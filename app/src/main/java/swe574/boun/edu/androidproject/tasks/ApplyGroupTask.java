@@ -2,6 +2,7 @@ package swe574.boun.edu.androidproject.tasks;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.MalformedJsonException;
 
 import org.json.JSONException;
@@ -80,6 +81,7 @@ public class ApplyGroupTask extends AsyncTask<Void, Void, Boolean> {
                 while ((line = reader.readLine()) != null) {
                     responseJson += line;
                 }
+                Log.e("ApplyGroupTask", json);
                 throw new IllegalStateException("Response code is not valid " + response + " RESPOnSE JSON \n" + responseJson);
             }
             httpURLConnection.disconnect();

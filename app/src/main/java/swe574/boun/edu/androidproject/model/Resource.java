@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import java.util.Date;
 import java.util.List;
 
-public final class Resource implements Parcelable {
+public class Resource implements Parcelable {
     public static final Creator<Resource> CREATOR = new Creator<Resource>() {
         @Override
         public Resource createFromParcel(Parcel in) {
@@ -18,74 +18,113 @@ public final class Resource implements Parcelable {
             return new Resource[size];
         }
     };
-    private final String mID;
-    private final List<Tag> mTags;
-    private final String mDescription;
-    private final String mEntityType;
-    private final String mLink;
-    private final String mType;
-    private final Group mGroup;
-    private final Date mDate;
-    private final User mCreator;
+    private String id;
+    private List<Tag> tagList;
+    private String description;
+    private EntityType entityType;
+    private String link;
+    private ResourceType type;
+    private Group group;
+    private Date createdAt;
+    private User creator;
 
-    public Resource(String mID, List<Tag> mTags, String mDescription, String mEntityType, String mLink, String mType, Group mGroup, Date mDate, User mCreator) {
-        this.mID = mID;
-        this.mTags = mTags;
-        this.mDescription = mDescription;
-        this.mEntityType = mEntityType;
-        this.mLink = mLink;
-        this.mType = mType;
-        this.mGroup = mGroup;
-        this.mDate = mDate;
-        this.mCreator = mCreator;
+    public Resource(String id, List<Tag> tagList, String mDescription, EntityType entityType, String link, ResourceType type, Group group, Date createdAt, User creator) {
+        this.id = id;
+        this.tagList = tagList;
+        this.description = mDescription;
+        this.entityType = entityType;
+        this.link = link;
+        this.type = type;
+        this.group = group;
+        this.createdAt = createdAt;
+        this.creator = creator;
     }
 
     protected Resource(Parcel in) {
-        mID = in.readString();
-        mTags = in.createTypedArrayList(Tag.CREATOR);
-        mDescription = in.readString();
-        mEntityType = in.readString();
-        mLink = in.readString();
-        mType = in.readString();
-        mGroup = in.readParcelable(Group.class.getClassLoader());
-        mDate = (Date) in.readSerializable();
-        mCreator = in.readParcelable(User.class.getClassLoader());
+        id = in.readString();
+        tagList = in.createTypedArrayList(Tag.CREATOR);
+        description = in.readString();
+        entityType = (EntityType) in.readSerializable();
+        link = in.readString();
+        type = (ResourceType) in.readSerializable();
+        group = in.readParcelable(Group.class.getClassLoader());
+        createdAt = (Date) in.readSerializable();
+        creator = in.readParcelable(User.class.getClassLoader());
     }
 
-    public String getmID() {
-        return mID;
+    public Resource() {
     }
 
-    public List<Tag> getmTags() {
-        return mTags;
+    public String getId() {
+        return id;
     }
 
-    public String getmDescription() {
-        return mDescription;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getmEntityType() {
-        return mEntityType;
+    public List<Tag> getTagList() {
+        return tagList;
     }
 
-    public String getmLink() {
-        return mLink;
+    public void setTagList(List<Tag> tagList) {
+        this.tagList = tagList;
     }
 
-    public String getmType() {
-        return mType;
+    public String getDescription() {
+        return description;
     }
 
-    public Group getmGroup() {
-        return mGroup;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public Date getmDate() {
-        return mDate;
+    public EntityType getEntityType() {
+        return entityType;
     }
 
-    public User getmCreator() {
-        return mCreator;
+    public void setEntityType(EntityType entityType) {
+        this.entityType = entityType;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public ResourceType getType() {
+        return type;
+    }
+
+    public void setType(ResourceType type) {
+        this.type = type;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public User getCreator() {
+        return creator;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
     }
 
     @Override
@@ -95,14 +134,14 @@ public final class Resource implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mID);
-        dest.writeTypedList(mTags);
-        dest.writeString(mDescription);
-        dest.writeString(mEntityType);
-        dest.writeString(mLink);
-        dest.writeString(mType);
-        dest.writeParcelable(mGroup, flags);
-        dest.writeSerializable(mDate);
-        dest.writeParcelable(mCreator, flags);
+        dest.writeString(id);
+        dest.writeTypedList(tagList);
+        dest.writeString(description);
+        dest.writeSerializable(entityType);
+        dest.writeString(link);
+        dest.writeSerializable(type);
+        dest.writeParcelable(group, flags);
+        dest.writeSerializable(createdAt);
+        dest.writeParcelable(creator, flags);
     }
 }

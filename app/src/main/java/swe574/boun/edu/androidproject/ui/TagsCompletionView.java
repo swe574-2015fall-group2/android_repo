@@ -14,7 +14,7 @@ import com.tokenautocomplete.TokenCompleteTextView;
 
 import swe574.boun.edu.androidproject.R;
 
-public abstract class TagsCompletionView extends TokenCompleteTextView<TagData> {
+public class TagsCompletionView extends TokenCompleteTextView<TagData> {
     public TagsCompletionView(Context context) {
         super(context);
     }
@@ -47,8 +47,6 @@ public abstract class TagsCompletionView extends TokenCompleteTextView<TagData> 
         }
     }
 
-    public abstract void setUp();
-
     public void configurate(TagsArrayAdapter adapter, TokenListener listener, final TokenTextWatcher watcher) {
         if (adapter != null)
             setAdapter(adapter);
@@ -65,6 +63,5 @@ public abstract class TagsCompletionView extends TokenCompleteTextView<TagData> 
             }
         });
         setTokenClickStyle(TokenClickStyle.Select);
-        setUp();
     }
 }

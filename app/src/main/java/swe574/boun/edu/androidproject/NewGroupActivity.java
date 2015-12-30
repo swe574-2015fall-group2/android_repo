@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,9 +57,12 @@ public class NewGroupActivity extends AppCompatActivity implements TokenComplete
         setTitle("New Group");
 
         mGroupNameView = (EditText) findViewById(R.id.groupName);
+        mGroupNameView.setMovementMethod(new ScrollingMovementMethod());
         mGroupDescriptionView = (EditText) findViewById(R.id.groupDesc);
+        mGroupDescriptionView.setMovementMethod(new ScrollingMovementMethod());
 
         mTagsCompletionView = (TagsCompletionView) findViewById(R.id.groupTags);
+        mTagsCompletionView.setMovementMethod(new ScrollingMovementMethod());
         mAdapter = new FilteredArrayAdapter<TagData>(this, R.layout.tag_layout, new ArrayList<TagData>()) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {

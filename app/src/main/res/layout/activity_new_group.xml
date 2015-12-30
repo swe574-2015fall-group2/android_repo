@@ -43,8 +43,9 @@
                     android:drawableLeft="@drawable/ic_icon_groupname"
                     android:hint="Group Name"
                     android:inputType="text"
-                    android:maxLines="1"
-                    android:singleLine="true" />
+                    android:maxLines="2"
+                    android:singleLine="true"
+                    android:scrollbars="vertical"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -61,8 +62,9 @@
                     android:drawableLeft="@drawable/ic_icon_hashtag"
                     android:hint="Tags"
                     android:inputType="text"
-                    android:maxLines="1"
-                    android:singleLine="true" />
+                    android:maxLines="2"
+                    android:singleLine="true"
+                    android:scrollbars="vertical"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -80,7 +82,8 @@
                     android:gravity="top|left"
                     android:hint="Group Description"
                     android:inputType="textMultiLine"
-                    android:maxLines="5" />
+                    android:scrollbars="vertical"
+                    android:maxLines="3" />
 
             </android.support.design.widget.TextInputLayout>
 

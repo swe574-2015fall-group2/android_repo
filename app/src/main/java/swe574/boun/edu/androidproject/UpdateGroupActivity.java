@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -73,11 +74,9 @@ public class UpdateGroupActivity extends AppCompatActivity implements TokenCompl
 
         mTagsCompletionView = (TagsCompletionView) findViewById(R.id.groupTags);
         mTagsCompletionView.setMovementMethod(new ScrollingMovementMethod());
-        StringBuilder stringBuilder = new StringBuilder();
         for(int i = 0 ; i < mGroup.getmTags().size() ; i++){
-            stringBuilder.append(mGroup.getmTags().get(i).getLabel()).append(",");
+            mTagsCompletionView.addObject(TagData.fromTag(mGroup.getmTags().get(i)));
         }
-        mTagsCompletionView.setText(stringBuilder.toString().substring(0, stringBuilder.length() - 2));
         mTags = mGroup.getmTags();
         mAdapter = new FilteredArrayAdapter<TagData>(this, R.layout.tag_layout, new ArrayList<TagData>()) {
             @Override
@@ -116,14 +115,14 @@ public class UpdateGroupActivity extends AppCompatActivity implements TokenCompl
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                String[] splitted = ((SpannableStringBuilder) s).toString().split(",");
+                String[] splitted = s.toString().split(",");
                 String tag = splitted[splitted.length - 1];
                 counter = (splitted.length) / 3;
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String[] splitted = ((SpannableStringBuilder) s).toString().split(",");
+                String[] splitted = s.toString().split(",");
                 String tag = splitted[splitted.length - 1];
                 if (counter > (splitted.length) / 3) {
                     mTags.remove(mTags.size() - 1);
@@ -188,7 +187,6 @@ public class UpdateGroupActivity extends AppCompatActivity implements TokenCompl
 
             }
         };
-        mTags = new ArrayList<>();
         mTagsCompletionView.addTextChangedListener(textWatcher);
         mTagsCompletionView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -224,7 +222,7 @@ public class UpdateGroupActivity extends AppCompatActivity implements TokenCompl
         }
 
         if (!cancel) {
-            JSONObject jsonObject = new JSONObject();
+            final JSONObject jsonObject = new JSONObject();
             try {
                 jsonObject.accumulate("authToken", App.mAuth);
                 jsonObject.accumulate("name", mGroupNameView.getText().toString());
@@ -247,7 +245,22 @@ public class UpdateGroupActivity extends AppCompatActivity implements TokenCompl
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-
+                    Log.e("Update Group", jsonObject.toString());
+                    NetworkResponse response = error.networkResponse;
+                    if(response.data != null && response.data.length > 0){
+                        try {
+                            JSONObject object = new JSONObject(new String(response.data));
+                            if(object.has("status")){
+                                if(object.getString("status").equals("success")){
+                                    Toast.makeText(UpdateGroupActivity.this, "You have successfully updated your group.", Toast.LENGTH_SHORT).show();
+                                    setResult(RESULT_OK);
+                                    finish();
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }, jsonObject);
             mRequestQueue.add(jsonRequest);

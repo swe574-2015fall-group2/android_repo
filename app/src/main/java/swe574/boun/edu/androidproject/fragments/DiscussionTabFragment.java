@@ -53,7 +53,7 @@ public class DiscussionTabFragment extends ModelFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.add(1, ADD_DISCUSSION, 1, "Create Discussion");
+        menu.add(1, ADD_DISCUSSION, 0, "Create Discussion");
     }
 
     @Override

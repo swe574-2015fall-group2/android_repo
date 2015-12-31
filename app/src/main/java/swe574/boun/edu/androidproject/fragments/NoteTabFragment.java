@@ -61,7 +61,7 @@ public class NoteTabFragment extends ModelFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.add(1, ADD_NOTE_ID, 1, "Create Note");
+        menu.add(1, ADD_NOTE_ID, 0, "Create Note");
     }
 
     @Override

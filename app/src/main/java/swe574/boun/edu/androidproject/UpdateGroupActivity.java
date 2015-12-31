@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
@@ -41,7 +40,6 @@ import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.Group;
 import swe574.boun.edu.androidproject.model.Tag;
 import swe574.boun.edu.androidproject.network.JSONRequest;
-import swe574.boun.edu.androidproject.tasks.CreateGroupTask;
 import swe574.boun.edu.androidproject.ui.TagData;
 import swe574.boun.edu.androidproject.ui.TagsCompletionView;
 
@@ -74,7 +72,7 @@ public class UpdateGroupActivity extends AppCompatActivity implements TokenCompl
 
         mTagsCompletionView = (TagsCompletionView) findViewById(R.id.groupTags);
         mTagsCompletionView.setMovementMethod(new ScrollingMovementMethod());
-        for(int i = 0 ; i < mGroup.getmTags().size() ; i++){
+        for (int i = 0; i < mGroup.getmTags().size(); i++) {
             mTagsCompletionView.addObject(TagData.fromTag(mGroup.getmTags().get(i)));
         }
         mTags = mGroup.getmTags();
@@ -247,11 +245,11 @@ public class UpdateGroupActivity extends AppCompatActivity implements TokenCompl
                 public void onErrorResponse(VolleyError error) {
                     Log.e("Update Group", jsonObject.toString());
                     NetworkResponse response = error.networkResponse;
-                    if(response.data != null && response.data.length > 0){
+                    if (response.data != null && response.data.length > 0) {
                         try {
                             JSONObject object = new JSONObject(new String(response.data));
-                            if(object.has("status")){
-                                if(object.getString("status").equals("success")){
+                            if (object.has("status")) {
+                                if (object.getString("status").equals("success")) {
                                     Toast.makeText(UpdateGroupActivity.this, "You have successfully updated your group.", Toast.LENGTH_SHORT).show();
                                     setResult(RESULT_OK);
                                     finish();

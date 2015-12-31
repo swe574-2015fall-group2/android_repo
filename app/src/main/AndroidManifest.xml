@@ -49,13 +49,10 @@
         <activity android:name=".ViewMeetingActivity" />
         <activity android:name=".MeetingPeopleActivity" />
         <activity android:name=".ViewAllGroupsActivity" />
-        <activity
-            android:name=".NewDiscussionActivity"
-            android:label="New Discussion" />
         <activity android:name=".UpdateProfileActivity" />
-        <activity android:name=".ViewDiscussionActivity"></activity>
-        <activity android:name=".ViewNoteActivity" />
         <activity android:name=".UpdateGroupActivity" />
+        <activity android:name=".NewCommunicateActivity" />
+        <activity android:name=".ViewCommunicateActivity"></activity>
     </application>
 
 </manifest>

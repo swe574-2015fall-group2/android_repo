@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,8 +61,10 @@ public class GroupTabFragment extends ModelFragment {
 
         TextView description = (TextView) rootView.findViewById(R.id.group_description);
         description.setText(mGroup.getmDescription());
+        description.setMovementMethod(new ScrollingMovementMethod());
 
         TextView tags = (TextView) rootView.findViewById(R.id.group_tags);
+        tags.setMovementMethod(new ScrollingMovementMethod());
         String tagText = "";
         for (Tag t : mGroup.getmTags()) {
             tagText += "#" + t.getLabel() + ", ";
@@ -107,7 +110,7 @@ public class GroupTabFragment extends ModelFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == UPDATE_GROUP && resultCode == Activity.RESULT_OK){
+        if (requestCode == UPDATE_GROUP && resultCode == Activity.RESULT_OK) {
             JSONObject jsonObject = new JSONObject();
             try {
                 jsonObject.accumulate("authToken", App.mAuth);

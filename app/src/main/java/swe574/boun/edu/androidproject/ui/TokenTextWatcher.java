@@ -31,7 +31,7 @@ public abstract class TokenTextWatcher implements TextWatcher {
             return;
         }
 
-        onTextChanged();
+        onTextChanged(tag);
     }
 
     @Override
@@ -46,5 +46,5 @@ public abstract class TokenTextWatcher implements TextWatcher {
         mTags.add(tagData);
     }
 
-    public abstract void onTextChanged();
+    public abstract void onTextChanged(String tag);
 }

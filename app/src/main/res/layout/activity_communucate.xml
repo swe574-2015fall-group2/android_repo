@@ -5,7 +5,7 @@
     android:background="@drawable/background_login"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="swe574.boun.edu.androidproject.NewGroupActivity">
+    tools:context=".NewCommunicateActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -24,15 +24,16 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/noteTitleEditText"
+                    android:id="@+id/communicationTitleEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:background="@drawable/edittextstyle"
-                    android:drawableStart="@drawable/ic_icon_programme"
-                    android:hint="Note Title"
+                    android:drawableStart="@drawable/ic_icon_description"
+                    android:hint="Title"
                     android:inputType="text"
-                    android:maxLines="1"
+                    android:maxLines="2"
+                    android:scrollbars="vertical"
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
@@ -42,7 +43,7 @@
                 android:layout_height="wrap_content">
 
                 <swe574.boun.edu.androidproject.ui.TagsCompletionView
-                    android:id="@+id/noteTagsTagsCompletionView"
+                    android:id="@+id/communicationTagsTagsCompletionView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="16dp"
@@ -50,7 +51,8 @@
                     android:drawableStart="@drawable/ic_icon_hashtag"
                     android:hint="Tags"
                     android:inputType="text"
-                    android:maxLines="1"
+                    android:maxLines="2"
+                    android:scrollbars="vertical"
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
@@ -60,27 +62,30 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/noteTextEditText"
+                    android:id="@+id/communicationDescriptionEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:background="@drawable/edittextstyle"
-                    android:drawableStart="@drawable/ic_icon_description"
+                    android:drawableStart="@drawable/ic_icon_programme"
                     android:gravity="top|start"
-                    android:hint="Note Content"
-                    android:inputType="textMultiLine" />
+                    android:hint="Text"
+                    android:inputType="textMultiLine"
+                    android:maxLines="5"
+                    android:scrollbars="vertical" />
 
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:id="@+id/noteCreateButton"
+                android:id="@+id/createButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:background="@drawable/button_style"
-                android:text="Create Note"
+                android:text="Create Group"
                 android:textColor="@color/white" />
         </LinearLayout>
     </ScrollView>
+
 
 </LinearLayout>

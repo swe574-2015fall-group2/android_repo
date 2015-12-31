@@ -58,10 +58,27 @@ public class GroupTabbedActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        GroupTabLayout tabLayout = (GroupTabLayout) findViewById(R.id.tabs);
+        final GroupTabLayout tabLayout = (GroupTabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
+        tabLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                int width = tabLayout.getMeasuredWidth();
+                for (int i = 0; i < tabLayout.getTabCount(); i++) {
+                    TabLayout.Tab v = tabLayout.getTabAt(i);
+                    if (v != null) {
+                        v.setCustomView(R.layout.tabitem);
+                        if (v.getCustomView() != null) {
+                            v.getCustomView().setMinimumWidth(width / 3);
+                        }
+                    }
+                }
+            }
+        });
+
+
     }
 
 

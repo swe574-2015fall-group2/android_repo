@@ -33,6 +33,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_toStartOf="@+id/button_leave"
                 android:maxLines="3"
+                android:scrollbars="vertical"
                 android:text="No Description"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -71,6 +72,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_toStartOf="@+id/button_leave"
                 android:maxLines="3"
+                android:scrollbars="vertical"
                 android:text="No Tags"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </RelativeLayout>

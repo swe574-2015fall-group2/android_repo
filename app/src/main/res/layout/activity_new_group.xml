@@ -44,8 +44,8 @@
                     android:hint="Group Name"
                     android:inputType="text"
                     android:maxLines="2"
-                    android:singleLine="true"
-                    android:scrollbars="vertical"/>
+                    android:scrollbars="vertical"
+                    android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -63,8 +63,8 @@
                     android:hint="Tags"
                     android:inputType="text"
                     android:maxLines="2"
-                    android:singleLine="true"
-                    android:scrollbars="vertical"/>
+                    android:scrollbars="vertical"
+                    android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -82,8 +82,8 @@
                     android:gravity="top|left"
                     android:hint="Group Description"
                     android:inputType="textMultiLine"
-                    android:scrollbars="vertical"
-                    android:maxLines="3" />
+                    android:maxLines="3"
+                    android:scrollbars="vertical" />
 
             </android.support.design.widget.TextInputLayout>
 

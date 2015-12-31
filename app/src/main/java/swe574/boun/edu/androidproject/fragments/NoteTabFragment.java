@@ -1,11 +1,15 @@
 package swe574.boun.edu.androidproject.fragments;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -32,17 +36,45 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import swe574.boun.edu.androidproject.NewNoteActivity;
+import swe574.boun.edu.androidproject.NewCommunicateActivity;
 import swe574.boun.edu.androidproject.R;
-import swe574.boun.edu.androidproject.ViewNoteActivity;
+import swe574.boun.edu.androidproject.ViewCommunicateActivity;
 import swe574.boun.edu.androidproject.message.App;
+import swe574.boun.edu.androidproject.model.CommunicationType;
 import swe574.boun.edu.androidproject.model.ModelFragment;
 import swe574.boun.edu.androidproject.model.Note;
 import swe574.boun.edu.androidproject.network.JSONRequest;
 
 public class NoteTabFragment extends ModelFragment {
+    private final int ADD_NOTE_ID = 9;
     private ListView mNotesListView;
     private List<Note> mNotesList;
+    private JSONRequest mNotesRequest;
+    private RequestQueue mRequestQueue;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.add(1, ADD_NOTE_ID, 1, "Create Note");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == ADD_NOTE_ID) {
+            Intent intent = new Intent(getContext(), NewCommunicateActivity.class);
+            intent.putExtra("type", CommunicationType.NOTE);
+            intent.putExtra("group", mGroup);
+            startActivityForResult(intent, 1);
+        }
+        return true;
+    }
 
     @Nullable
     @Override
@@ -50,15 +82,16 @@ public class NoteTabFragment extends ModelFragment {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_note, null, false);
 
         mNotesListView = (ListView) viewGroup.findViewById(R.id.listNotes);
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        mRequestQueue = Volley.newRequestQueue(getContext());
         JSONObject jsonObject = new JSONObject();
+
         try {
             jsonObject.accumulate("authToken", App.mAuth);
             jsonObject.accumulate("id", mGroup.getmID());
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        JSONRequest jsonRequest = new JSONRequest("http://162.243.18.170:9000/v1/note/queryByGroup", new Response.Listener<String>() {
+        mNotesRequest = new JSONRequest("http://162.243.18.170:9000/v1/note/queryByGroup", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -89,8 +122,9 @@ public class NoteTabFragment extends ModelFragment {
                                     @Override
                                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                         Note note = mNotesList.get(position);
-                                        Intent intent = new Intent(getContext(), ViewNoteActivity.class);
+                                        Intent intent = new Intent(getContext(), ViewCommunicateActivity.class);
                                         intent.putExtra("note", note);
+                                        intent.putExtra("type", CommunicationType.NOTE);
                                         startActivityForResult(intent, 2);
                                     }
                                 });
@@ -102,16 +136,13 @@ public class NoteTabFragment extends ModelFragment {
                 }
                 if (mNotesListView.getAdapter() == null) {
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.item_nogroups, R.id.textview, new String[]{"No notes are are found. Press here to create a note."});
-                    mNotesListView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    mNotesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            Intent intent = new Intent(getContext(), NewNoteActivity.class);
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            Intent intent = new Intent(getContext(), NewCommunicateActivity.class);
+                            intent.putExtra("type", CommunicationType.NOTE);
+                            intent.putExtra("group", mGroup);
                             startActivityForResult(intent, 1);
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
-
                         }
                     });
                     mNotesListView.setAdapter(adapter);
@@ -121,11 +152,28 @@ public class NoteTabFragment extends ModelFragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.item_nogroups, R.id.textview, new String[]{"No notes are are found. Press here to create a note."});
+                mNotesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Intent intent = new Intent(getContext(), NewCommunicateActivity.class);
+                        intent.putExtra("type", CommunicationType.NOTE);
+                        intent.putExtra("group", mGroup);
+                        startActivityForResult(intent, 1);
+                    }
+                });
+                mNotesListView.setAdapter(adapter);
             }
         }, jsonObject);
-        requestQueue.add(jsonRequest);
+        mRequestQueue.add(mNotesRequest);
         return viewGroup;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if ((requestCode == 1 || requestCode == 2) && resultCode == Activity.RESULT_OK) {
+            mRequestQueue.add(mNotesRequest);
+        }
     }
 
     @Override

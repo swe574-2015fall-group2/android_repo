@@ -1,10 +1,14 @@
 package swe574.boun.edu.androidproject.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -24,17 +28,45 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import swe574.boun.edu.androidproject.NewDiscussionActivity;
+import swe574.boun.edu.androidproject.NewCommunicateActivity;
 import swe574.boun.edu.androidproject.R;
-import swe574.boun.edu.androidproject.ViewDiscussionActivity;
+import swe574.boun.edu.androidproject.ViewCommunicateActivity;
 import swe574.boun.edu.androidproject.message.App;
+import swe574.boun.edu.androidproject.model.CommunicationType;
 import swe574.boun.edu.androidproject.model.Discussion;
 import swe574.boun.edu.androidproject.model.ModelFragment;
 import swe574.boun.edu.androidproject.network.JSONRequest;
 
 public class DiscussionTabFragment extends ModelFragment {
+    private final int ADD_DISCUSSION = 8;
     private ListView mDiscussionListView;
     private List<Discussion> mDiscussionList;
+    private RequestQueue mRequestQueue;
+    private JSONRequest mDiscussionRequest;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.add(1, ADD_DISCUSSION, 1, "Create Discussion");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == ADD_DISCUSSION) {
+            Intent intent = new Intent(getContext(), NewCommunicateActivity.class);
+            intent.putExtra("type", CommunicationType.DISCUSSION);
+            intent.putExtra("group", mGroup);
+            startActivityForResult(intent, 1);
+        }
+        return true;
+    }
 
     @Nullable
     @Override
@@ -42,7 +74,7 @@ public class DiscussionTabFragment extends ModelFragment {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_discussion, null, false);
 
         mDiscussionListView = (ListView) viewGroup.findViewById(R.id.listDiscussions);
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        mRequestQueue = Volley.newRequestQueue(getContext());
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.accumulate("authToken", App.mAuth);
@@ -50,7 +82,7 @@ public class DiscussionTabFragment extends ModelFragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        JSONRequest jsonRequest = new JSONRequest("http://162.243.18.170:9000/v1/discussion/list", new Response.Listener<String>() {
+        mDiscussionRequest = new JSONRequest("http://162.243.18.170:9000/v1/discussion/list", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -75,8 +107,9 @@ public class DiscussionTabFragment extends ModelFragment {
                                     @Override
                                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                         Discussion discussion = mDiscussionList.get(position);
-                                        Intent intent = new Intent(getContext(), ViewDiscussionActivity.class);
+                                        Intent intent = new Intent(getContext(), ViewCommunicateActivity.class);
                                         intent.putExtra("discussion", discussion);
+                                        intent.putExtra("type", CommunicationType.DISCUSSION);
                                         startActivityForResult(intent, 2);
                                     }
                                 });
@@ -87,11 +120,13 @@ public class DiscussionTabFragment extends ModelFragment {
                     e.printStackTrace();
                 }
                 if (mDiscussionListView.getAdapter() == null) {
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.item_nogroups, R.id.textview, new String[]{"No discussions are are found. Press here to create a discussion."});
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.item_nogroups, R.id.textview, new String[]{"No discussions are found. Press here to create a discussion."});
                     mDiscussionListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            Intent intent = new Intent(getContext(), NewDiscussionActivity.class);
+                            Intent intent = new Intent(getContext(), NewCommunicateActivity.class);
+                            intent.putExtra("type", CommunicationType.DISCUSSION);
+                            intent.putExtra("group", mGroup);
                             startActivityForResult(intent, 1);
                         }
                     });
@@ -102,11 +137,31 @@ public class DiscussionTabFragment extends ModelFragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                if (mDiscussionListView.getAdapter() == null) {
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.item_nogroups, R.id.textview, new String[]{"No discussions are found. Press here to create a discussion."});
+                    mDiscussionListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            Intent intent = new Intent(getContext(), NewCommunicateActivity.class);
+                            intent.putExtra("type", CommunicationType.DISCUSSION);
+                            intent.putExtra("group", mGroup);
+                            startActivityForResult(intent, 1);
+                        }
+                    });
+                    mDiscussionListView.setAdapter(adapter);
 
+                }
             }
         }, jsonObject);
-        requestQueue.add(jsonRequest);
+        mRequestQueue.add(mDiscussionRequest);
         return viewGroup;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if ((requestCode == 1 || requestCode == 2) && resultCode == Activity.RESULT_OK) {
+            mRequestQueue.add(mDiscussionRequest);
+        }
     }
 
     @Override

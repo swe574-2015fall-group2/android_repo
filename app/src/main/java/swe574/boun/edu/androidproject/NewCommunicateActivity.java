@@ -67,7 +67,7 @@ public class NewCommunicateActivity extends AppCompatActivity implements View.On
         mTagsArrayAdapter = new TagsArrayAdapter(this, R.layout.tag_layout, mTagsDataList);
         mRequestQueue = RequestQueueBuilder.preapareSerialQueue(this);
         mRequestQueue.start();
-        TokenTextWatcher tokenTextWatcher = new TokenTextWatcher() {
+        TokenTextWatcher tokenTextWatcher = new TokenTextWatcher(mRequestQueue) {
             @Override
             public void onTextChanged(String tag) {
                 final JSONObject jsonObject = new JSONObject();

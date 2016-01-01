@@ -18,6 +18,8 @@ import android.widget.Button;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.tokenautocomplete.TokenCompleteTextView;
 
 import org.json.JSONException;
@@ -43,7 +45,7 @@ import swe574.boun.edu.androidproject.ui.TagsResponseListener;
 import swe574.boun.edu.androidproject.ui.TokenTextWatcher;
 
 public class HomeDrawerActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener{
     // Codes
     public static final int NEW_GROUP = 1;
     int code = 0;
@@ -94,7 +96,7 @@ public class HomeDrawerActivity extends AppCompatActivity
         mRequestQueue = RequestQueueBuilder.preapareSerialQueue(this);
         mRequestQueue.start();
 
-        TokenTextWatcher tokenTextWatcher = new TokenTextWatcher() {
+        TokenTextWatcher tokenTextWatcher = new TokenTextWatcher(mRequestQueue) {
             @Override
             public void onTextChanged(String tag) {
                 final JSONObject jsonObject = new JSONObject();
@@ -104,7 +106,7 @@ public class HomeDrawerActivity extends AppCompatActivity
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                mTagsRequest = new JSONRequest("http://162.243.18.170:9000/v1/semantic/queryLabel", new TagsResponseListener(mTagsArrayAdapter), new TagsErrorListener(jsonObject), jsonObject);
+                mTagsRequest = new JSONRequest("http://162.243.18.170:9000/v1/semantic/querySearchString", new TagsResponseListener(mTagsArrayAdapter), new TagsErrorListener(jsonObject), jsonObject);
                 mRequestQueue.add(mTagsRequest);
             }
         };
@@ -124,7 +126,24 @@ public class HomeDrawerActivity extends AppCompatActivity
         mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //mSearchRequest = new JSONRequest()
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.accumulate("authToken", App.mAuth);
+                    jsonObject.accumulate("tagData", mTagDataList.get(0).toTag().toJson());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                mSearchRequest = new JSONRequest("http://162.243.18.170:9000/v1/semantic/search", new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }, jsonObject);
             }
         });
 

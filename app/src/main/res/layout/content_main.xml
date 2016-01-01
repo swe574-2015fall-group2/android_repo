@@ -13,24 +13,42 @@
     tools:context=".HomeDrawerActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/search_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/background_form"
         android:orientation="horizontal">
 
-        <EditText
+        <swe574.boun.edu.androidproject.ui.TagsCompletionView
             android:id="@+id/search_bar"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:layout_weight="5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toStartOf="@+id/ButtonSearch"
             android:background="@drawable/edittextstyle"
-            android:drawableLeft="@drawable/ic_icon_search"
+            android:drawableStart="@drawable/ic_icon_search"
             android:hint="Search" />
 
-    </LinearLayout>
+        <Button
+            android:id="@+id/ButtonSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/search_bar"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/search_bar"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/button_style"
+            android:gravity="center"
+            android:text="Search"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/fragment_container"

@@ -10,25 +10,52 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.tokenautocomplete.TokenCompleteTextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import swe574.boun.edu.androidproject.fragments.GroupsNavigationFragment;
 import swe574.boun.edu.androidproject.fragments.HomeNavigationFragment;
 import swe574.boun.edu.androidproject.fragments.MessageNavigationFragment;
 import swe574.boun.edu.androidproject.fragments.ProfileNavigationFragment;
+import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.HomeFragment;
 import swe574.boun.edu.androidproject.model.User;
+import swe574.boun.edu.androidproject.network.JSONRequest;
+import swe574.boun.edu.androidproject.network.RequestQueueBuilder;
+import swe574.boun.edu.androidproject.ui.TagData;
+import swe574.boun.edu.androidproject.ui.TagsArrayAdapter;
+import swe574.boun.edu.androidproject.ui.TagsCompletionView;
+import swe574.boun.edu.androidproject.ui.TagsErrorListener;
+import swe574.boun.edu.androidproject.ui.TagsResponseListener;
+import swe574.boun.edu.androidproject.ui.TokenTextWatcher;
 
 public class HomeDrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    // Codes
     public static final int NEW_GROUP = 1;
     int code = 0;
+    // Activity datas
     private User mUser;
-
+    private List<TagData> mTagDataList;
+    // UI Elements
     private NavigationView mNavigationView;
-    private EditText mSearchEditTextView;
+    private TagsCompletionView mSearchEditTextView;
+    private TagsArrayAdapter mTagsArrayAdapter;
+    //Network Variables
+    private RequestQueue mRequestQueue;
+    private JSONRequest mTagsRequest;
+    private JSONRequest mSearchRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +81,67 @@ public class HomeDrawerActivity extends AppCompatActivity
         Bundle extras = intent.getExtras();
         mUser = extras.getParcelable("user");
 
-        mSearchEditTextView = (EditText) findViewById(R.id.search_bar);
+        mSearchEditTextView = (TagsCompletionView) findViewById(R.id.search_bar);
+        mSearchEditTextView.setMaxLines(1);
+        mSearchEditTextView.setMovementMethod(new ScrollingMovementMethod());
+        mSearchEditTextView.setVerticalScrollBarEnabled(true);
+
+        mTagDataList = new ArrayList<>();
+        mTagsArrayAdapter = new TagsArrayAdapter(this, R.layout.tag_layout, mTagDataList);
+        mRequestQueue = RequestQueueBuilder.preapareSerialQueue(this);
+        mRequestQueue.start();
+
+        TokenTextWatcher tokenTextWatcher = new TokenTextWatcher() {
+            @Override
+            public void onTextChanged(String tag) {
+                final JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.accumulate("authToken", App.mAuth);
+                    jsonObject.accumulate("queryString", tag);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                mTagsRequest = new JSONRequest("http://162.243.18.170:9000/v1/semantic/queryLabel", new TagsResponseListener(mTagsArrayAdapter), new TagsErrorListener(jsonObject), jsonObject);
+                mRequestQueue.add(mTagsRequest);
+            }
+        };
+        mSearchEditTextView.configurate(mTagsArrayAdapter, new TokenCompleteTextView.TokenListener() {
+            @Override
+            public void onTokenAdded(Object token) {
+
+            }
+
+            @Override
+            public void onTokenRemoved(Object token) {
+
+            }
+        }, tokenTextWatcher);
 
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mRequestQueue.stop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mRequestQueue.start();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mRequestQueue.cancelAll(new RequestQueue.RequestFilter() {
+            @Override
+            public boolean apply(Request<?> request) {
+                return true;
+            }
+        });
+        mRequestQueue.stop();
     }
 
     @Override

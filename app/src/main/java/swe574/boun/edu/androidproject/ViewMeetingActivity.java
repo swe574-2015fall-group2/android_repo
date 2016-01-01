@@ -9,10 +9,10 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,6 +26,7 @@ import swe574.boun.edu.androidproject.model.Meeting;
 import swe574.boun.edu.androidproject.model.Tag;
 import swe574.boun.edu.androidproject.model.User;
 import swe574.boun.edu.androidproject.network.JSONRequest;
+import swe574.boun.edu.androidproject.network.RequestQueueBuilder;
 
 public class ViewMeetingActivity extends AppCompatActivity {
     private User mUser;
@@ -38,6 +39,7 @@ public class ViewMeetingActivity extends AppCompatActivity {
     private ListView mMeetingAgenda;
     private ListView mMeetingToDo;
     private TextView mMeetingDetails;
+    private RequestQueue mRequestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +65,10 @@ public class ViewMeetingActivity extends AppCompatActivity {
         mMeetingAgenda = (ListView) findViewById(R.id.MeetingAgendaListView);
         mMeetingToDo = (ListView) findViewById(R.id.MeetingTodoListView);
         mMeetingDetails = (TextView) findViewById(R.id.MeetingContactDetailsTextView);
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        mRequestQueue = RequestQueueBuilder.preapareSerialQueue(this);
+        mRequestQueue.start();
+
         JSONRequest meetingRequest = new JSONRequest("http://162.243.18.170:9000/v1/meeting/get", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -120,7 +125,7 @@ public class ViewMeetingActivity extends AppCompatActivity {
             }
         }, requestObject);
 
-        requestQueue.add(meetingRequest);
+        mRequestQueue.add(meetingRequest);
 
         Button mFindPeople = (Button) findViewById(R.id.meetingPeople);
         mFindPeople.setOnClickListener(new View.OnClickListener() {
@@ -130,7 +135,29 @@ public class ViewMeetingActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mRequestQueue.stop();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mRequestQueue.start();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mRequestQueue.cancelAll(new RequestQueue.RequestFilter() {
+            @Override
+            public boolean apply(Request<?> request) {
+                return true;
+            }
+        });
+        mRequestQueue.stop();
     }
 }

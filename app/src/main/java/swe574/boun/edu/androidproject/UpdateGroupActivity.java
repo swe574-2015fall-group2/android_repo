@@ -25,7 +25,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.tokenautocomplete.FilteredArrayAdapter;
 import com.tokenautocomplete.TokenCompleteTextView;
 
@@ -40,6 +39,7 @@ import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.Group;
 import swe574.boun.edu.androidproject.model.Tag;
 import swe574.boun.edu.androidproject.network.JSONRequest;
+import swe574.boun.edu.androidproject.network.RequestQueueBuilder;
 import swe574.boun.edu.androidproject.ui.TagData;
 import swe574.boun.edu.androidproject.ui.TagsCompletionView;
 
@@ -102,7 +102,8 @@ public class UpdateGroupActivity extends AppCompatActivity implements TokenCompl
             }
 
         };
-        mRequestQueue = Volley.newRequestQueue(UpdateGroupActivity.this);
+        mRequestQueue = RequestQueueBuilder.preapareSerialQueue(this);
+        mRequestQueue.start();
         final String url = "http://162.243.18.170:9000/v1/semantic/queryLabel";
 
         mTagsCompletionView.setAdapter(mAdapter);
@@ -284,5 +285,29 @@ public class UpdateGroupActivity extends AppCompatActivity implements TokenCompl
     @Override
     public void onTokenRemoved(Object token) {
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mRequestQueue.stop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mRequestQueue.start();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mRequestQueue.cancelAll(new RequestQueue.RequestFilter() {
+            @Override
+            public boolean apply(Request<?> request) {
+                return true;
+            }
+        });
+        mRequestQueue.stop();
     }
 }

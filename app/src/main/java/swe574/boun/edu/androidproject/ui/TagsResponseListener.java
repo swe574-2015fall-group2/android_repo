@@ -2,6 +2,7 @@ package swe574.boun.edu.androidproject.ui;
 
 import android.util.Log;
 
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 
 import org.json.JSONArray;
@@ -18,6 +19,7 @@ import swe574.boun.edu.androidproject.model.Tag;
  */
 public class TagsResponseListener implements Response.Listener<String> {
     private TagsArrayAdapter mAdapter;
+    private RequestQueue mRequestQueue;
 
     public TagsResponseListener(TagsArrayAdapter mAdapter) {
         this.mAdapter = mAdapter;

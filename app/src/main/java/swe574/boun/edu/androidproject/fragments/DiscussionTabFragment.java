@@ -15,10 +15,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -36,6 +36,7 @@ import swe574.boun.edu.androidproject.model.CommunicationType;
 import swe574.boun.edu.androidproject.model.Discussion;
 import swe574.boun.edu.androidproject.model.ModelFragment;
 import swe574.boun.edu.androidproject.network.JSONRequest;
+import swe574.boun.edu.androidproject.network.RequestQueueBuilder;
 
 public class DiscussionTabFragment extends ModelFragment {
     private final int ADD_DISCUSSION = 8;
@@ -74,7 +75,8 @@ public class DiscussionTabFragment extends ModelFragment {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_discussion, null, false);
 
         mDiscussionListView = (ListView) viewGroup.findViewById(R.id.listDiscussions);
-        mRequestQueue = Volley.newRequestQueue(getContext());
+        mRequestQueue = RequestQueueBuilder.preapareSerialQueue(getContext());
+        mRequestQueue.start();
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.accumulate("authToken", App.mAuth);
@@ -184,4 +186,29 @@ public class DiscussionTabFragment extends ModelFragment {
             }
         }
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mRequestQueue.stop();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mRequestQueue.start();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mRequestQueue.cancelAll(new RequestQueue.RequestFilter() {
+            @Override
+            public boolean apply(Request<?> request) {
+                return true;
+            }
+        });
+        mRequestQueue.stop();
+    }
+
 }

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
@@ -23,7 +22,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.tokenautocomplete.FilteredArrayAdapter;
 import com.tokenautocomplete.TokenCompleteTextView;
 
@@ -36,6 +34,7 @@ import java.util.List;
 
 import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.Tag;
+import swe574.boun.edu.androidproject.network.RequestQueueBuilder;
 import swe574.boun.edu.androidproject.tasks.CreateGroupTask;
 import swe574.boun.edu.androidproject.ui.TagData;
 import swe574.boun.edu.androidproject.ui.TagsCompletionView;
@@ -49,6 +48,8 @@ public class NewGroupActivity extends AppCompatActivity implements TokenComplete
     private FilteredArrayAdapter<TagData> mAdapter;
     private List<Tag> mTags;
     private CreateGroupTask mTask;
+    //Network Elements
+    private RequestQueue mRequestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +90,8 @@ public class NewGroupActivity extends AppCompatActivity implements TokenComplete
             }
 
         };
-        final RequestQueue requestQueue = Volley.newRequestQueue(NewGroupActivity.this);
+        mRequestQueue = RequestQueueBuilder.preapareSerialQueue(this);
+        mRequestQueue.start();
         final String url = "http://162.243.18.170:9000/v1/semantic/queryLabel";
 
         mTagsCompletionView.setAdapter(mAdapter);
@@ -100,14 +102,14 @@ public class NewGroupActivity extends AppCompatActivity implements TokenComplete
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                String[] splitted = ((SpannableStringBuilder) s).toString().split(",");
+                String[] splitted = s.toString().split(",");
                 String tag = splitted[splitted.length - 1];
                 counter = (splitted.length) / 3;
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String[] splitted = ((SpannableStringBuilder) s).toString().split(",");
+                String[] splitted = s.toString().split(",");
                 String tag = splitted[splitted.length - 1];
                 if (counter > (splitted.length) / 3) {
                     mTags.remove(mTags.size() - 1);
@@ -164,7 +166,7 @@ public class NewGroupActivity extends AppCompatActivity implements TokenComplete
                         return "application/json";
                     }
                 };
-                requestQueue.add(request);
+                mRequestQueue.add(request);
             }
 
             @Override
@@ -212,7 +214,6 @@ public class NewGroupActivity extends AppCompatActivity implements TokenComplete
         }
 
         if (!cancel) {
-            // TODO IMPLEMENT TAGS
             mTask = new CreateGroupTask(this, (ViewGroup) ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0), mTags);
             mTask.execute((Void) null);
         } else {
@@ -237,5 +238,29 @@ public class NewGroupActivity extends AppCompatActivity implements TokenComplete
     @Override
     public void onTokenRemoved(Object token) {
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mRequestQueue.stop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mRequestQueue.start();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mRequestQueue.cancelAll(new RequestQueue.RequestFilter() {
+            @Override
+            public boolean apply(Request<?> request) {
+                return true;
+            }
+        });
+        mRequestQueue.stop();
     }
 }

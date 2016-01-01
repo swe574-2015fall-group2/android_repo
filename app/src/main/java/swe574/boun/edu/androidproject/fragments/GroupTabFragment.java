@@ -16,9 +16,10 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,12 +31,14 @@ import swe574.boun.edu.androidproject.model.Group;
 import swe574.boun.edu.androidproject.model.ModelFragment;
 import swe574.boun.edu.androidproject.model.Tag;
 import swe574.boun.edu.androidproject.network.JSONRequest;
+import swe574.boun.edu.androidproject.network.RequestQueueBuilder;
 import swe574.boun.edu.androidproject.tasks.GetGroupCalendarTask;
 import swe574.boun.edu.androidproject.tasks.LeaveGroupTask;
 import swe574.boun.edu.androidproject.tasks.OnTaskCompleted;
 
 public class GroupTabFragment extends ModelFragment {
     private final int UPDATE_GROUP = 1;
+    private RequestQueue mRequestQueue;
 
     public GroupTabFragment() {
         // Required empty public constructor
@@ -145,8 +148,34 @@ public class GroupTabFragment extends ModelFragment {
 
                 }
             }, jsonObject);
-            Volley.newRequestQueue(getContext()).add(jsonRequest);
+            mRequestQueue = RequestQueueBuilder.preapareSerialQueue(getContext());
+            mRequestQueue.start();
+            mRequestQueue.add(jsonRequest);
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mRequestQueue.stop();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mRequestQueue.start();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mRequestQueue.cancelAll(new RequestQueue.RequestFilter() {
+            @Override
+            public boolean apply(Request<?> request) {
+                return true;
+            }
+        });
+        mRequestQueue.stop();
     }
 
     @Override

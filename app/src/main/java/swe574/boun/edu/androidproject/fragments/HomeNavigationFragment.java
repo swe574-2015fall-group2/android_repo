@@ -12,10 +12,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,6 +32,7 @@ import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.HomeFragment;
 import swe574.boun.edu.androidproject.model.Meeting;
 import swe574.boun.edu.androidproject.network.JSONRequest;
+import swe574.boun.edu.androidproject.network.RequestQueueBuilder;
 import swe574.boun.edu.androidproject.tasks.FetchMyGroupsTask;
 import swe574.boun.edu.androidproject.tasks.OnTaskCompleted;
 
@@ -46,9 +47,28 @@ public class HomeNavigationFragment extends HomeFragment {
     boolean first = true;
     private ListView mMyGroupsListView;
     private ListView mMyMeetingsListView;
+    private RequestQueue mRequestQueue;
 
     public HomeNavigationFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mRequestQueue.stop();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mRequestQueue.cancelAll(new RequestQueue.RequestFilter() {
+            @Override
+            public boolean apply(Request<?> request) {
+                return true;
+            }
+        });
+        mRequestQueue.stop();
     }
 
     @Override
@@ -80,7 +100,8 @@ public class HomeNavigationFragment extends HomeFragment {
         mTask.execute();
 
         mMyMeetingsListView = (ListView) view.findViewById(R.id.listViewMyMeetings);
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        mRequestQueue = RequestQueueBuilder.preapareSerialQueue(getContext());
+        mRequestQueue.start();
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.accumulate("authToken", App.mAuth);
@@ -131,7 +152,7 @@ public class HomeNavigationFragment extends HomeFragment {
 
             }
         }, jsonObject);
-        requestQueue.add(jsonRequest);
+        mRequestQueue.add(jsonRequest);
 
         return view;
     }
@@ -174,6 +195,7 @@ public class HomeNavigationFragment extends HomeFragment {
             });
             mTask.execute();
         }
+        mRequestQueue.start();
         first = false;
     }
 }

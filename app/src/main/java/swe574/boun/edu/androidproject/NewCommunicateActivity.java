@@ -11,10 +11,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
 import com.tokenautocomplete.TokenCompleteTextView;
 
 import org.json.JSONArray;
@@ -28,6 +28,7 @@ import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.CommunicationType;
 import swe574.boun.edu.androidproject.model.Group;
 import swe574.boun.edu.androidproject.network.JSONRequest;
+import swe574.boun.edu.androidproject.network.RequestQueueBuilder;
 import swe574.boun.edu.androidproject.ui.TagData;
 import swe574.boun.edu.androidproject.ui.TagsArrayAdapter;
 import swe574.boun.edu.androidproject.ui.TagsCompletionView;
@@ -64,7 +65,8 @@ public class NewCommunicateActivity extends AppCompatActivity implements View.On
 
         mTagsDataList = new ArrayList<>();
         mTagsArrayAdapter = new TagsArrayAdapter(this, R.layout.tag_layout, mTagsDataList);
-        mRequestQueue = Volley.newRequestQueue(this);
+        mRequestQueue = RequestQueueBuilder.preapareSerialQueue(this);
+        mRequestQueue.start();
         TokenTextWatcher tokenTextWatcher = new TokenTextWatcher() {
             @Override
             public void onTextChanged(String tag) {
@@ -174,4 +176,29 @@ public class NewCommunicateActivity extends AppCompatActivity implements View.On
     private boolean validateDescription(String s) {
         return !TextUtils.isEmpty(s);
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mRequestQueue.stop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mRequestQueue.start();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mRequestQueue.cancelAll(new RequestQueue.RequestFilter() {
+            @Override
+            public boolean apply(Request<?> request) {
+                return true;
+            }
+        });
+        mRequestQueue.stop();
+    }
 }
+

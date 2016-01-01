@@ -16,10 +16,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -44,6 +44,7 @@ import swe574.boun.edu.androidproject.model.CommunicationType;
 import swe574.boun.edu.androidproject.model.ModelFragment;
 import swe574.boun.edu.androidproject.model.Note;
 import swe574.boun.edu.androidproject.network.JSONRequest;
+import swe574.boun.edu.androidproject.network.RequestQueueBuilder;
 
 public class NoteTabFragment extends ModelFragment {
     private final int ADD_NOTE_ID = 9;
@@ -82,7 +83,8 @@ public class NoteTabFragment extends ModelFragment {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_note, null, false);
 
         mNotesListView = (ListView) viewGroup.findViewById(R.id.listNotes);
-        mRequestQueue = Volley.newRequestQueue(getContext());
+        mRequestQueue = RequestQueueBuilder.preapareSerialQueue(getContext());
+        mRequestQueue.start();
         JSONObject jsonObject = new JSONObject();
 
         try {
@@ -116,7 +118,7 @@ public class NoteTabFragment extends ModelFragment {
                                     mNotesList.add(gson.fromJson(object.toString(), Note.class));
                                     adapterHolder.add(mNotesList.get(i).getTitle());
                                 }
-                                ArrayAdapter<String> arrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, adapterHolder);
+                                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, adapterHolder);
                                 mNotesListView.setAdapter(arrayAdapter);
                                 mNotesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
@@ -195,6 +197,30 @@ public class NoteTabFragment extends ModelFragment {
                 getActivity().setTitle("Notes");
             }
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mRequestQueue.stop();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mRequestQueue.start();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mRequestQueue.cancelAll(new RequestQueue.RequestFilter() {
+            @Override
+            public boolean apply(Request<?> request) {
+                return true;
+            }
+        });
+        mRequestQueue.stop();
     }
 
 }

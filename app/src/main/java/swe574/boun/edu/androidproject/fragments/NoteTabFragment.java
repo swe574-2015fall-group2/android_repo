@@ -202,25 +202,29 @@ public class NoteTabFragment extends ModelFragment {
     @Override
     public void onPause() {
         super.onPause();
-        mRequestQueue.stop();
+        if(mRequestQueue != null)
+            mRequestQueue.stop();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mRequestQueue.start();
+        if(mRequestQueue != null)
+            mRequestQueue.start();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mRequestQueue.cancelAll(new RequestQueue.RequestFilter() {
-            @Override
-            public boolean apply(Request<?> request) {
-                return true;
-            }
-        });
-        mRequestQueue.stop();
+        if(mRequestQueue != null) {
+            mRequestQueue.cancelAll(new RequestQueue.RequestFilter() {
+                @Override
+                public boolean apply(Request<?> request) {
+                    return true;
+                }
+            });
+            mRequestQueue.stop();
+        }
     }
 
 }

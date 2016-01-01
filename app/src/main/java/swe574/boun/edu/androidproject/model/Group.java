@@ -109,11 +109,16 @@ public final class Group implements Parcelable {
         List<Tag> tags = null;
         if (result.has("tagList")) {
             tags = new ArrayList<>();
-            JSONArray array = result.getJSONArray("tagList");
+            Object o = result.get("tagList");
+            if (o != null) {
+                if(o instanceof JSONArray) {
+                    JSONArray array = (JSONArray) o;
 
-            for (int i = 0; i < array.length(); i++) {
-                Tag tag = Tag.fromJsonObject(array.getJSONObject(i));
-                tags.add(tag);
+                    for (int i = 0; i < array.length(); i++) {
+                        Tag tag = Tag.fromJsonObject(array.getJSONObject(i));
+                        tags.add(tag);
+                    }
+                }
             }
         }
 

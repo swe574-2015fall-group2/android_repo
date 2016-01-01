@@ -13,6 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -52,6 +54,7 @@ public class HomeDrawerActivity extends AppCompatActivity
     private NavigationView mNavigationView;
     private TagsCompletionView mSearchEditTextView;
     private TagsArrayAdapter mTagsArrayAdapter;
+    private Button mSearchButton;
     //Network Variables
     private RequestQueue mRequestQueue;
     private JSONRequest mTagsRequest;
@@ -117,6 +120,13 @@ public class HomeDrawerActivity extends AppCompatActivity
             }
         }, tokenTextWatcher);
 
+        mSearchButton = (Button) findViewById(R.id.ButtonSearch);
+        mSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //mSearchRequest = new JSONRequest()
+            }
+        });
 
     }
 

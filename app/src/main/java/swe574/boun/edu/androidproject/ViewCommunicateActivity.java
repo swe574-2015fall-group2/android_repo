@@ -24,7 +24,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import swe574.boun.edu.androidproject.adapters.CommentListAdapter;
@@ -36,7 +35,6 @@ import swe574.boun.edu.androidproject.model.CommunicationType;
 import swe574.boun.edu.androidproject.model.Discussion;
 import swe574.boun.edu.androidproject.model.Group;
 import swe574.boun.edu.androidproject.model.Note;
-import swe574.boun.edu.androidproject.model.Resource;
 import swe574.boun.edu.androidproject.model.ResourceQuery;
 import swe574.boun.edu.androidproject.model.Tag;
 import swe574.boun.edu.androidproject.model.User;
@@ -49,7 +47,6 @@ public class ViewCommunicateActivity extends AppCompatActivity {
     // Data Object
     private Discussion mDiscussion;
     private Note mNote;
-    private List<Resource> mResourceList;
     private Map<User, Comment> mCommentMap;
     private CommunicationType mCommunicationType;
     private String mURL;
@@ -97,7 +94,7 @@ public class ViewCommunicateActivity extends AppCompatActivity {
             id = mNote.getId();
         }
         mCommunicationUpdateButton = (Button) findViewById(R.id.communicationUpdateButton);
-        if (App.mUserID.equals(creator)) {
+        if (!App.mUserID.equals(creator)) {
             mCommunicationUpdateButton.setVisibility(View.GONE);
         }
         mCommunicationUpdateButton.setOnClickListener(new View.OnClickListener() {

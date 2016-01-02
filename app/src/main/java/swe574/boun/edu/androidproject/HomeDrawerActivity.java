@@ -34,6 +34,7 @@ import swe574.boun.edu.androidproject.fragments.MessageNavigationFragment;
 import swe574.boun.edu.androidproject.fragments.ProfileNavigationFragment;
 import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.HomeFragment;
+import swe574.boun.edu.androidproject.model.Tag;
 import swe574.boun.edu.androidproject.model.User;
 import swe574.boun.edu.androidproject.network.JSONRequest;
 import swe574.boun.edu.androidproject.network.RequestQueueBuilder;
@@ -51,7 +52,7 @@ public class HomeDrawerActivity extends AppCompatActivity
     int code = 0;
     // Activity datas
     private User mUser;
-    private List<TagData> mTagDataList;
+    private List<Tag> mTagList;
     // UI Elements
     private NavigationView mNavigationView;
     private TagsCompletionView mSearchEditTextView;
@@ -91,8 +92,8 @@ public class HomeDrawerActivity extends AppCompatActivity
         mSearchEditTextView.setMovementMethod(new ScrollingMovementMethod());
         mSearchEditTextView.setVerticalScrollBarEnabled(true);
 
-        mTagDataList = new ArrayList<>();
-        mTagsArrayAdapter = new TagsArrayAdapter(this, R.layout.tag_layout, mTagDataList);
+        mTagList = new ArrayList<>();
+        mTagsArrayAdapter = new TagsArrayAdapter(this, R.layout.tag_layout, new ArrayList<TagData>());
         mRequestQueue = RequestQueueBuilder.preapareSerialQueue(this);
         mRequestQueue.start();
 
@@ -129,7 +130,7 @@ public class HomeDrawerActivity extends AppCompatActivity
                 JSONObject jsonObject = new JSONObject();
                 try {
                     jsonObject.accumulate("authToken", App.mAuth);
-                    jsonObject.accumulate("tagData", mTagDataList.get(0).toTag().toJson());
+                    jsonObject.accumulate("tagData", mTagList.get(0).toJson());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

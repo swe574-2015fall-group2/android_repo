@@ -1,12 +1,17 @@
 package swe574.boun.edu.androidproject.ui;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 import swe574.boun.edu.androidproject.model.Tag;
 
 public class TagData implements Serializable {
+    @SerializedName("label")
     private String mLabel;
+    @SerializedName("description")
     private String mDescription;
+    @SerializedName("clazz")
     private String mClass;
 
     public TagData(String mLabel, String mDescription, String mClass) {

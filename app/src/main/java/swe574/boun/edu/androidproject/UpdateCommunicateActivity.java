@@ -43,7 +43,7 @@ public class UpdateCommunicateActivity extends AppCompatActivity implements View
     // UI Elements
     private EditText mTitleEditText;
     private EditText mDescriptionEditText;
-    private List<TagData> mTagsDataList;
+    private List<Tag> mTagsList;
     private CommunicationType mCommunicationType;
     private Button mCreateButton;
     private TagsArrayAdapter mTagsArrayAdapter;
@@ -66,8 +66,8 @@ public class UpdateCommunicateActivity extends AppCompatActivity implements View
         TagsCompletionView mTagsCompletionView = (TagsCompletionView) findViewById(R.id.communicationTagsTagsCompletionView);
         mTagsCompletionView.setMovementMethod(new ScrollingMovementMethod());
 
-        mTagsDataList = new ArrayList<>();
-        mTagsArrayAdapter = new TagsArrayAdapter(this, R.layout.tag_layout, mTagsDataList);
+        mTagsList = new ArrayList<>();
+        mTagsArrayAdapter = new TagsArrayAdapter(this, R.layout.tag_layout, new ArrayList<TagData>());
         mRequestQueue = RequestQueueBuilder.preapareSerialQueue(this);
         mRequestQueue.start();
         TokenTextWatcher tokenTextWatcher = new TokenTextWatcher(mRequestQueue) {
@@ -152,8 +152,8 @@ public class UpdateCommunicateActivity extends AppCompatActivity implements View
                         jsonObject.accumulate("title", mTitleEditText.getText());
                         jsonObject.accumulate("groupId", group.getmID());
                         JSONArray array = new JSONArray();
-                        for (TagData data : mTagsDataList) {
-                            array.put(data.toTag().toJson());
+                        for (Tag tag : mTagsList) {
+                            array.put(tag.toJson());
                         }
                         jsonObject.accumulate("tagList", array);
                     } catch (JSONException e) {
@@ -167,8 +167,8 @@ public class UpdateCommunicateActivity extends AppCompatActivity implements View
                         jsonObject.accumulate("name", mDescriptionEditText.getText());
                         jsonObject.accumulate("description", mTitleEditText.getText());
                         JSONArray array = new JSONArray();
-                        for (TagData data : mTagsDataList) {
-                            array.put(data.toTag().toJson());
+                        for (Tag tag : mTagsList) {
+                            array.put(tag.toJson());
                         }
                         jsonObject.accumulate("tagList", array);
                         jsonObject.accumulate("discussionId", discussion.getId());

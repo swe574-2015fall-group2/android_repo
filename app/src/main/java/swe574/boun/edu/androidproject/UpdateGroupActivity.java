@@ -58,7 +58,7 @@ public class UpdateGroupActivity extends AppCompatActivity implements TokenCompl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_group);
-        setTitle("New Group");
+        setTitle("Update Group");
 
         Intent intent = getIntent();
         mGroup = intent.getParcelableExtra("group");
@@ -203,6 +203,7 @@ public class UpdateGroupActivity extends AppCompatActivity implements TokenCompl
                 attemptCreate();
             }
         });
+        mCreateButton.setText("Update Group");
     }
 
     private void attemptCreate() {
@@ -226,6 +227,7 @@ public class UpdateGroupActivity extends AppCompatActivity implements TokenCompl
                 jsonObject.accumulate("authToken", App.mAuth);
                 jsonObject.accumulate("name", mGroupNameView.getText().toString());
                 jsonObject.accumulate("description", mGroupDescriptionView.getText().toString());
+                jsonObject.accumulate("groupId", mGroup.getmID());
                 JSONArray jsonArray = new JSONArray();
                 for (Tag t : mTags) {
                     jsonArray.put(t.toJson());

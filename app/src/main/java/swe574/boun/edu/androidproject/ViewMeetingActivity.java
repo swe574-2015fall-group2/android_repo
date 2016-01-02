@@ -3,7 +3,11 @@ package swe574.boun.edu.androidproject;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -13,23 +17,28 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
+import swe574.boun.edu.androidproject.adapters.ListViewAdapterListener;
+import swe574.boun.edu.androidproject.adapters.ResourceListAdapter;
 import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.ContactDetails;
 import swe574.boun.edu.androidproject.model.Meeting;
+import swe574.boun.edu.androidproject.model.ResourceQuery;
 import swe574.boun.edu.androidproject.model.Tag;
-import swe574.boun.edu.androidproject.model.User;
+import swe574.boun.edu.androidproject.network.JSONBuilder;
 import swe574.boun.edu.androidproject.network.JSONRequest;
-import swe574.boun.edu.androidproject.network.RequestQueueBuilder;
+import swe574.boun.edu.androidproject.ui.ResourceViewHolder;
 
 public class ViewMeetingActivity extends AppCompatActivity {
-    private User mUser;
     private Meeting mMeeting;
     private TextView mMeetingTags;
     private TextView mMeetingLocation;
@@ -39,6 +48,7 @@ public class ViewMeetingActivity extends AppCompatActivity {
     private ListView mMeetingAgenda;
     private ListView mMeetingToDo;
     private TextView mMeetingDetails;
+    private RecyclerView mMeetingresources;
     private RequestQueue mRequestQueue;
 
     @Override
@@ -46,7 +56,6 @@ public class ViewMeetingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_meeting);
         Intent i = getIntent();
-        mUser = i.getParcelableExtra("user");
         final Meeting meeting = i.getParcelableExtra("meeting");
         JSONObject requestObject = new JSONObject();
 
@@ -65,9 +74,9 @@ public class ViewMeetingActivity extends AppCompatActivity {
         mMeetingAgenda = (ListView) findViewById(R.id.MeetingAgendaListView);
         mMeetingToDo = (ListView) findViewById(R.id.MeetingTodoListView);
         mMeetingDetails = (TextView) findViewById(R.id.MeetingContactDetailsTextView);
+        mMeetingresources = (RecyclerView) findViewById(R.id.MeetingResourcesRecyclerView);
 
-        mRequestQueue = RequestQueueBuilder.preapareSerialQueue(this);
-        mRequestQueue.start();
+        mRequestQueue = Volley.newRequestQueue(this);
 
         JSONRequest meetingRequest = new JSONRequest("http://162.243.18.170:9000/v1/meeting/get", new Response.Listener<String>() {
             @Override
@@ -79,21 +88,29 @@ public class ViewMeetingActivity extends AppCompatActivity {
                 }
                 setTitle(mMeeting.getmName());
                 StringBuilder stringBuilder = new StringBuilder();
-                for (Tag g : mMeeting.getmTags())
-                    stringBuilder.append(g.getTag() + ", ");
-                mMeetingTags.setText(stringBuilder.substring(0, stringBuilder.length() - 2).toString());
+                if (mMeeting.getmTags() != null && mMeeting.getmTags().size() > 0) {
+                    for (Tag g : mMeeting.getmTags())
+                        stringBuilder.append(g.getTag() + ", ");
+                    mMeetingTags.setText(stringBuilder.substring(0, stringBuilder.length() - 2).toString());
+                }
                 mMeetingLocation.setText(mMeeting.getmLocation());
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(mMeeting.getmDate());
-                mMeetingDay.setText(calendar.get(Calendar.DATE));
+                mMeetingDay.setText(Integer.toString(calendar.get(Calendar.DATE)));
                 mMeetingMonth.setText(new SimpleDateFormat("MMM").format(mMeeting.getmDate()));
-                mMeetingYear.setText(calendar.get(Calendar.YEAR));
-                if (mMeeting.getmAgenda() != null) {
+                mMeetingYear.setText(Integer.toString(calendar.get(Calendar.YEAR)));
+                if (mMeeting.getmAgenda() != null && mMeeting.getmAgenda().size() > 0) {
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(ViewMeetingActivity.this, android.R.layout.simple_list_item_1, mMeeting.getmAgenda());
                     mMeetingAgenda.setAdapter(adapter);
+                } else {
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(ViewMeetingActivity.this, android.R.layout.simple_list_item_1, new String[]{"No agenta items are found."});
+                    mMeetingAgenda.setAdapter(adapter);
                 }
-                if (mMeeting.getmToDo() != null) {
+                if (mMeeting.getmToDo() != null && mMeeting.getmToDo().size() > 0) {
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(ViewMeetingActivity.this, android.R.layout.simple_list_item_1, mMeeting.getmToDo());
+                    mMeetingToDo.setAdapter(adapter);
+                } else {
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(ViewMeetingActivity.this, android.R.layout.simple_list_item_1, new String[]{"No to-do items are found."});
                     mMeetingToDo.setAdapter(adapter);
                 }
                 if (mMeeting.getmDetails() != null) {
@@ -115,8 +132,61 @@ public class ViewMeetingActivity extends AppCompatActivity {
                     }
                     stringBuilder.deleteCharAt(stringBuilder.length() - 1);
                     mMeetingDetails.setText(stringBuilder.toString());
-
                 }
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.accumulate("authToken", App.mAuth);
+                    jsonObject.accumulate("groupId", mMeeting.getmGroupID());
+                    jsonObject.accumulate("meetingId", mMeeting.getmID());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                JSONRequest jsonRequest = new JSONRequest("http://162.243.18.170:9000/v1/resource/queryResourcesByGroup", new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        ResourceQuery resourceQuery = JSONBuilder.returnDefaultBuilder().create().fromJson(response, ResourceQuery.class);
+                        if (resourceQuery.getResult() != null) {
+                            ResourceListAdapter resourceListAdapter = new ResourceListAdapter(resourceQuery.getResult(), new ListViewAdapterListener() {
+                                @Override
+                                public void onViewCreated(ViewGroup viewGroup) {
+                                    viewGroup.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+
+                                        }
+                                    });
+                                }
+                            });
+                            LinearLayoutManager manager = new LinearLayoutManager(ViewMeetingActivity.this, LinearLayoutManager.HORIZONTAL, false);
+                            mMeetingresources.setLayoutManager(manager);
+                            mMeetingresources.setAdapter(resourceListAdapter);
+                        } else {
+                            final List<String> list = Arrays.asList(new String[]{"No resources are found for this meeting."});
+                            final swe574.boun.edu.androidproject.model.ArrayAdapter arrayAdapter = new swe574.boun.edu.androidproject.model.ArrayAdapter(list) {
+                                @Override
+                                public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                                    TextView viewGroup = (TextView) LayoutInflater.from(ViewMeetingActivity.this).inflate(android.R.layout.simple_list_item_1, parent, false);
+                                    return new ResourceViewHolder(viewGroup);
+                                }
+
+                                @Override
+                                public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+                                    ((TextView) holder.itemView.findViewById(android.R.id.text1)).setText(list.get(0));
+                                }
+                            };
+                            LinearLayoutManager manager = new LinearLayoutManager(ViewMeetingActivity.this, LinearLayoutManager.HORIZONTAL, false);
+                            mMeetingresources.setLayoutManager(manager);
+                            mMeetingresources.setAdapter(arrayAdapter);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }, jsonObject);
+                mRequestQueue.add(jsonRequest);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -126,6 +196,7 @@ public class ViewMeetingActivity extends AppCompatActivity {
         }, requestObject);
 
         mRequestQueue.add(meetingRequest);
+        mRequestQueue.start();
 
         Button mFindPeople = (Button) findViewById(R.id.meetingPeople);
         mFindPeople.setOnClickListener(new View.OnClickListener() {

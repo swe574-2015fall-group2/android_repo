@@ -21,31 +21,32 @@
 
         <TextView
             android:id="@+id/meetingTags"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
+            android:layout_toStartOf="@+id/linearLayout"
             android:maxLines="3"
-            android:nestedScrollingEnabled="true"
+            android:scrollbars="vertical"
             android:text=""
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/MeetingLocation"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
             android:layout_below="@+id/meetingTags"
+            android:layout_toStartOf="@+id/linearLayout"
             android:maxLines="1"
             android:text="" />
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignBottom="@+id/MeetingLocation"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="40dp"
-            android:layout_toEndOf="@+id/meetingTags"
+            android:layout_toEndOf="@+id/space"
             android:orientation="vertical">
 
             <TextView
@@ -73,6 +74,13 @@
                 android:layout_marginBottom="10dp"
                 android:text="" />
         </LinearLayout>
+
+        <Space
+            android:id="@+id/space"
+            android:layout_width="200px"
+            android:layout_height="20px"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" />
 
     </RelativeLayout>
 
@@ -122,7 +130,8 @@
             android:id="@+id/MeetingResourcesRecyclerView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"></android.support.v7.widget.RecyclerView>
+            android:layout_weight="2"
+            android:padding="16dp"></android.support.v7.widget.RecyclerView>
 
         <RelativeLayout
             android:layout_width="0dp"

@@ -13,7 +13,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import swe574.boun.edu.androidproject.model.Tag;
 import swe574.boun.edu.androidproject.network.JSONBuilder;
 
 /**

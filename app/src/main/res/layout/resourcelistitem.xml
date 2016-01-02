@@ -27,10 +27,10 @@
 
         <TextView
             android:id="@+id/resourceDescriptionTextView"
-            android:layout_width="match_parent"
+            android:layout_width="270dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:maxLines="3"
+            android:maxLines="5"
             android:paddingBottom="16dp"
             android:paddingEnd="16dp"
             android:paddingStart="16dp"

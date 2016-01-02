@@ -33,7 +33,7 @@ public class SearchResult {
         this.clazzList = clazzList;
     }
 
-    private static class SearchDetail{
+    private static class SearchDetail {
         private EntityType type;
         private String id;
         private String description;

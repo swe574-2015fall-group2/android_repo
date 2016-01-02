@@ -190,21 +190,21 @@ public class DiscussionTabFragment extends ModelFragment {
     @Override
     public void onPause() {
         super.onPause();
-        if(mRequestQueue != null)
+        if (mRequestQueue != null)
             mRequestQueue.stop();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(mRequestQueue != null)
+        if (mRequestQueue != null)
             mRequestQueue.start();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(mRequestQueue != null) {
+        if (mRequestQueue != null) {
             mRequestQueue.cancelAll(new RequestQueue.RequestFilter() {
                 @Override
                 public boolean apply(Request<?> request) {

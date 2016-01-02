@@ -27,6 +27,7 @@ public class Discussion implements Parcelable {
     private String groupId;
     private List<Comment> commentList;
     private List<Tag> tagList;
+    private List<String> resourceIdList;
 
     public Discussion() {
     }
@@ -39,6 +40,7 @@ public class Discussion implements Parcelable {
         groupId = in.readString();
         commentList = in.createTypedArrayList(Comment.CREATOR);
         tagList = in.createTypedArrayList(Tag.CREATOR);
+        resourceIdList = in.createStringArrayList();
     }
 
     public String getId() {
@@ -97,6 +99,14 @@ public class Discussion implements Parcelable {
         this.tagList = tagList;
     }
 
+    public List<String> getResourceIdList() {
+        return resourceIdList;
+    }
+
+    public void setResourceIdList(List<String> resourceIdList) {
+        this.resourceIdList = resourceIdList;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -111,5 +121,6 @@ public class Discussion implements Parcelable {
         dest.writeString(groupId);
         dest.writeTypedList(commentList);
         dest.writeTypedList(tagList);
+        dest.writeStringList(resourceIdList);
     }
 }

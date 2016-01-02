@@ -45,7 +45,7 @@ import swe574.boun.edu.androidproject.ui.TagsResponseListener;
 import swe574.boun.edu.androidproject.ui.TokenTextWatcher;
 
 public class HomeDrawerActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener {
     // Codes
     public static final int NEW_GROUP = 1;
     int code = 0;

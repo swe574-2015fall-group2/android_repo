@@ -24,7 +24,7 @@ public abstract class TokenTextWatcher implements TextWatcher {
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        if(mRequestQueue != null)
+        if (mRequestQueue != null)
             mRequestQueue.cancelAll(new RequestQueue.RequestFilter() {
                 @Override
                 public boolean apply(Request<?> request) {

@@ -126,6 +126,7 @@ public class NoteTabFragment extends ModelFragment {
                                         Note note = mNotesList.get(position);
                                         Intent intent = new Intent(getContext(), ViewCommunicateActivity.class);
                                         intent.putExtra("note", note);
+                                        intent.putExtra("group", mGroup);
                                         intent.putExtra("type", CommunicationType.NOTE);
                                         startActivityForResult(intent, 2);
                                     }
@@ -202,21 +203,21 @@ public class NoteTabFragment extends ModelFragment {
     @Override
     public void onPause() {
         super.onPause();
-        if(mRequestQueue != null)
+        if (mRequestQueue != null)
             mRequestQueue.stop();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(mRequestQueue != null)
+        if (mRequestQueue != null)
             mRequestQueue.start();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(mRequestQueue != null) {
+        if (mRequestQueue != null) {
             mRequestQueue.cancelAll(new RequestQueue.RequestFilter() {
                 @Override
                 public boolean apply(Request<?> request) {

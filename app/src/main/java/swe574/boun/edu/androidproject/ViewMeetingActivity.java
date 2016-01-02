@@ -80,7 +80,7 @@ public class ViewMeetingActivity extends AppCompatActivity {
                 setTitle(mMeeting.getmName());
                 StringBuilder stringBuilder = new StringBuilder();
                 for (Tag g : mMeeting.getmTags())
-                    stringBuilder.append(g.getLabel() + ", ");
+                    stringBuilder.append(g.getTag() + ", ");
                 mMeetingTags.setText(stringBuilder.substring(0, stringBuilder.length() - 2).toString());
                 mMeetingLocation.setText(mMeeting.getmLocation());
                 Calendar calendar = Calendar.getInstance();

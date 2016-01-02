@@ -60,7 +60,6 @@ public class UpdateCommunicateActivity extends AppCompatActivity implements View
         mTitleEditText = (EditText) findViewById(R.id.communicationTitleEditText);
         mTitleEditText.setMovementMethod(new ScrollingMovementMethod());
 
-
         mDescriptionEditText = (EditText) findViewById(R.id.communicationDescriptionEditText);
         mDescriptionEditText.setMovementMethod(new ScrollingMovementMethod());
 
@@ -126,47 +125,61 @@ public class UpdateCommunicateActivity extends AppCompatActivity implements View
     @Override
     public void onClick(View v) {
         if (v == mCreateButton) {
+            Intent intent = getIntent();
             boolean cancel = false;
             View focus = null;
 
             if (!validateDescription(mDescriptionEditText.getText().toString())) {
                 focus = mDescriptionEditText;
-                mDescriptionEditText.setError("Group Description cannot be empty");
+                mDescriptionEditText.setError("Description cannot be empty");
                 cancel = true;
             }
             if (!validateName(mTitleEditText.getText().toString())) {
                 focus = mTitleEditText;
-                mTitleEditText.setError("Group Name cannot be empty");
+                mTitleEditText.setError("Name cannot be empty");
                 cancel = true;
             }
 
             if (!cancel) {
                 final JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.accumulate("authToken", App.mAuth);
-                    jsonObject.accumulate("title", mTitleEditText.getText().toString());
-                    jsonObject.accumulate("text", mDescriptionEditText.getText().toString());
-                    jsonObject.accumulate("groupId", ((Group) getIntent().getParcelableExtra("group")).getmID());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                JSONArray jsonArray = new JSONArray();
-                for (TagData t : mTagsDataList) {
+                Group group = intent.getParcelableExtra("group");
+                if (mCommunicationType == CommunicationType.NOTE) {
+                    Note note = intent.getParcelableExtra("note");
                     try {
-                        jsonArray.put(t.toTag().toJson());
+                        jsonObject.accumulate("authToken", App.mAuth);
+                        jsonObject.accumulate("id", note.getId());
+                        jsonObject.accumulate("text", mDescriptionEditText.getText());
+                        jsonObject.accumulate("title", mTitleEditText.getText());
+                        jsonObject.accumulate("groupId", group.getmID());
+                        JSONArray array = new JSONArray();
+                        for (TagData data : mTagsDataList) {
+                            array.put(data.toTag().toJson());
+                        }
+                        jsonObject.accumulate("tagList", array);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Discussion discussion = intent.getParcelableExtra("discussion");
+                    try {
+                        jsonObject.accumulate("authToken", App.mAuth);
+                        jsonObject.accumulate("groupId", group.getmID());
+                        jsonObject.accumulate("name", mDescriptionEditText.getText());
+                        jsonObject.accumulate("description", mTitleEditText.getText());
+                        JSONArray array = new JSONArray();
+                        for (TagData data : mTagsDataList) {
+                            array.put(data.toTag().toJson());
+                        }
+                        jsonObject.accumulate("tagList", array);
+                        jsonObject.accumulate("discussionId", discussion.getId());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-                try {
-                    jsonObject.accumulate("tagList", jsonArray);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
                 JSONRequest mCreateRequest = new JSONRequest(mUrl, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(UpdateCommunicateActivity.this, "You have successfully created " + (mCommunicationType == CommunicationType.NOTE ? "Note" : "Discussion"), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UpdateCommunicateActivity.this, "You have successfully updated " + (mCommunicationType == CommunicationType.NOTE ? "Note" : "Discussion"), Toast.LENGTH_SHORT).show();
                         setResult(RESULT_OK);
                         finish();
                     }

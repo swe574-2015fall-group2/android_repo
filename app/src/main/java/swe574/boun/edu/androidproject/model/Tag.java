@@ -22,33 +22,31 @@ public class Tag implements Parcelable {
             return new Tag[size];
         }
     };
-    private String label;
+    private String tag;
     private String clazz;
     private String description;
 
     public Tag() {
     }
 
-    public Tag(String label, String clazz, String description) {
-        this.label = label;
+    public Tag(String tag, String clazz, String description) {
+        this.tag = tag;
         this.clazz = clazz;
         this.description = description;
     }
 
     protected Tag(Parcel in) {
-        label = in.readString();
+        tag = in.readString();
         clazz = in.readString();
         description = in.readString();
     }
 
     public static Tag fromJsonObject(JSONObject jsonObject) throws JSONException {
-        Tag tag = null;
+        Tag newTag = null;
 
-        String label = null;
-        if (jsonObject.has("label")) {
-            label = jsonObject.getString("label");
-        } else if (jsonObject.has("tag")) {
-            label = jsonObject.getString("tag");
+        String _tag = null;
+        if (jsonObject.has("tag")) {
+            _tag = jsonObject.getString("tag");
         }
 
         String _class = null;
@@ -61,16 +59,16 @@ public class Tag implements Parcelable {
             description = jsonObject.getString("description");
         }
 
-        tag = new Tag(label, _class, description);
+        newTag = new Tag(_tag, _class, description);
+        return newTag;
+    }
+
+    public String getTag() {
         return tag;
     }
 
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
+    public void setTag(String label) {
+        this.tag = label;
     }
 
     public String getClazz() {
@@ -96,15 +94,15 @@ public class Tag implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(label);
+        dest.writeString(tag);
         dest.writeString(clazz);
         dest.writeString(description);
     }
 
     public JSONObject toJson() throws JSONException {
         JSONObject object = new JSONObject();
-        object.put("tag", label);
-        if (clazz.equals("null") || clazz == null || TextUtils.isEmpty(clazz))
+        object.put("tag", tag);
+        if (clazz.equals("null") || TextUtils.isEmpty(clazz))
             object.put("clazz", null);
         else {
             object.put("clazz", clazz);

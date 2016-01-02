@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -27,6 +28,7 @@ import java.util.List;
 import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.CommunicationType;
 import swe574.boun.edu.androidproject.model.Group;
+import swe574.boun.edu.androidproject.model.Tag;
 import swe574.boun.edu.androidproject.network.JSONRequest;
 import swe574.boun.edu.androidproject.network.RequestQueueBuilder;
 import swe574.boun.edu.androidproject.ui.TagData;
@@ -40,7 +42,7 @@ public class NewCommunicateActivity extends AppCompatActivity implements View.On
     // UI Elements
     private EditText mTitleEditText;
     private EditText mDescriptionEditText;
-    private List<TagData> mTagsDataList;
+    private List<Tag> mTagList;
     private CommunicationType mCommunicationType;
     private Button mCreateButton;
     private TagsArrayAdapter mTagsArrayAdapter;
@@ -63,10 +65,11 @@ public class NewCommunicateActivity extends AppCompatActivity implements View.On
         TagsCompletionView mTagsCompletionView = (TagsCompletionView) findViewById(R.id.communicationTagsTagsCompletionView);
         mTagsCompletionView.setMovementMethod(new ScrollingMovementMethod());
 
-        mTagsDataList = new ArrayList<>();
-        mTagsArrayAdapter = new TagsArrayAdapter(this, R.layout.tag_layout, mTagsDataList);
+        mTagList = new ArrayList<>();
+        mTagsArrayAdapter = new TagsArrayAdapter(this, R.layout.tag_layout, new ArrayList<TagData>());
         mRequestQueue = RequestQueueBuilder.preapareSerialQueue(this);
         mRequestQueue.start();
+
         TokenTextWatcher tokenTextWatcher = new TokenTextWatcher(mRequestQueue) {
             @Override
             public void onTextChanged(String tag) {
@@ -81,6 +84,7 @@ public class NewCommunicateActivity extends AppCompatActivity implements View.On
                 mRequestQueue.add(mTagsRequest);
             }
         };
+
         mTagsCompletionView.configurate(mTagsArrayAdapter, new TokenCompleteTextView.TokenListener() {
             @Override
             public void onTokenAdded(Object token) {
@@ -92,6 +96,15 @@ public class NewCommunicateActivity extends AppCompatActivity implements View.On
 
             }
         }, tokenTextWatcher);
+
+        mTagsCompletionView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TagData data = mTagsArrayAdapter.getItem(position);
+                mTagList.add(data.toTag());
+                Log.v("TAG", data.getmLabel());
+            }
+        });
 
         Intent intent = getIntent();
         mCommunicationType = (CommunicationType) intent.getSerializableExtra("type");
@@ -114,37 +127,45 @@ public class NewCommunicateActivity extends AppCompatActivity implements View.On
 
             if (!validateDescription(mDescriptionEditText.getText().toString())) {
                 focus = mDescriptionEditText;
-                mDescriptionEditText.setError("Group Description cannot be empty");
+                mDescriptionEditText.setError("Description cannot be empty");
                 cancel = true;
             }
             if (!validateName(mTitleEditText.getText().toString())) {
                 focus = mTitleEditText;
-                mTitleEditText.setError("Group Name cannot be empty");
+                mTitleEditText.setError("Name cannot be empty");
                 cancel = true;
             }
 
             if (!cancel) {
                 final JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.accumulate("authToken", App.mAuth);
-                    jsonObject.accumulate("title", mTitleEditText.getText().toString());
-                    jsonObject.accumulate("text", mDescriptionEditText.getText().toString());
-                    jsonObject.accumulate("groupId", ((Group) getIntent().getParcelableExtra("group")).getmID());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                JSONArray jsonArray = new JSONArray();
-                for (TagData t : mTagsDataList) {
+                if (mCommunicationType == CommunicationType.NOTE) {
                     try {
-                        jsonArray.put(t.toTag().toJson());
+                        jsonObject.accumulate("authToken", App.mAuth);
+                        jsonObject.accumulate("title", mTitleEditText.getText().toString());
+                        jsonObject.accumulate("text", mDescriptionEditText.getText().toString());
+                        jsonObject.accumulate("groupId", ((Group) getIntent().getParcelableExtra("group")).getmID());
+                        JSONArray array = new JSONArray();
+                        for (Tag tag : mTagList) {
+                            array.put(tag.toJson());
+                        }
+                        jsonObject.accumulate("tagList", array);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }
-                try {
-                    jsonObject.accumulate("tagList", jsonArray);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                } else {
+                    try {
+                        jsonObject.accumulate("authToken", App.mAuth);
+                        jsonObject.accumulate("name", mTitleEditText.getText().toString());
+                        jsonObject.accumulate("description", mDescriptionEditText.getText().toString());
+                        jsonObject.accumulate("groupId", ((Group) getIntent().getParcelableExtra("group")).getmID());
+                        JSONArray array = new JSONArray();
+                        for (Tag tag : mTagList) {
+                            array.put(tag.toJson());
+                        }
+                        jsonObject.accumulate("tagList", array);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
                 JSONRequest mCreateRequest = new JSONRequest(mUrl, new Response.Listener<String>() {
                     @Override

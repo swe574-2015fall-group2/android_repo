@@ -70,7 +70,7 @@ public class GroupTabFragment extends ModelFragment {
         tags.setMovementMethod(new ScrollingMovementMethod());
         String tagText = "";
         for (Tag t : mGroup.getmTags()) {
-            tagText += "#" + t.getLabel() + ", ";
+            tagText += "#" + t.getTag() + ", ";
         }
         if (!tagText.equals("") && tagText.length() >= 2)
             tags.setText(tagText.substring(0, tagText.length() - 2));
@@ -134,7 +134,7 @@ public class GroupTabFragment extends ModelFragment {
                         TextView tags = (TextView) rootView.findViewById(R.id.group_tags);
                         String tagText = "";
                         for (Tag t : mGroup.getmTags()) {
-                            tagText += "#" + t.getLabel() + ", ";
+                            tagText += "#" + t.getTag() + ", ";
                         }
                         if (!tagText.equals("") && tagText.length() >= 2)
                             tags.setText(tagText.substring(0, tagText.length() - 2));

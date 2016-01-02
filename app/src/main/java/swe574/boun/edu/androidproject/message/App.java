@@ -11,6 +11,7 @@ public class App extends Application {
     public static SimpleDateFormat mDefaultFormatter = new SimpleDateFormat("yyyy-MM-dd");
     public static volatile Handler applicationHandler = null;
     public static String mAuth;
+    public static String mUserID;
     private static App Instance;
 
     public static App getInstance() {

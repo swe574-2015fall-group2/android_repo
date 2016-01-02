@@ -483,6 +483,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     JSONObject result = object.getJSONObject("result");
                     mUser = new User(result.getString("id"), null, null, null, null, null, null, null);
                     App.mAuth = result.getString("token");
+                    App.mUserID = result.getString("id");
                     return true;
                 }
                 return false;

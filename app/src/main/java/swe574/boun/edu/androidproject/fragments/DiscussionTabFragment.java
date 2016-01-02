@@ -112,6 +112,7 @@ public class DiscussionTabFragment extends ModelFragment {
                                         Intent intent = new Intent(getContext(), ViewCommunicateActivity.class);
                                         intent.putExtra("discussion", discussion);
                                         intent.putExtra("type", CommunicationType.DISCUSSION);
+                                        intent.putExtra("group", mGroup);
                                         startActivityForResult(intent, 2);
                                     }
                                 });
@@ -162,7 +163,87 @@ public class DiscussionTabFragment extends ModelFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if ((requestCode == 1 || requestCode == 2) && resultCode == Activity.RESULT_OK) {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.accumulate("authToken", App.mAuth);
+                jsonObject.accumulate("id", mGroup.getmID());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            mDiscussionRequest = new JSONRequest("http://162.243.18.170:9000/v1/discussion/list", new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONObject responseObject = new JSONObject(response);
+                        if (responseObject.has("status")) {
+                            String status = responseObject.getString("status");
+                            if (status.equals("success")) {
+                                mDiscussionList = new ArrayList<>();
+                                responseObject = responseObject.getJSONObject("result");
+                                if (responseObject.has("discussionList")) {
+                                    JSONArray jsonArray = responseObject.getJSONArray("discussionList");
+                                    Gson gson = new Gson();
+                                    ArrayList<String> adapterHolder = new ArrayList<>();
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject object = jsonArray.getJSONObject(i);
+                                        mDiscussionList.add(gson.fromJson(object.toString(), Discussion.class));
+                                        adapterHolder.add(mDiscussionList.get(i).getName());
+                                    }
+                                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, adapterHolder);
+                                    mDiscussionListView.setAdapter(arrayAdapter);
+                                    mDiscussionListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                        @Override
+                                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                            Discussion discussion = mDiscussionList.get(position);
+                                            Intent intent = new Intent(getContext(), ViewCommunicateActivity.class);
+                                            intent.putExtra("discussion", discussion);
+                                            intent.putExtra("type", CommunicationType.DISCUSSION);
+                                            intent.putExtra("group", mGroup);
+                                            startActivityForResult(intent, 2);
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    if (mDiscussionListView.getAdapter() == null) {
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.item_nogroups, R.id.textview, new String[]{"No discussions are found. Press here to create a discussion."});
+                        mDiscussionListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(getContext(), NewCommunicateActivity.class);
+                                intent.putExtra("type", CommunicationType.DISCUSSION);
+                                intent.putExtra("group", mGroup);
+                                startActivityForResult(intent, 1);
+                            }
+                        });
+                        mDiscussionListView.setAdapter(adapter);
+
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    if (mDiscussionListView.getAdapter() == null) {
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.item_nogroups, R.id.textview, new String[]{"No discussions are found. Press here to create a discussion."});
+                        mDiscussionListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(getContext(), NewCommunicateActivity.class);
+                                intent.putExtra("type", CommunicationType.DISCUSSION);
+                                intent.putExtra("group", mGroup);
+                                startActivityForResult(intent, 1);
+                            }
+                        });
+                        mDiscussionListView.setAdapter(adapter);
+
+                    }
+                }
+            }, jsonObject);
             mRequestQueue.add(mDiscussionRequest);
+            mRequestQueue.start();
         }
     }
 

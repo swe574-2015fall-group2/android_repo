@@ -85,18 +85,21 @@ public class ViewCommunicateActivity extends AppCompatActivity {
         mCommunicationCommentsListView = (ListView) findViewById(R.id.communicationCommentsListView);
 
         mCommunicationType = (CommunicationType) intent.getSerializableExtra("type");
-        String id;
+        String id, creator = "";
         if (mCommunicationType == CommunicationType.DISCUSSION) {
             mDiscussion = intent.getParcelableExtra("discussion");
             mURL = "http://162.243.18.170:9000/v1/discussion/query";
             id = mDiscussion.getId();
+            creator = mDiscussion.getCreatorId();
         } else {
             mNote = intent.getParcelableExtra("note");
             mURL = "http://162.243.18.170:9000/v1/note/query";
             id = mNote.getId();
         }
-
         mCommunicationUpdateButton = (Button) findViewById(R.id.communicationUpdateButton);
+        if (App.mUserID.equals(creator)) {
+            mCommunicationUpdateButton.setVisibility(View.GONE);
+        }
         mCommunicationUpdateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,7 +153,7 @@ public class ViewCommunicateActivity extends AppCompatActivity {
                     mCommunicationDescriptionTextView.setMaxLines(10);
                     String tagText = "";
                     for (Tag t : mNote.getTagList()) {
-                        tagText += "#" + t.getLabel() + ", ";
+                        tagText += "#" + t.getTag() + ", ";
                     }
                     if (!tagText.equals("") && tagText.length() >= 2) {
                         mCommunicationTagsTextView.setText(tagText.substring(0, tagText.length() - 2));
@@ -173,69 +176,73 @@ public class ViewCommunicateActivity extends AppCompatActivity {
                     mCommunicationDescriptionTextView.setText(mDiscussion.getDescription());
                     String tagText = "";
                     for (Tag t : mDiscussion.getTagList()) {
-                        tagText += "#" + t.getLabel() + ", ";
+                        tagText += "#" + t.getTag() + ", ";
                     }
                     if (!tagText.equals("") && tagText.length() >= 2) {
                         mCommunicationTagsTextView.setText(tagText.substring(0, tagText.length() - 2));
                     }
-                    mCommentMap = new LinkedHashMap<>();
-                    final int[] requests = {mDiscussion.getCommentList().size()};
-                    for (final Comment comment : mDiscussion.getCommentList()) {
-                        jsonObject = new JSONObject();
-                        try {
-                            jsonObject.accumulate("authToken", App.mAuth);
-                            jsonObject.accumulate("id", comment.getCreatorId());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        mGetCommentJSONRequest = new JSONRequest("http://162.243.18.170:9000/v1/user/get", new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                try {
-                                    JSONObject result = new JSONObject(response);
-                                    result = result.getJSONObject("result");
-                                    User user = User.createFromJSON(comment.getCreatorId(), result);
-                                    mCommentMap.put(user, comment);
-                                    requests[0]--;
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                    if (mDiscussion.getCommentList() != null) {
+                        mCommentMap = new LinkedHashMap<>();
+                        final int[] requests = {mDiscussion.getCommentList().size()};
+                        for (final Comment comment : mDiscussion.getCommentList()) {
+                            jsonObject = new JSONObject();
+                            try {
+                                jsonObject.accumulate("authToken", App.mAuth);
+                                jsonObject.accumulate("id", comment.getCreatorId());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            mGetCommentJSONRequest = new JSONRequest("http://162.243.18.170:9000/v1/user/get", new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    try {
+                                        JSONObject result = new JSONObject(response);
+                                        result = result.getJSONObject("result");
+                                        User user = User.createFromJSON(comment.getCreatorId(), result);
+                                        mCommentMap.put(user, comment);
+                                        requests[0]--;
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
-                            }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
 
-                            }
-                        }, jsonObject);
-                        mRequestQueue.add(mGetCommentJSONRequest);
-                    }
-                    WaitOnUITask task = new WaitOnUITask(new OnTaskCompleted() {
-                        @Override
-                        public void onTaskCompleted(Bundle extras) {
-                            CommentListAdapter commentListAdapter = new CommentListAdapter(null, mCommentMap, ViewCommunicateActivity.this);
-                            mCommunicationCommentsListView.setAdapter(commentListAdapter);
+                                }
+                            }, jsonObject);
+                            mRequestQueue.add(mGetCommentJSONRequest);
                         }
-                    }, requests);
-                    task.execute();
+                        WaitOnUITask task = new WaitOnUITask(new OnTaskCompleted() {
+                            @Override
+                            public void onTaskCompleted(Bundle extras) {
+                                CommentListAdapter commentListAdapter = new CommentListAdapter(null, mCommentMap, ViewCommunicateActivity.this);
+                                mCommunicationCommentsListView.setAdapter(commentListAdapter);
+                            }
+                        }, requests);
+                        task.execute();
+                    }
                 }
                 mGetResourcesJSONRequest = new JSONRequest("http://162.243.18.170:9000/v1/resource/queryResourcesByGroup", new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         ResourceQuery resourceQuery = gson.fromJson(response, ResourceQuery.class);
-                        ResourceListAdapter resourceListAdapter = new ResourceListAdapter(resourceQuery.getResult(), new ListViewAdapterListener() {
-                            @Override
-                            public void onViewCreated(ViewGroup viewGroup) {
-                                viewGroup.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
+                        if (resourceQuery.getResult() != null) {
+                            ResourceListAdapter resourceListAdapter = new ResourceListAdapter(resourceQuery.getResult(), new ListViewAdapterListener() {
+                                @Override
+                                public void onViewCreated(ViewGroup viewGroup) {
+                                    viewGroup.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
 
-                                    }
-                                });
-                            }
-                        });
-                        LinearLayoutManager manager = new LinearLayoutManager(ViewCommunicateActivity.this, LinearLayoutManager.HORIZONTAL, false);
-                        mCommunicationResourcesRecyclerView.setLayoutManager(manager);
-                        mCommunicationResourcesRecyclerView.setAdapter(resourceListAdapter);
+                                        }
+                                    });
+                                }
+                            });
+                            LinearLayoutManager manager = new LinearLayoutManager(ViewCommunicateActivity.this, LinearLayoutManager.HORIZONTAL, false);
+                            mCommunicationResourcesRecyclerView.setLayoutManager(manager);
+                            mCommunicationResourcesRecyclerView.setAdapter(resourceListAdapter);
+                        }
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -243,7 +250,7 @@ public class ViewCommunicateActivity extends AppCompatActivity {
 
                     }
                 }, requestJson);
-                mRequestQueue.add(mGetCommentJSONRequest);
+                mRequestQueue.add(mGetResourcesJSONRequest);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -274,7 +281,7 @@ public class ViewCommunicateActivity extends AppCompatActivity {
         protected Void doInBackground(Void... params) {
             while (requests[0] > 0) {
                 try {
-                    wait(500);
+                    Thread.sleep(500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

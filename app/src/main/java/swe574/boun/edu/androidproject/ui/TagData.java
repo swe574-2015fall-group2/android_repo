@@ -16,7 +16,7 @@ public class TagData implements Serializable {
     }
 
     public static TagData fromTag(Tag tag) {
-        return new TagData(tag.getLabel(), tag.getDescription(), tag.getClazz());
+        return new TagData(tag.getTag(), tag.getDescription(), tag.getClazz());
     }
 
     public String getmLabel() {
@@ -44,6 +44,6 @@ public class TagData implements Serializable {
     }
 
     public Tag toTag() {
-        return new Tag(mLabel, mDescription, mClass);
+        return new Tag(mLabel, mClass, mDescription);
     }
 }

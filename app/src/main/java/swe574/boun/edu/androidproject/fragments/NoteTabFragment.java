@@ -175,7 +175,91 @@ public class NoteTabFragment extends ModelFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if ((requestCode == 1 || requestCode == 2) && resultCode == Activity.RESULT_OK) {
+            JSONObject jsonObject = new JSONObject();
+
+            try {
+                jsonObject.accumulate("authToken", App.mAuth);
+                jsonObject.accumulate("id", mGroup.getmID());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            mNotesRequest = new JSONRequest("http://162.243.18.170:9000/v1/note/queryByGroup", new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONObject responseObject = new JSONObject(response);
+                        if (responseObject.has("status")) {
+                            String status = responseObject.getString("status");
+                            if (status.equals("success")) {
+                                mNotesList = new ArrayList<>();
+                                responseObject = responseObject.getJSONObject("result");
+                                if (responseObject.has("noteList")) {
+                                    JSONArray jsonArray = responseObject.getJSONArray("noteList");
+                                    GsonBuilder builder = new GsonBuilder();
+                                    builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
+                                        public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                                            return new Date(json.getAsJsonPrimitive().getAsLong());
+                                        }
+                                    });
+                                    Gson gson = builder.create();
+                                    ArrayList<String> adapterHolder = new ArrayList<>();
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject object = jsonArray.getJSONObject(i);
+                                        mNotesList.add(gson.fromJson(object.toString(), Note.class));
+                                        adapterHolder.add(mNotesList.get(i).getTitle());
+                                    }
+                                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, adapterHolder);
+                                    mNotesListView.setAdapter(arrayAdapter);
+                                    mNotesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                        @Override
+                                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                            Note note = mNotesList.get(position);
+                                            Intent intent = new Intent(getContext(), ViewCommunicateActivity.class);
+                                            intent.putExtra("note", note);
+                                            intent.putExtra("group", mGroup);
+                                            intent.putExtra("type", CommunicationType.NOTE);
+                                            startActivityForResult(intent, 2);
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    if (mNotesListView.getAdapter() == null) {
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.item_nogroups, R.id.textview, new String[]{"No notes are are found. Press here to create a note."});
+                        mNotesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(getContext(), NewCommunicateActivity.class);
+                                intent.putExtra("type", CommunicationType.NOTE);
+                                intent.putExtra("group", mGroup);
+                                startActivityForResult(intent, 1);
+                            }
+                        });
+                        mNotesListView.setAdapter(adapter);
+
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.item_nogroups, R.id.textview, new String[]{"No notes are are found. Press here to create a note."});
+                    mNotesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            Intent intent = new Intent(getContext(), NewCommunicateActivity.class);
+                            intent.putExtra("type", CommunicationType.NOTE);
+                            intent.putExtra("group", mGroup);
+                            startActivityForResult(intent, 1);
+                        }
+                    });
+                    mNotesListView.setAdapter(adapter);
+                }
+            }, jsonObject);
             mRequestQueue.add(mNotesRequest);
+            mRequestQueue.start();
         }
     }
 

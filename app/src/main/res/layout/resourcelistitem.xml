@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/ic_file_cloud_download" />
+            android:src="@drawable/ic_file_cloud_download" />
     </LinearLayout>
 
     <RelativeLayout

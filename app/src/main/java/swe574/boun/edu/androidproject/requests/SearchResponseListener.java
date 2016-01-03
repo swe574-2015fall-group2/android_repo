@@ -1,7 +1,13 @@
 package swe574.boun.edu.androidproject.requests;
 
-import com.android.volley.Response;
+import android.os.Bundle;
+import android.os.Parcelable;
 
+import com.android.volley.Response;
+import com.google.gson.Gson;
+
+import swe574.boun.edu.androidproject.model.SearchResult;
+import swe574.boun.edu.androidproject.network.JSONBuilder;
 import swe574.boun.edu.androidproject.tasks.OnTaskCompleted;
 
 /**
@@ -17,8 +23,13 @@ public class SearchResponseListener implements Response.Listener<String> {
 
     @Override
     public void onResponse(String response) {
+        SearchResult searchResult;
+        Gson gson = JSONBuilder.returnDefaultBuilder().create();
+        searchResult = gson.fromJson(response, SearchResult.class);
         if(mListener != null){
-            mListener.onTaskCompleted(null);
+            Bundle extras = new Bundle();
+            extras.putParcelable(RESULT_TOKEN, searchResult);
+            mListener.onTaskCompleted(extras);
         }
     }
 }

@@ -22,6 +22,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
 import com.tokenautocomplete.FilteredArrayAdapter;
 import com.tokenautocomplete.TokenCompleteTextView;
 
@@ -34,6 +35,7 @@ import java.util.List;
 
 import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.Tag;
+import swe574.boun.edu.androidproject.network.JSONBuilder;
 import swe574.boun.edu.androidproject.network.RequestQueueBuilder;
 import swe574.boun.edu.androidproject.tasks.CreateGroupTask;
 import swe574.boun.edu.androidproject.ui.TagData;
@@ -138,10 +140,12 @@ public class NewGroupActivity extends AppCompatActivity implements TokenComplete
                             } else {
                                 return;
                             }
+                            // FIXME HACK DUE TO SERVICE INCONSISTENCY
+                            Gson gson = JSONBuilder.returnDefaultBuilder().create();
                             JSONArray array = result.getJSONArray("dataList");
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject tagObject = array.getJSONObject(i);
-                                tagList.add(TagData.fromTag(Tag.fromJsonObject(tagObject)));
+                                tagList.add(gson.fromJson(tagObject.toString(), TagData.class));
                             }
                             mAdapter.clear();
                             mAdapter.addAll(tagList);

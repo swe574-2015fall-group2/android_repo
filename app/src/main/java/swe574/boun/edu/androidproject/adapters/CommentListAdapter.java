@@ -91,7 +91,7 @@ public class CommentListAdapter extends BaseAdapter {
         TextView commentDateTextView = (TextView) viewGroup.findViewById(R.id.commentDateTextView);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM HH:mm");
         commentDateTextView.setText(simpleDateFormat.format(comment.getCreationTime()));
-        if(mListener != null) {
+        if (mListener != null) {
             mListener.onViewCreated(viewGroup);
         }
         return viewGroup;

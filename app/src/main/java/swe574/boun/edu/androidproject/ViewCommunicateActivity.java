@@ -1,7 +1,6 @@
 package swe574.boun.edu.androidproject;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -42,7 +41,6 @@ import swe574.boun.edu.androidproject.model.Tag;
 import swe574.boun.edu.androidproject.model.User;
 import swe574.boun.edu.androidproject.network.JSONBuilder;
 import swe574.boun.edu.androidproject.network.JSONRequest;
-import swe574.boun.edu.androidproject.tasks.OnTaskCompleted;
 
 public class ViewCommunicateActivity extends AppCompatActivity {
     private static final int UPDATE_COMMUNICATE = 1;
@@ -157,7 +155,7 @@ public class ViewCommunicateActivity extends AppCompatActivity {
                     mCommunicationDescriptionTextView.setText(mNote.getText());
                     mCommunicationDescriptionTextView.setMaxLines(10);
                     String tagText = "";
-                    if(mNote.getTagList() != null) {
+                    if (mNote.getTagList() != null) {
                         for (Tag t : mNote.getTagList()) {
                             tagText += "#" + t.getTag() + ", ";
                         }
@@ -183,7 +181,7 @@ public class ViewCommunicateActivity extends AppCompatActivity {
                     setTitle(mDiscussion.getName());
                     mCommunicationDescriptionTextView.setText(mDiscussion.getDescription());
                     String tagText = "";
-                    if(mDiscussion.getTagList() != null) {
+                    if (mDiscussion.getTagList() != null) {
                         for (Tag t : mDiscussion.getTagList()) {
                             tagText += "#" + t.getTag() + ", ";
                         }
@@ -317,7 +315,7 @@ public class ViewCommunicateActivity extends AppCompatActivity {
                                     mCommunicationDescriptionTextView.setText(mNote.getText());
                                     mCommunicationDescriptionTextView.setMaxLines(10);
                                     String tagText = "";
-                                    if(mNote.getTagList() != null) {
+                                    if (mNote.getTagList() != null) {
                                         for (Tag t : mNote.getTagList()) {
                                             tagText += "#" + t.getTag() + ", ";
                                         }
@@ -343,7 +341,7 @@ public class ViewCommunicateActivity extends AppCompatActivity {
                                     setTitle(mDiscussion.getName());
                                     mCommunicationDescriptionTextView.setText(mDiscussion.getDescription());
                                     String tagText = "";
-                                    if(mDiscussion.getTagList() != null) {
+                                    if (mDiscussion.getTagList() != null) {
                                         for (Tag t : mDiscussion.getTagList()) {
                                             tagText += "#" + t.getTag() + ", ";
                                         }

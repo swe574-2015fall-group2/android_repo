@@ -80,33 +80,35 @@
         android:padding="16dp" />
 
     <RelativeLayout
+        android:id="@+id/relative"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:padding="8dp"
-        android:id="@+id/relative">
+        android:padding="8dp">
+
         <EditText
+            android:id="@+id/communicationCommentEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/communicationAddCommentButton"
             android:background="@drawable/edittextstyle"
             android:drawableStart="@drawable/ic_icon_message"
             android:hint="Comment"
             android:maxLines="3"
-            android:scrollbars="horizontal"
-            android:id="@+id/communicationCommentEditText"
-            android:layout_alignParentStart="true"
-            android:layout_toStartOf="@+id/communicationAddCommentButton" />
+            android:scrollbars="horizontal" />
+
         <Button
+            android:id="@+id/communicationAddCommentButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:id="@+id/communicationAddCommentButton"
             android:layout_alignBottom="@+id/communicationCommentEditText"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:text="Add"
+            android:layout_marginStart="8dp"
             android:background="@drawable/button_style"
-            android:textColor="@color/white"
-            android:layout_marginStart="8dp"/>
+            android:text="Add"
+            android:textColor="@color/white" />
     </RelativeLayout>
 
 </LinearLayout>

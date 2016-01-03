@@ -107,16 +107,19 @@ public class NewCommunicateActivity extends AppCompatActivity implements View.On
         });
 
         Intent intent = getIntent();
+        mCreateButton = (Button) findViewById(R.id.createButton);
+        mCreateButton.setOnClickListener(this);
         mCommunicationType = (CommunicationType) intent.getSerializableExtra("type");
         if (mCommunicationType == CommunicationType.NOTE) {
             mUrl = "http://162.243.18.170:9000/v1/note/create";
             setTitle("New Note");
+            mCreateButton.setText("Create Note");
         } else {
             mUrl = "http://162.243.18.170:9000/v1/discussion/create";
             setTitle("New Discussion");
+            mCreateButton.setText("Create Discussion");
         }
-        mCreateButton = (Button) findViewById(R.id.createButton);
-        mCreateButton.setOnClickListener(this);
+
     }
 
     @Override

@@ -14,10 +14,10 @@
             android:id="@+id/nav_groups"
             android:icon="@drawable/ic_icon_groupname"
             android:title="Groups" />
-        <item
+        <!-- <item
             android:id="@+id/nav_messages"
             android:icon="@drawable/ic_icon_message"
-            android:title="Messages" />
+            android:title="Messages" /> -->
     </group>
 
 </menu>

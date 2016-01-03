@@ -66,6 +66,7 @@ public class ViewCommunicateActivity extends AppCompatActivity {
     private Button mCommunicationAddCommentButton;
     private Group mGroup;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,7 +141,12 @@ public class ViewCommunicateActivity extends AppCompatActivity {
                 final JSONObject requestJson = new JSONObject();
                 try {
                     requestJson.accumulate("authToken", App.mAuth);
-                    requestJson.accumulate("groupId", mGroup.getmID());
+                    if(mDiscussion != null){
+                        requestJson.accumulate("groupId", mDiscussion.getId());
+                    }
+                    else {
+                        requestJson.accumulate("groupId", mNote.getId());
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -300,7 +306,12 @@ public class ViewCommunicateActivity extends AppCompatActivity {
                                 final JSONObject requestJson = new JSONObject();
                                 try {
                                     requestJson.accumulate("authToken", App.mAuth);
-                                    requestJson.accumulate("groupId", mGroup.getmID());
+                                    if(mDiscussion != null){
+                                        requestJson.accumulate("groupId", mDiscussion.getId());
+                                    }
+                                    else {
+                                        requestJson.accumulate("groupId", mNote.getId());
+                                    }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }

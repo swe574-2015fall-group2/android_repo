@@ -16,13 +16,19 @@ import org.json.JSONObject;
 
 import swe574.boun.edu.androidproject.GroupTabbedActivity;
 import swe574.boun.edu.androidproject.R;
+import swe574.boun.edu.androidproject.ViewCommunicateActivity;
+import swe574.boun.edu.androidproject.ViewMeetingActivity;
 import swe574.boun.edu.androidproject.message.App;
+import swe574.boun.edu.androidproject.model.Discussion;
 import swe574.boun.edu.androidproject.model.Group;
+import swe574.boun.edu.androidproject.model.Meeting;
+import swe574.boun.edu.androidproject.model.Note;
 import swe574.boun.edu.androidproject.model.SearchResult;
 import swe574.boun.edu.androidproject.model.User;
 import swe574.boun.edu.androidproject.network.JSONRequest;
 import swe574.boun.edu.androidproject.requests.GenericErrorListener;
 import swe574.boun.edu.androidproject.requests.GetGroupResponseListener;
+import swe574.boun.edu.androidproject.requests.GetMeetingResponseListener;
 import swe574.boun.edu.androidproject.tasks.OnTaskCompleted;
 
 /**
@@ -55,9 +61,9 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             @Override
             public void onClick(View v) {
                 final Bundle bundle = new Bundle();
+                bundle.putParcelable("user", mUser);
                 switch (result.getType()){
                     case GROUP:
-                        bundle.putParcelable("user", mUser);
                         JSONObject requestObject = new JSONObject();
                         try {
                             requestObject.accumulate("authToken", App.mAuth);
@@ -78,10 +84,42 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
                         holder.itemView.getContext().startActivity(intent);
                         break;
                     case DISCUSSION:
+                        bundle.putParcelable("group", new Group(null,null,null,"0",null,false,null));
+                        Discussion discussion = new Discussion();
+                        discussion.setId(result.getId());
+                        bundle.putParcelable("discussion", discussion);
+                        Intent dIntent = new Intent(holder.itemView.getContext(),ViewCommunicateActivity.class);
+                        dIntent.putExtras(bundle);
+                        holder.itemView.getContext().startActivity(dIntent);
                         break;
                     case NOTE:
+                        bundle.putParcelable("group", new Group(null, null, null, "0", null, false, null));
+                        Note note = new Note();
+                        note.setId(result.getId());
+                        bundle.putParcelable("note", note);
+                        Intent nIntent = new Intent(holder.itemView.getContext(),ViewCommunicateActivity.class);
+                        nIntent.putExtras(bundle);
+                        holder.itemView.getContext().startActivity(nIntent);
                         break;
                     case MEETING:
+                        JSONObject requestMeetingObject = new JSONObject();
+                        try {
+                            requestMeetingObject.accumulate("authToken", App.mAuth);
+                            requestMeetingObject.accumulate("id", result.getId());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        JSONRequest meetingRequest = new JSONRequest("http://162.243.18.170:9000/v1/meeting/get", new GetMeetingResponseListener(new OnTaskCompleted() {
+                            @Override
+                            public void onTaskCompleted(Bundle extras) {
+                                Meeting meeting = extras.getParcelable(GetMeetingResponseListener.MEETING_TOKEN);
+                                bundle.putParcelable("meeting", meeting);
+                            }
+                        }), new GenericErrorListener(requestMeetingObject, null),requestMeetingObject);
+                        Volley.newRequestQueue(holder.itemView.getContext()).add(meetingRequest);
+                        Intent mIntent = new Intent(holder.itemView.getContext(),ViewMeetingActivity.class);
+                        mIntent.putExtras(bundle);
+                        holder.itemView.getContext().startActivity(mIntent);
                         break;
                     case RESOURCE:
                         Toast.makeText(holder.itemView.getContext(), "This feature is currently in development", Toast.LENGTH_SHORT).show();

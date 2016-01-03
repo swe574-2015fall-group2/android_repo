@@ -88,23 +88,16 @@ public class NewCommunicateActivity extends AppCompatActivity implements View.On
         mTagsCompletionView.configurate(mTagsArrayAdapter, new TokenCompleteTextView.TokenListener() {
             @Override
             public void onTokenAdded(Object token) {
-
+                TagData data = (TagData) token;
+                mTagList.add(data.toTag());
             }
 
             @Override
             public void onTokenRemoved(Object token) {
-
+                TagData data = (TagData) token;
+                mTagList.remove(data.toTag());
             }
         }, tokenTextWatcher);
-
-        mTagsCompletionView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TagData data = mTagsArrayAdapter.getItem(position);
-                mTagList.add(data.toTag());
-                Log.v("TAG", data.getmLabel());
-            }
-        });
 
         Intent intent = getIntent();
         mCreateButton = (Button) findViewById(R.id.createButton);

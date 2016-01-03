@@ -3,6 +3,7 @@ package swe574.boun.edu.androidproject.adapters;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.ViewCommunicateActivity;
 import swe574.boun.edu.androidproject.ViewMeetingActivity;
 import swe574.boun.edu.androidproject.message.App;
+import swe574.boun.edu.androidproject.model.CommunicationType;
 import swe574.boun.edu.androidproject.model.Discussion;
 import swe574.boun.edu.androidproject.model.Group;
 import swe574.boun.edu.androidproject.model.Meeting;
@@ -76,18 +78,19 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
                             public void onTaskCompleted(Bundle extras) {
                                 Group group = extras.getParcelable(GetGroupResponseListener.GROUP_TOKEN);
                                 bundle.putParcelable("group", group);
+                                Intent intent = new Intent(holder.itemView.getContext(), GroupTabbedActivity.class);
+                                intent.putExtras(bundle);
+                                holder.itemView.getContext().startActivity(intent);
                             }
                         }), new GenericErrorListener(requestObject, null), requestObject);
                         Volley.newRequestQueue(holder.itemView.getContext()).add(request);
-                        Intent intent = new Intent(holder.itemView.getContext(), GroupTabbedActivity.class);
-                        intent.putExtras(bundle);
-                        holder.itemView.getContext().startActivity(intent);
                         break;
                     case DISCUSSION:
                         bundle.putParcelable("group", new Group(null, null, null, "0", null, false, null));
                         Discussion discussion = new Discussion();
                         discussion.setId(result.getId());
                         bundle.putParcelable("discussion", discussion);
+                        bundle.putSerializable("type", CommunicationType.DISCUSSION);
                         Intent dIntent = new Intent(holder.itemView.getContext(), ViewCommunicateActivity.class);
                         dIntent.putExtras(bundle);
                         holder.itemView.getContext().startActivity(dIntent);
@@ -97,6 +100,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
                         Note note = new Note();
                         note.setId(result.getId());
                         bundle.putParcelable("note", note);
+                        bundle.putSerializable("type", CommunicationType.NOTE);
                         Intent nIntent = new Intent(holder.itemView.getContext(), ViewCommunicateActivity.class);
                         nIntent.putExtras(bundle);
                         holder.itemView.getContext().startActivity(nIntent);
@@ -114,12 +118,12 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
                             public void onTaskCompleted(Bundle extras) {
                                 Meeting meeting = extras.getParcelable(GetMeetingResponseListener.MEETING_TOKEN);
                                 bundle.putParcelable("meeting", meeting);
+                                Intent mIntent = new Intent(holder.itemView.getContext(), ViewMeetingActivity.class);
+                                mIntent.putExtras(bundle);
+                                holder.itemView.getContext().startActivity(mIntent);
                             }
                         }), new GenericErrorListener(requestMeetingObject, null), requestMeetingObject);
                         Volley.newRequestQueue(holder.itemView.getContext()).add(meetingRequest);
-                        Intent mIntent = new Intent(holder.itemView.getContext(), ViewMeetingActivity.class);
-                        mIntent.putExtras(bundle);
-                        holder.itemView.getContext().startActivity(mIntent);
                         break;
                     case RESOURCE:
                         Toast.makeText(holder.itemView.getContext(), "This feature is currently in development", Toast.LENGTH_SHORT).show();
@@ -145,6 +149,8 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             mEntityTypeTextView = (TextView) itemView.findViewById(R.id.entityTypeTextView);
             mIdTextView = (TextView) itemView.findViewById(R.id.idTextView);
             mDescriptionTextView = (TextView) itemView.findViewById(R.id.descriptionTextView);
+            mDescriptionTextView.setMovementMethod(new ScrollingMovementMethod());
+            mDescriptionTextView.setHorizontalScrollBarEnabled(true);
             mTagTextView = (TextView) itemView.findViewById(R.id.tagTextView);
         }
     }

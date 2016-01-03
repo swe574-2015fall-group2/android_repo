@@ -39,9 +39,6 @@ public abstract class TokenTextWatcher implements TextWatcher {
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         mTagsArray = s.toString().split(",");
         String tag = mTagsArray[mTagsArray.length - 1];
-        if (mTokenCount > (mTagsArray.length) / 3) {
-            mTags.remove(mTags.size() - 1);
-        }
         if (tag.length() < 2) {
             return;
         }

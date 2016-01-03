@@ -27,7 +27,9 @@ public class GetGroupResponseListener implements Response.Listener<String> {
     public void onResponse(String response) {
         Bundle bundle = new Bundle();
         try {
-            Group group = Group.fromJsonString(new JSONObject(response));
+            JSONObject object = new JSONObject(response);
+            object = object.getJSONObject("result");
+            Group group = Group.fromJsonString(object);
             bundle.putParcelable(GROUP_TOKEN, group);
         } catch (JSONException e) {
             e.printStackTrace();

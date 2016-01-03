@@ -125,9 +125,6 @@ public class UpdateGroupActivity extends AppCompatActivity implements TokenCompl
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String[] splitted = s.toString().split(",");
                 String tag = splitted[splitted.length - 1];
-                if (counter > (splitted.length) / 3) {
-                    mTags.remove(mTags.size() - 1);
-                }
                 if (tag.length() < 2) {
                     return;
                 }
@@ -191,14 +188,6 @@ public class UpdateGroupActivity extends AppCompatActivity implements TokenCompl
             }
         };
         mTagsCompletionView.addTextChangedListener(textWatcher);
-        mTagsCompletionView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TagData data = mAdapter.getItem(position);
-                mTags.add(data.toTag());
-                Log.v("TAG", data.getmLabel());
-            }
-        });
 
         mCreateButton = (Button) findViewById(R.id.create_group);
         mCreateButton.setOnClickListener(new View.OnClickListener() {
@@ -285,12 +274,14 @@ public class UpdateGroupActivity extends AppCompatActivity implements TokenCompl
 
     @Override
     public void onTokenAdded(Object token) {
-
+        TagData tagData = (TagData) token;
+        mTags.add(tagData.toTag());
     }
 
     @Override
     public void onTokenRemoved(Object token) {
-
+        TagData tagData = (TagData) token;
+        mTags.remove(tagData.toTag());
     }
 
     @Override

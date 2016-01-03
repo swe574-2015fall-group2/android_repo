@@ -27,7 +27,9 @@ public class GetMeetingResponseListener implements Response.Listener<String> {
     public void onResponse(String response) {
         Meeting meeting = null;
         try {
-            meeting = Meeting.createFromJSON(new JSONObject(response));
+            JSONObject object = new JSONObject(response);
+            object = object.getJSONObject("result");
+            meeting = Meeting.createFromJSON(object);
         } catch (JSONException e) {
             e.printStackTrace();
         }

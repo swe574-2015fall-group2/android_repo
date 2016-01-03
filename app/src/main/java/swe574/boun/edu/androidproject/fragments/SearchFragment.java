@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import swe574.boun.edu.androidproject.R;
+import swe574.boun.edu.androidproject.adapters.DividerItemDecoration;
 import swe574.boun.edu.androidproject.adapters.SearchResultsAdapter;
 import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.SearchResult;
@@ -69,6 +71,9 @@ public class SearchFragment extends Fragment implements OnTaskCompleted, OnVolle
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.fragment_search, container, false);
         mSearchResultsRecyclerView = (RecyclerView) viewGroup.findViewById(R.id.searchResultsRecyclerView);
+        mSearchResultsRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+
+        mSearchResultsRecyclerView.setHasFixedSize(true);
         return viewGroup;
     }
 
@@ -113,6 +118,7 @@ public class SearchFragment extends Fragment implements OnTaskCompleted, OnVolle
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         SearchResultsAdapter adapter = new SearchResultsAdapter(results, mUser);
         mSearchResultsRecyclerView.setLayoutManager(manager);
+        mSearchResultsRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mSearchResultsRecyclerView.setAdapter(adapter);
     }
 

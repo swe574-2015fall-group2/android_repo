@@ -20,6 +20,10 @@ public class TagsErrorListener implements Response.ErrorListener {
     @Override
     public void onErrorResponse(VolleyError error) {
         Log.e("ERROR/REQUEST", mJSONObject.toString());
+        if(error.networkResponse != null)
         Log.e("ERROR/RESPONSE", new String(error.networkResponse.data));
+        else{
+            Log.e("ERROR/RESPONSE", "No Response");
+        }
     }
 }

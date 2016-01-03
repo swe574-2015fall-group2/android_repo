@@ -87,12 +87,14 @@ public class UpdateCommunicateActivity extends AppCompatActivity implements View
         mTagsCompletionView.configurate(mTagsArrayAdapter, new TokenCompleteTextView.TokenListener() {
             @Override
             public void onTokenAdded(Object token) {
-
+                TagData data = (TagData) token;
+                mTagsList.add(data.toTag());
             }
 
             @Override
             public void onTokenRemoved(Object token) {
-
+                TagData data = (TagData) token;
+                mTagsList.remove(data.toTag());
             }
         }, tokenTextWatcher);
 

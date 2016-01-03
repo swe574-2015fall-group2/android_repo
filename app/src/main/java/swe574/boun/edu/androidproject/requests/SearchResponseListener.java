@@ -5,6 +5,9 @@ import android.os.Bundle;
 import com.android.volley.Response;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import swe574.boun.edu.androidproject.model.SearchResult;
 import swe574.boun.edu.androidproject.network.JSONBuilder;
 import swe574.boun.edu.androidproject.tasks.OnTaskCompleted;
@@ -24,7 +27,16 @@ public class SearchResponseListener implements Response.Listener<String> {
     public void onResponse(String response) {
         SearchResult searchResult;
         Gson gson = JSONBuilder.returnDefaultBuilder().create();
-        searchResult = gson.fromJson(response, SearchResult.class);
+        JSONObject object = null;
+        try {
+            object = new JSONObject(response);
+            if(object.has("result")){
+                object = object.getJSONObject("result");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        searchResult = gson.fromJson(object.toString(), SearchResult.class);
         if (mListener != null) {
             Bundle extras = new Bundle();
             extras.putParcelable(RESULT_TOKEN, searchResult);

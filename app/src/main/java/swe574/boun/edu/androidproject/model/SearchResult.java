@@ -79,7 +79,7 @@ public class SearchResult implements Parcelable {
         private String id;
         private String description;
         private Tag tag;
-        private int rank;
+        private double rank;
 
         public SearchDetail(EntityType type, String id, String description, Tag tag, int rank) {
             this.type = type;
@@ -97,7 +97,7 @@ public class SearchResult implements Parcelable {
             id = in.readString();
             description = in.readString();
             tag = in.readParcelable(Tag.class.getClassLoader());
-            rank = in.readInt();
+            rank = in.readDouble();
         }
 
         public EntityType getType() {
@@ -132,7 +132,7 @@ public class SearchResult implements Parcelable {
             this.tag = tag;
         }
 
-        public int getRank() {
+        public double getRank() {
             return rank;
         }
 
@@ -151,7 +151,7 @@ public class SearchResult implements Parcelable {
             dest.writeString(id);
             dest.writeString(description);
             dest.writeParcelable(tag, flags);
-            dest.writeInt(rank);
+            dest.writeDouble(rank);
         }
     }
 }

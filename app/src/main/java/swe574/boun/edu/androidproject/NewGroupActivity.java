@@ -113,9 +113,6 @@ public class NewGroupActivity extends AppCompatActivity implements TokenComplete
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String[] splitted = s.toString().split(",");
                 String tag = splitted[splitted.length - 1];
-                if (counter > (splitted.length) / 3) {
-                    mTags.remove(mTags.size() - 1);
-                }
                 if (tag.length() < 2) {
                     return;
                 }
@@ -180,14 +177,6 @@ public class NewGroupActivity extends AppCompatActivity implements TokenComplete
         };
         mTags = new ArrayList<>();
         mTagsCompletionView.addTextChangedListener(textWatcher);
-        mTagsCompletionView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TagData data = mAdapter.getItem(position);
-                mTags.add(data.toTag());
-                Log.v("TAG", data.getmLabel());
-            }
-        });
 
         mCreateButton = (Button) findViewById(R.id.create_group);
         mCreateButton.setOnClickListener(new View.OnClickListener() {
@@ -236,12 +225,14 @@ public class NewGroupActivity extends AppCompatActivity implements TokenComplete
 
     @Override
     public void onTokenAdded(Object token) {
-
+        TagData tagData = (TagData) token;
+        mTags.add(tagData.toTag());
     }
 
     @Override
     public void onTokenRemoved(Object token) {
-
+        TagData tagData = (TagData) token;
+        mTags.remove(tagData.toTag());
     }
 
     @Override

@@ -12,9 +12,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -116,12 +118,14 @@ public class HomeDrawerActivity extends AppCompatActivity
         mSearchEditTextView.configurate(mTagsArrayAdapter, new TokenCompleteTextView.TokenListener() {
             @Override
             public void onTokenAdded(Object token) {
-
+                TagData tagData = (TagData) token;
+                mTagList.add(tagData.toTag());
             }
 
             @Override
             public void onTokenRemoved(Object token) {
-
+                TagData tagData = (TagData) token;
+                mTagList.remove(tagData.toTag());
             }
         }, tokenTextWatcher);
 
@@ -132,7 +136,7 @@ public class HomeDrawerActivity extends AppCompatActivity
                 if (mTagList.size() > 0) {
                     SearchFragment fragment = SearchFragment.newInstance(mUser, mTagList.get(0));
                     FragmentManager manager = getSupportFragmentManager();
-                    for (int i = 0; i < 4; i++) {
+                    for (int i = 0; i < 3; i++) {
                         mNavigationView.getMenu().getItem(i).setChecked(false);
                     }
                     Fragment currentFragment = manager.findFragmentById(R.id.fragment_container);

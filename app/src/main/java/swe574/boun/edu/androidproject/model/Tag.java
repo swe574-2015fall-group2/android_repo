@@ -102,10 +102,12 @@ public class Tag implements Parcelable {
     public JSONObject toJson() throws JSONException {
         JSONObject object = new JSONObject();
         object.put("tag", tag);
-        if (clazz.equals("null") || TextUtils.isEmpty(clazz))
-            object.put("clazz", null);
-        else {
-            object.put("clazz", clazz);
+        if(clazz != null) {
+            if (clazz.equals("null") || TextUtils.isEmpty(clazz))
+                object.put("clazz", null);
+            else {
+                object.put("clazz", clazz);
+            }
         }
         return object;
     }

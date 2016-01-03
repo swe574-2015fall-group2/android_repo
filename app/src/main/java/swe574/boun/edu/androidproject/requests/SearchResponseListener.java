@@ -30,7 +30,7 @@ public class SearchResponseListener implements Response.Listener<String> {
         JSONObject object = null;
         try {
             object = new JSONObject(response);
-            if(object.has("result")){
+            if (object.has("result")) {
                 object = object.getJSONObject("result");
             }
         } catch (JSONException e) {

@@ -43,16 +43,16 @@ public final class Meeting implements Parcelable {
     private final String mType;
     private final boolean isPin;
     private final ContactDetails mDetails;
-    private final List<String> mInvited;
-    private final List<String> mAttended;
-    private final List<String> mRejected;
-    private final List<String> mTentative;
+    private final List<User> mInvited;
+    private final List<User> mAttended;
+    private final List<User> mRejected;
+    private final List<User> mTentative;
     private final List<Tag> mTags;
 
     public Meeting(String mID, String mCreatorID, String mGroupID, String mName, Date mDate, String mTimeZone, List<String> mAgenda,
                    List<String> mToDo, String mStartHour, String mEndHour, long mActual, String mLocation, String mDescription,
-                   String mStatus, String mType, boolean isPin, ContactDetails mDetails, List<String> mInvited, List<String> mAttended,
-                   List<String> mRejected, List<String> mTentative, List<Tag> mTags) {
+                   String mStatus, String mType, boolean isPin, ContactDetails mDetails, List<User> mInvited, List<User> mAttended,
+                   List<User> mRejected, List<User> mTentative, List<Tag> mTags) {
         this.mID = mID;
         this.mCreatorID = mCreatorID;
         this.mGroupID = mGroupID;
@@ -95,10 +95,10 @@ public final class Meeting implements Parcelable {
         mType = in.readString();
         isPin = in.readByte() != 0;
         mDetails = in.readParcelable(ContactDetails.class.getClassLoader());
-        mInvited = in.createStringArrayList();
-        mAttended = in.createStringArrayList();
-        mRejected = in.createStringArrayList();
-        mTentative = in.createStringArrayList();
+        mInvited = in.createTypedArrayList(User.CREATOR);
+        mAttended = in.createTypedArrayList(User.CREATOR);
+        mRejected = in.createTypedArrayList(User.CREATOR);
+        mTentative = in.createTypedArrayList(User.CREATOR);
         mTags = in.createTypedArrayList(Tag.CREATOR);
     }
 
@@ -317,7 +317,7 @@ public final class Meeting implements Parcelable {
             }
         }
 
-        List<String> invited = null;
+        List<User> invited = null;
         if (result.has("invitedUserSet")) {
             Object object = result.get("invitedUserSet");
             if ((object instanceof JSONArray)) {
@@ -325,13 +325,13 @@ public final class Meeting implements Parcelable {
                 if (inviset != null) {
                     invited = new ArrayList<>();
                     for (int i = 0; i < inviset.length(); i++) {
-                        invited.add(inviset.get(i).toString());
+                        invited.add(User.createFromJSON("", (JSONObject) inviset.get(i)));
                     }
                 }
             }
         }
 
-        List<String> attended = null;
+        List<User> attended = null;
         if (result.has("attandedUserSet")) {
             Object object = result.get("attandedUserSet");
             if ((object instanceof JSONArray)) {
@@ -339,13 +339,13 @@ public final class Meeting implements Parcelable {
                 if (attset != null) {
                     attended = new ArrayList<>();
                     for (int i = 0; i < attset.length(); i++) {
-                        attended.add(attset.get(i).toString());
+                        attended.add(User.createFromJSON("", (JSONObject) attset.get(i)));
                     }
                 }
             }
         }
 
-        List<String> rejected = null;
+        List<User> rejected = null;
         if (result.has("rejectedUserSet")) {
             Object object = result.get("rejectedUserSet");
             if ((object instanceof JSONArray)) {
@@ -353,13 +353,13 @@ public final class Meeting implements Parcelable {
                 if (attset != null) {
                     rejected = new ArrayList<>();
                     for (int i = 0; i < attset.length(); i++) {
-                        rejected.add(attset.get(i).toString());
+                        rejected.add(User.createFromJSON("", (JSONObject) attset.get(i)));
                     }
                 }
             }
         }
 
-        List<String> tentitive = null;
+        List<User> tentitive = null;
         if (result.has("tentativeUserSet")) {
             Object object = result.get("tentativeUserSet");
             if ((object instanceof JSONArray)) {
@@ -367,7 +367,7 @@ public final class Meeting implements Parcelable {
                 if (attset != null) {
                     tentitive = new ArrayList<>();
                     for (int i = 0; i < attset.length(); i++) {
-                        tentitive.add(attset.get(i).toString());
+                        tentitive.add(User.createFromJSON("", (JSONObject) attset.get(i)));
                     }
                 }
             }
@@ -415,10 +415,10 @@ public final class Meeting implements Parcelable {
         dest.writeString(mType);
         dest.writeByte((byte) (isPin ? 1 : 0));
         dest.writeParcelable(mDetails, flags);
-        dest.writeStringList(mInvited);
-        dest.writeStringList(mAttended);
-        dest.writeStringList(mRejected);
-        dest.writeStringList(mTentative);
+        dest.writeTypedList(mInvited);
+        dest.writeTypedList(mAttended);
+        dest.writeTypedList(mRejected);
+        dest.writeTypedList(mTentative);
         dest.writeTypedList(mTags);
     }
 
@@ -490,19 +490,19 @@ public final class Meeting implements Parcelable {
         return mDetails;
     }
 
-    public List<String> getmInvited() {
+    public List<User> getmInvited() {
         return mInvited;
     }
 
-    public List<String> getmAttended() {
+    public List<User> getmAttended() {
         return mAttended;
     }
 
-    public List<String> getmRejected() {
+    public List<User> getmRejected() {
         return mRejected;
     }
 
-    public List<String> getmTentative() {
+    public List<User> getmTentative() {
         return mTentative;
     }
 

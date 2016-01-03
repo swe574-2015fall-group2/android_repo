@@ -248,9 +248,12 @@ public class HomeDrawerActivity extends AppCompatActivity
             case R.id.nav_profile:
                 type = ProfileNavigationFragment.class;
                 break;
+            // FIXME This should be enable after the demo
+            /*
             case R.id.nav_messages:
                 type = MessageNavigationFragment.class;
                 break;
+                */
         }
         fragment = HomeFragment.newInstance(mUser, type);
         FragmentManager manager = getSupportFragmentManager();

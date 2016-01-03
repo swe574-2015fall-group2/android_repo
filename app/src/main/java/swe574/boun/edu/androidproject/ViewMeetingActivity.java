@@ -25,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -38,6 +39,7 @@ import swe574.boun.edu.androidproject.model.ContactDetails;
 import swe574.boun.edu.androidproject.model.Meeting;
 import swe574.boun.edu.androidproject.model.ResourceQuery;
 import swe574.boun.edu.androidproject.model.Tag;
+import swe574.boun.edu.androidproject.model.User;
 import swe574.boun.edu.androidproject.network.JSONBuilder;
 import swe574.boun.edu.androidproject.network.JSONRequest;
 import swe574.boun.edu.androidproject.ui.ResourceViewHolder;
@@ -52,7 +54,7 @@ public class ViewMeetingActivity extends AppCompatActivity {
     private ListView mMeetingAgenda;
     private ListView mMeetingToDo;
     private TextView mMeetingDetails;
-    private RecyclerView mMeetingresources;
+    private RecyclerView mMeetingResources;
     private RequestQueue mRequestQueue;
 
     @Override
@@ -79,7 +81,7 @@ public class ViewMeetingActivity extends AppCompatActivity {
         mMeetingToDo = (ListView) findViewById(R.id.MeetingTodoListView);
         mMeetingDetails = (TextView) findViewById(R.id.MeetingContactDetailsTextView);
         mMeetingDetails.setMovementMethod(new ScrollingMovementMethod());
-        mMeetingresources = (RecyclerView) findViewById(R.id.MeetingResourcesRecyclerView);
+        mMeetingResources = (RecyclerView) findViewById(R.id.MeetingResourcesRecyclerView);
         mRequestQueue = Volley.newRequestQueue(this);
 
         JSONRequest meetingRequest = new JSONRequest("http://162.243.18.170:9000/v1/meeting/get", new Response.Listener<String>() {
@@ -120,6 +122,22 @@ public class ViewMeetingActivity extends AppCompatActivity {
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(ViewMeetingActivity.this, android.R.layout.simple_list_item_1, new String[]{"No to-do items are found."});
                     mMeetingToDo.setAdapter(adapter);
                 }
+                Button mFindPeople = (Button) findViewById(R.id.meetingPeople);
+                if(mMeeting.getmInvited() == null || mMeeting.getmInvited().size() == 0){
+                    mFindPeople.setVisibility(View.GONE);
+                }
+                mFindPeople.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Bundle bundle = new Bundle();
+                        Intent i = new Intent(ViewMeetingActivity.this, MeetingPeopleActivity.class);
+                        ArrayList<User> people = (ArrayList<User>) mMeeting.getmInvited();
+                        bundle.putParcelableArrayList("people", people);
+                        i.putExtras(bundle);
+                        startActivity(i);
+                    }
+                });
+
                 if (mMeeting.getmDetails() != null) {
                     stringBuilder = new StringBuilder();
                     ContactDetails contactDetails = mMeeting.getmDetails();
@@ -166,11 +184,11 @@ public class ViewMeetingActivity extends AppCompatActivity {
                                 }
                             });
                             LinearLayoutManager manager = new LinearLayoutManager(ViewMeetingActivity.this, LinearLayoutManager.HORIZONTAL, false);
-                            mMeetingresources.setLayoutManager(manager);
-                            mMeetingresources.setAdapter(resourceListAdapter);
+                            mMeetingResources.setLayoutManager(manager);
+                            mMeetingResources.setAdapter(resourceListAdapter);
                             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                             params.width = resourceQuery.getResult().size() * 80;
-                            mMeetingresources.setLayoutParams(params);
+                            mMeetingResources.setLayoutParams(params);
                         } else {
                             final List<String> list = Arrays.asList(new String[]{"No resources are found for this meeting."});
                             final swe574.boun.edu.androidproject.model.ArrayAdapter arrayAdapter = new swe574.boun.edu.androidproject.model.ArrayAdapter(list) {
@@ -186,8 +204,8 @@ public class ViewMeetingActivity extends AppCompatActivity {
                                 }
                             };
                             LinearLayoutManager manager = new LinearLayoutManager(ViewMeetingActivity.this, LinearLayoutManager.HORIZONTAL, false);
-                            mMeetingresources.setLayoutManager(manager);
-                            mMeetingresources.setAdapter(arrayAdapter);
+                            mMeetingResources.setLayoutManager(manager);
+                            mMeetingResources.setAdapter(arrayAdapter);
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -207,15 +225,6 @@ public class ViewMeetingActivity extends AppCompatActivity {
 
         mRequestQueue.add(meetingRequest);
         mRequestQueue.start();
-
-        Button mFindPeople = (Button) findViewById(R.id.meetingPeople);
-        mFindPeople.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(ViewMeetingActivity.this, MeetingPeopleActivity.class);
-                startActivity(i);
-            }
-        });
     }
 
     @Override

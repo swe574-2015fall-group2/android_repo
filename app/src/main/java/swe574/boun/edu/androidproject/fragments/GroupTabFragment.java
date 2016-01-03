@@ -7,12 +7,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,16 +24,22 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.UpdateGroupActivity;
+import swe574.boun.edu.androidproject.adapters.ListViewAdapterListener;
+import swe574.boun.edu.androidproject.adapters.ResourceListAdapter;
 import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.Group;
 import swe574.boun.edu.androidproject.model.ModelFragment;
+import swe574.boun.edu.androidproject.model.ResourceQuery;
 import swe574.boun.edu.androidproject.model.Tag;
+import swe574.boun.edu.androidproject.network.JSONBuilder;
 import swe574.boun.edu.androidproject.network.JSONRequest;
 import swe574.boun.edu.androidproject.network.RequestQueueBuilder;
 import swe574.boun.edu.androidproject.tasks.GetGroupCalendarTask;
@@ -38,16 +48,61 @@ import swe574.boun.edu.androidproject.tasks.OnTaskCompleted;
 
 public class GroupTabFragment extends ModelFragment {
     private final int UPDATE_GROUP = 1;
+    private RecyclerView mGroupResourceRecyclerView;
     private RequestQueue mRequestQueue;
 
     public GroupTabFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        mRequestQueue = Volley.newRequestQueue(getContext());
+        final JSONObject requestJson = new JSONObject();
+        try {
+            requestJson.accumulate("authToken", App.mAuth);
+            requestJson.accumulate("groupId", mGroup.getmID());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JSONRequest getResourcesJSONRequest = new JSONRequest("http://162.243.18.170:9000/v1/resource/queryResourcesByGroup", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Gson gson = JSONBuilder.returnDefaultBuilder().create();
+                Log.d("REQUEST", requestJson.toString());
+                Log.d("RESPONSE", response);
+                ResourceQuery resourceQuery = gson.fromJson(response, ResourceQuery.class);
+                if (resourceQuery.getResult() != null) {
+                    ResourceListAdapter resourceListAdapter = new ResourceListAdapter(resourceQuery.getResult(), new ListViewAdapterListener() {
+                        @Override
+                        public void onViewCreated(ViewGroup viewGroup) {
+                            viewGroup.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                }
+                            });
+                        }
+                    });
+                    LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                    mGroupResourceRecyclerView.setLayoutManager(manager);
+                    mGroupResourceRecyclerView.setAdapter(resourceListAdapter);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }, requestJson);
+        mRequestQueue.add(getResourcesJSONRequest);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_group_home, null, false);
+        mGroupResourceRecyclerView = (RecyclerView) rootView.findViewById(R.id.groupResourceRecyclerView);
         getActivity().setTitle(mGroup.getmName());
 
         final ListView list = (ListView) rootView.findViewById(R.id.group_calendar);

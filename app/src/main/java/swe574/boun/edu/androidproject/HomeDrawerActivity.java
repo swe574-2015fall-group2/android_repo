@@ -4,17 +4,20 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -32,6 +35,7 @@ import swe574.boun.edu.androidproject.fragments.GroupsNavigationFragment;
 import swe574.boun.edu.androidproject.fragments.HomeNavigationFragment;
 import swe574.boun.edu.androidproject.fragments.MessageNavigationFragment;
 import swe574.boun.edu.androidproject.fragments.ProfileNavigationFragment;
+import swe574.boun.edu.androidproject.fragments.SearchFragment;
 import swe574.boun.edu.androidproject.message.App;
 import swe574.boun.edu.androidproject.model.HomeFragment;
 import swe574.boun.edu.androidproject.model.Tag;
@@ -49,6 +53,7 @@ public class HomeDrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     // Codes
     public static final int NEW_GROUP = 1;
+    private static final String SEARCH_FRAGMENT = "SEARCH";
     int code = 0;
     // Activity datas
     private User mUser;
@@ -127,24 +132,23 @@ public class HomeDrawerActivity extends AppCompatActivity
         mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.accumulate("authToken", App.mAuth);
-                    jsonObject.accumulate("tagData", mTagList.get(0).toJson());
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if(mTagList.size() > 0){
+                    SearchFragment fragment = SearchFragment.newInstance(mUser, mTagList.get(0));
+                    FragmentManager manager = getSupportFragmentManager();
+                    for(int i = 0 ; i < 4 ; i++){
+                        mNavigationView.getMenu().getItem(i).setChecked(false);
+                    }
+                    Fragment currentFragment = (HomeFragment) manager.findFragmentById(R.id.fragment_container);
+                    if(currentFragment instanceof SearchFragment){
+                        manager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
+                    }
+                    else {
+                        manager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(SEARCH_FRAGMENT).commit();
+                    }
                 }
-                mSearchRequest = new JSONRequest("http://162.243.18.170:9000/v1/semantic/search", new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                }, jsonObject);
+                else {
+                    Toast.makeText(HomeDrawerActivity.this, "Please enter a valid search string", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -182,7 +186,7 @@ public class HomeDrawerActivity extends AppCompatActivity
         } else {
             FragmentManager manager = getSupportFragmentManager();
             super.onBackPressed();
-            HomeFragment currentFragment = (HomeFragment) manager.findFragmentById(R.id.fragment_container);
+            Fragment currentFragment = manager.findFragmentById(R.id.fragment_container);
             if (currentFragment instanceof HomeNavigationFragment) {
                 mNavigationView.getMenu().getItem(0).setChecked(true);
             } else if (currentFragment instanceof GroupsNavigationFragment) {
@@ -191,8 +195,9 @@ public class HomeDrawerActivity extends AppCompatActivity
                 mNavigationView.getMenu().getItem(1).setChecked(true);
             } else if (currentFragment instanceof MessageNavigationFragment) {
                 mNavigationView.getMenu().getItem(3).setChecked(true);
+            } else if (currentFragment instanceof SearchFragment){
+                manager.popBackStack(SEARCH_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
-
         }
 
     }

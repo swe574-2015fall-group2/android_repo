@@ -120,4 +120,5 @@ public class SearchFragment extends Fragment implements OnTaskCompleted, OnVolle
     public void onVolleyError(VolleyError error) {
 
     }
+
 }

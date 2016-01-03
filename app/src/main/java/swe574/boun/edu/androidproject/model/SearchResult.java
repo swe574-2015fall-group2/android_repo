@@ -3,13 +3,23 @@ package swe574.boun.edu.androidproject.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Jongaros on 12/30/2015.
  */
-public class SearchResult implements Parcelable{
+public class SearchResult implements Parcelable {
+    public static final Creator<SearchResult> CREATOR = new Creator<SearchResult>() {
+        @Override
+        public SearchResult createFromParcel(Parcel in) {
+            return new SearchResult(in);
+        }
+
+        @Override
+        public SearchResult[] newArray(int size) {
+            return new SearchResult[size];
+        }
+    };
     private List<SearchDetail> resultList;
     private List<String> clazzList;
 
@@ -25,18 +35,6 @@ public class SearchResult implements Parcelable{
         resultList = in.createTypedArrayList(SearchDetail.CREATOR);
         clazzList = in.createStringArrayList();
     }
-
-    public static final Creator<SearchResult> CREATOR = new Creator<SearchResult>() {
-        @Override
-        public SearchResult createFromParcel(Parcel in) {
-            return new SearchResult(in);
-        }
-
-        @Override
-        public SearchResult[] newArray(int size) {
-            return new SearchResult[size];
-        }
-    };
 
     public List<SearchDetail> getResultList() {
         return resultList;
@@ -65,7 +63,18 @@ public class SearchResult implements Parcelable{
         dest.writeStringList(clazzList);
     }
 
-    public static class SearchDetail implements Parcelable{
+    public static class SearchDetail implements Parcelable {
+        public static final Creator<SearchDetail> CREATOR = new Creator<SearchDetail>() {
+            @Override
+            public SearchDetail createFromParcel(Parcel in) {
+                return new SearchDetail(in);
+            }
+
+            @Override
+            public SearchDetail[] newArray(int size) {
+                return new SearchDetail[size];
+            }
+        };
         private EntityType type;
         private String id;
         private String description;
@@ -90,18 +99,6 @@ public class SearchResult implements Parcelable{
             tag = in.readParcelable(Tag.class.getClassLoader());
             rank = in.readInt();
         }
-
-        public static final Creator<SearchDetail> CREATOR = new Creator<SearchDetail>() {
-            @Override
-            public SearchDetail createFromParcel(Parcel in) {
-                return new SearchDetail(in);
-            }
-
-            @Override
-            public SearchDetail[] newArray(int size) {
-                return new SearchDetail[size];
-            }
-        };
 
         public EntityType getType() {
             return type;

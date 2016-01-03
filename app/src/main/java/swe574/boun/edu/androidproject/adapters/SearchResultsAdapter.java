@@ -56,13 +56,13 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         holder.mIdTextView.setText(result.getId());
         holder.mDescriptionTextView.setText(result.getDescription());
         // No SQL injection here ^^
-        holder.mTagTextView.setText("#" + result.getTag().getTag() + " (" + result.getTag().getClazz() + ")" );
+        holder.mTagTextView.setText("#" + result.getTag().getTag() + " (" + result.getTag().getClazz() + ")");
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Bundle bundle = new Bundle();
                 bundle.putParcelable("user", mUser);
-                switch (result.getType()){
+                switch (result.getType()) {
                     case GROUP:
                         JSONObject requestObject = new JSONObject();
                         try {
@@ -77,18 +77,18 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
                                 Group group = extras.getParcelable(GetGroupResponseListener.GROUP_TOKEN);
                                 bundle.putParcelable("group", group);
                             }
-                        }), new GenericErrorListener(requestObject, null),requestObject);
+                        }), new GenericErrorListener(requestObject, null), requestObject);
                         Volley.newRequestQueue(holder.itemView.getContext()).add(request);
-                        Intent intent = new Intent(holder.itemView.getContext(),GroupTabbedActivity.class);
+                        Intent intent = new Intent(holder.itemView.getContext(), GroupTabbedActivity.class);
                         intent.putExtras(bundle);
                         holder.itemView.getContext().startActivity(intent);
                         break;
                     case DISCUSSION:
-                        bundle.putParcelable("group", new Group(null,null,null,"0",null,false,null));
+                        bundle.putParcelable("group", new Group(null, null, null, "0", null, false, null));
                         Discussion discussion = new Discussion();
                         discussion.setId(result.getId());
                         bundle.putParcelable("discussion", discussion);
-                        Intent dIntent = new Intent(holder.itemView.getContext(),ViewCommunicateActivity.class);
+                        Intent dIntent = new Intent(holder.itemView.getContext(), ViewCommunicateActivity.class);
                         dIntent.putExtras(bundle);
                         holder.itemView.getContext().startActivity(dIntent);
                         break;
@@ -97,7 +97,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
                         Note note = new Note();
                         note.setId(result.getId());
                         bundle.putParcelable("note", note);
-                        Intent nIntent = new Intent(holder.itemView.getContext(),ViewCommunicateActivity.class);
+                        Intent nIntent = new Intent(holder.itemView.getContext(), ViewCommunicateActivity.class);
                         nIntent.putExtras(bundle);
                         holder.itemView.getContext().startActivity(nIntent);
                         break;
@@ -115,9 +115,9 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
                                 Meeting meeting = extras.getParcelable(GetMeetingResponseListener.MEETING_TOKEN);
                                 bundle.putParcelable("meeting", meeting);
                             }
-                        }), new GenericErrorListener(requestMeetingObject, null),requestMeetingObject);
+                        }), new GenericErrorListener(requestMeetingObject, null), requestMeetingObject);
                         Volley.newRequestQueue(holder.itemView.getContext()).add(meetingRequest);
-                        Intent mIntent = new Intent(holder.itemView.getContext(),ViewMeetingActivity.class);
+                        Intent mIntent = new Intent(holder.itemView.getContext(), ViewMeetingActivity.class);
                         mIntent.putExtras(bundle);
                         holder.itemView.getContext().startActivity(mIntent);
                         break;

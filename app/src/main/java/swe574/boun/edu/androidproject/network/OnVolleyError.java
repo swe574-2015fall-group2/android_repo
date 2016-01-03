@@ -6,5 +6,5 @@ import com.android.volley.VolleyError;
  * Created by Jongaros on 1/3/2016.
  */
 public interface OnVolleyError {
-    public void onVolleyError(VolleyError error);
+    void onVolleyError(VolleyError error);
 }

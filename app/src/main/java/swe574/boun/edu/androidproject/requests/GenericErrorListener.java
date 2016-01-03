@@ -29,7 +29,7 @@ public class GenericErrorListener implements Response.ErrorListener {
     public void onErrorResponse(VolleyError error) {
         Log.e("REQUEST", mRequest.toString());
         Log.e("RESPONSE", new String(error.networkResponse.data));
-        if(mListener != null){
+        if (mListener != null) {
             mListener.onVolleyError(error);
         }
     }

@@ -123,7 +123,7 @@ public class ViewMeetingActivity extends AppCompatActivity {
                     mMeetingToDo.setAdapter(adapter);
                 }
                 Button mFindPeople = (Button) findViewById(R.id.meetingPeople);
-                if(mMeeting.getmInvited() == null || mMeeting.getmInvited().size() == 0){
+                if (mMeeting.getmInvited() == null || mMeeting.getmInvited().size() == 0) {
                     mFindPeople.setVisibility(View.GONE);
                 }
                 mFindPeople.setOnClickListener(new View.OnClickListener() {
@@ -190,7 +190,7 @@ public class ViewMeetingActivity extends AppCompatActivity {
                             params.width = resourceQuery.getResult().size() * 80;
                             mMeetingResources.setLayoutParams(params);
                         } else {
-                            final List<String> list = Arrays.asList(new String[]{"No resources are found for this meeting."});
+                            final List<String> list = Arrays.asList("No resources are found for this meeting.");
                             final swe574.boun.edu.androidproject.model.ArrayAdapter arrayAdapter = new swe574.boun.edu.androidproject.model.ArrayAdapter(list) {
                                 @Override
                                 public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

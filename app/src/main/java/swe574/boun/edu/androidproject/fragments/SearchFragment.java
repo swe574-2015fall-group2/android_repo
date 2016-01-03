@@ -34,14 +34,17 @@ import swe574.boun.edu.androidproject.tasks.OnTaskCompleted;
 /**
  * Created by Jongaros on 1/3/2016.
  */
-public class SearchFragment extends Fragment implements OnTaskCompleted, OnVolleyError{
+public class SearchFragment extends Fragment implements OnTaskCompleted, OnVolleyError {
     // Initialize Variables
     protected static final String USER_TOKEN = "user";
     protected static final String TAG_TOKEN = "tag";
     protected User mUser;
-    private  Tag mTag;
+    private Tag mTag;
     // UI Variables
     private RecyclerView mSearchResultsRecyclerView;
+
+    public SearchFragment() {
+    }
 
     public static SearchFragment newInstance(User mUser, Tag mTag) {
         Bundle args = new Bundle();
@@ -55,13 +58,10 @@ public class SearchFragment extends Fragment implements OnTaskCompleted, OnVolle
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(getArguments() != null){
+        if (getArguments() != null) {
             mUser = getArguments().getParcelable(USER_TOKEN);
             mTag = getArguments().getParcelable(TAG_TOKEN);
         }
-    }
-
-    public SearchFragment() {
     }
 
     @Nullable

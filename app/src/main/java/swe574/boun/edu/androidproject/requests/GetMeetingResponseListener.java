@@ -1,7 +1,6 @@
 package swe574.boun.edu.androidproject.requests;
 
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.android.volley.Response;
@@ -15,7 +14,7 @@ import swe574.boun.edu.androidproject.tasks.OnTaskCompleted;
 /**
  * Created by Jongaros on 1/3/2016.
  */
-public class GetMeetingResponseListener implements Response.Listener<String>{
+public class GetMeetingResponseListener implements Response.Listener<String> {
     public static final String MEETING_TOKEN = "meeting";
     @NonNull
     private OnTaskCompleted mListener;

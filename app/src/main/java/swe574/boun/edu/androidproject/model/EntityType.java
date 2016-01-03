@@ -9,7 +9,7 @@ public enum EntityType {
     @Override
     public String toString() {
         String string;
-        switch (this){
+        switch (this) {
             case DISCUSSION:
                 string = "Discussion";
                 break;

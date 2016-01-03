@@ -11,7 +11,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,8 +20,6 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.tokenautocomplete.TokenCompleteTextView;
 
 import org.json.JSONException;
@@ -132,21 +129,19 @@ public class HomeDrawerActivity extends AppCompatActivity
         mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mTagList.size() > 0){
+                if (mTagList.size() > 0) {
                     SearchFragment fragment = SearchFragment.newInstance(mUser, mTagList.get(0));
                     FragmentManager manager = getSupportFragmentManager();
-                    for(int i = 0 ; i < 4 ; i++){
+                    for (int i = 0; i < 4; i++) {
                         mNavigationView.getMenu().getItem(i).setChecked(false);
                     }
-                    Fragment currentFragment = (HomeFragment) manager.findFragmentById(R.id.fragment_container);
-                    if(currentFragment instanceof SearchFragment){
+                    Fragment currentFragment = manager.findFragmentById(R.id.fragment_container);
+                    if (currentFragment instanceof SearchFragment) {
                         manager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
-                    }
-                    else {
+                    } else {
                         manager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(SEARCH_FRAGMENT).commit();
                     }
-                }
-                else {
+                } else {
                     Toast.makeText(HomeDrawerActivity.this, "Please enter a valid search string", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -195,7 +190,7 @@ public class HomeDrawerActivity extends AppCompatActivity
                 mNavigationView.getMenu().getItem(1).setChecked(true);
             } else if (currentFragment instanceof MessageNavigationFragment) {
                 mNavigationView.getMenu().getItem(3).setChecked(true);
-            } else if (currentFragment instanceof SearchFragment){
+            } else if (currentFragment instanceof SearchFragment) {
                 manager.popBackStack(SEARCH_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
         }

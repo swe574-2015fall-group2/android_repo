@@ -14,7 +14,7 @@ import swe574.boun.edu.androidproject.tasks.OnTaskCompleted;
 /**
  * Created by Jongaros on 1/3/2016.
  */
-public class GetGroupResponseListener implements Response.Listener<String>{
+public class GetGroupResponseListener implements Response.Listener<String> {
     public static final String GROUP_TOKEN = "group";
     @NonNull
     OnTaskCompleted mListener;

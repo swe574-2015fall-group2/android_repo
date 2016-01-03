@@ -141,10 +141,9 @@ public class ViewCommunicateActivity extends AppCompatActivity {
                 final JSONObject requestJson = new JSONObject();
                 try {
                     requestJson.accumulate("authToken", App.mAuth);
-                    if(mDiscussion != null){
+                    if (mDiscussion != null) {
                         requestJson.accumulate("groupId", mDiscussion.getId());
-                    }
-                    else {
+                    } else {
                         requestJson.accumulate("groupId", mNote.getId());
                     }
                 } catch (JSONException e) {
@@ -306,10 +305,9 @@ public class ViewCommunicateActivity extends AppCompatActivity {
                                 final JSONObject requestJson = new JSONObject();
                                 try {
                                     requestJson.accumulate("authToken", App.mAuth);
-                                    if(mDiscussion != null){
+                                    if (mDiscussion != null) {
                                         requestJson.accumulate("groupId", mDiscussion.getId());
-                                    }
-                                    else {
+                                    } else {
                                         requestJson.accumulate("groupId", mNote.getId());
                                     }
                                 } catch (JSONException e) {

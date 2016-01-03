@@ -39,7 +39,7 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceViewHolder
             @Override
             public void onClick(View v) {
                 String link = resource.getLink();
-                if(link != null) {
+                if (link != null) {
                     if (!link.startsWith("http://") && !link.startsWith("https://"))
                         link = "http://" + link;
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));

@@ -1,7 +1,6 @@
 package swe574.boun.edu.androidproject.requests;
 
 import android.os.Bundle;
-import android.os.Parcelable;
 
 import com.android.volley.Response;
 import com.google.gson.Gson;
@@ -26,7 +25,7 @@ public class SearchResponseListener implements Response.Listener<String> {
         SearchResult searchResult;
         Gson gson = JSONBuilder.returnDefaultBuilder().create();
         searchResult = gson.fromJson(response, SearchResult.class);
-        if(mListener != null){
+        if (mListener != null) {
             Bundle extras = new Bundle();
             extras.putParcelable(RESULT_TOKEN, searchResult);
             mListener.onTaskCompleted(extras);

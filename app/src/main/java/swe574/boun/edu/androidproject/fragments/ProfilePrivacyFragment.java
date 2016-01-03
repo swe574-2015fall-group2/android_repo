@@ -20,6 +20,7 @@ public class ProfilePrivacyFragment extends Fragment {
 
     @Nullable
     @Override
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_profile_privacy, null, false);
 

@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/meetingTags"
             android:layout_toStartOf="@+id/linearLayout"
-            android:maxLines="1"
+            android:maxLines="2"
             android:text="" />
 
         <LinearLayout
@@ -141,11 +141,12 @@
 
             <TextView
                 android:id="@+id/MeetingContactDetailsTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
                 android:text=""
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:scrollbars="horizontal"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
         </RelativeLayout>
     </LinearLayout>
 

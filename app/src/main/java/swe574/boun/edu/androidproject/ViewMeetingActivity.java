@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -26,6 +28,8 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import swe574.boun.edu.androidproject.adapters.ListViewAdapterListener;
 import swe574.boun.edu.androidproject.adapters.ResourceListAdapter;
@@ -74,8 +78,8 @@ public class ViewMeetingActivity extends AppCompatActivity {
         mMeetingAgenda = (ListView) findViewById(R.id.MeetingAgendaListView);
         mMeetingToDo = (ListView) findViewById(R.id.MeetingTodoListView);
         mMeetingDetails = (TextView) findViewById(R.id.MeetingContactDetailsTextView);
+        mMeetingDetails.setMovementMethod(new ScrollingMovementMethod());
         mMeetingresources = (RecyclerView) findViewById(R.id.MeetingResourcesRecyclerView);
-
         mRequestQueue = Volley.newRequestQueue(this);
 
         JSONRequest meetingRequest = new JSONRequest("http://162.243.18.170:9000/v1/meeting/get", new Response.Listener<String>() {
@@ -93,12 +97,15 @@ public class ViewMeetingActivity extends AppCompatActivity {
                         stringBuilder.append(g.getTag() + ", ");
                     mMeetingTags.setText(stringBuilder.substring(0, stringBuilder.length() - 2).toString());
                 }
-                mMeetingLocation.setText(mMeeting.getmLocation());
-                Calendar calendar = Calendar.getInstance();
+                StringBuilder builder = new StringBuilder();
+                builder.append(mMeeting.getmLocation());
+                Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone(mMeeting.getmTimeZone()));
                 calendar.setTime(mMeeting.getmDate());
+                builder.append(" ").append(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(meeting.getmDate())).append("\n").append(mMeeting.getmTimeZone());
                 mMeetingDay.setText(Integer.toString(calendar.get(Calendar.DATE)));
-                mMeetingMonth.setText(new SimpleDateFormat("MMM").format(mMeeting.getmDate()));
+                mMeetingMonth.setText(new SimpleDateFormat("MMM", Locale.getDefault()).format(mMeeting.getmDate()));
                 mMeetingYear.setText(Integer.toString(calendar.get(Calendar.YEAR)));
+                mMeetingLocation.setText(builder.toString());
                 if (mMeeting.getmAgenda() != null && mMeeting.getmAgenda().size() > 0) {
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(ViewMeetingActivity.this, android.R.layout.simple_list_item_1, mMeeting.getmAgenda());
                     mMeetingAgenda.setAdapter(adapter);
@@ -161,6 +168,9 @@ public class ViewMeetingActivity extends AppCompatActivity {
                             LinearLayoutManager manager = new LinearLayoutManager(ViewMeetingActivity.this, LinearLayoutManager.HORIZONTAL, false);
                             mMeetingresources.setLayoutManager(manager);
                             mMeetingresources.setAdapter(resourceListAdapter);
+                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                            params.width = resourceQuery.getResult().size() * 80;
+                            mMeetingresources.setLayoutParams(params);
                         } else {
                             final List<String> list = Arrays.asList(new String[]{"No resources are found for this meeting."});
                             final swe574.boun.edu.androidproject.model.ArrayAdapter arrayAdapter = new swe574.boun.edu.androidproject.model.ArrayAdapter(list) {

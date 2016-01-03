@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import swe574.boun.edu.androidproject.R;
 import swe574.boun.edu.androidproject.ViewMeetingActivity;
@@ -54,7 +55,7 @@ public class ListMeetingAdapter extends BaseAdapter {
 
         final Meeting meeting = mMeetings.get(position);
         if (meeting.getmDate() != null) {
-            Calendar meetingDate = Calendar.getInstance();
+            Calendar meetingDate = Calendar.getInstance(TimeZone.getTimeZone(meeting.getmTimeZone()));
             meetingDate.setTime(meeting.getmDate());
 
             TextView mDay = (TextView) viewGroup.findViewById(R.id.meeting_day);

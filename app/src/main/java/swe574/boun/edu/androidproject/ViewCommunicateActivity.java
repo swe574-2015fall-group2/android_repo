@@ -149,8 +149,10 @@ public class ViewCommunicateActivity extends AppCompatActivity {
                     mCommunicationDescriptionTextView.setText(mNote.getText());
                     mCommunicationDescriptionTextView.setMaxLines(10);
                     String tagText = "";
-                    for (Tag t : mNote.getTagList()) {
-                        tagText += "#" + t.getTag() + ", ";
+                    if(mNote.getTagList() != null) {
+                        for (Tag t : mNote.getTagList()) {
+                            tagText += "#" + t.getTag() + ", ";
+                        }
                     }
                     if (!tagText.equals("") && tagText.length() >= 2) {
                         mCommunicationTagsTextView.setText(tagText.substring(0, tagText.length() - 2));
@@ -172,8 +174,10 @@ public class ViewCommunicateActivity extends AppCompatActivity {
                     setTitle(mDiscussion.getName());
                     mCommunicationDescriptionTextView.setText(mDiscussion.getDescription());
                     String tagText = "";
-                    for (Tag t : mDiscussion.getTagList()) {
-                        tagText += "#" + t.getTag() + ", ";
+                    if(mDiscussion.getTagList() != null) {
+                        for (Tag t : mDiscussion.getTagList()) {
+                            tagText += "#" + t.getTag() + ", ";
+                        }
                     }
                     if (!tagText.equals("") && tagText.length() >= 2) {
                         mCommunicationTagsTextView.setText(tagText.substring(0, tagText.length() - 2));
@@ -239,6 +243,8 @@ public class ViewCommunicateActivity extends AppCompatActivity {
                             LinearLayoutManager manager = new LinearLayoutManager(ViewCommunicateActivity.this, LinearLayoutManager.HORIZONTAL, false);
                             mCommunicationResourcesRecyclerView.setLayoutManager(manager);
                             mCommunicationResourcesRecyclerView.setAdapter(resourceListAdapter);
+                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                            mCommunicationResourcesRecyclerView.setLayoutParams(params);
                         }
                     }
                 }, new Response.ErrorListener() {

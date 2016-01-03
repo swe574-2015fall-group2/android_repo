@@ -68,7 +68,7 @@
         android:layout_marginTop="16dp"
         android:layout_weight="0.5"
         android:background="@color/white"
-        android:padding="16dp"></android.support.v7.widget.RecyclerView>
+        android:padding="16dp" />
 
     <ListView
         android:id="@+id/communicationCommentsListView"
@@ -78,5 +78,35 @@
         android:layout_weight="1"
         android:background="@color/white"
         android:padding="16dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="8dp"
+        android:id="@+id/relative">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittextstyle"
+            android:drawableStart="@drawable/ic_icon_message"
+            android:hint="Comment"
+            android:maxLines="3"
+            android:scrollbars="horizontal"
+            android:id="@+id/communicationCommentEditText"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/communicationAddCommentButton" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/communicationAddCommentButton"
+            android:layout_alignBottom="@+id/communicationCommentEditText"
+            android:layout_alignParentTop="true"
+            android:text="Add"
+            android:background="@drawable/button_style"
+            android:textColor="@color/white"
+            android:layout_marginStart="8dp"/>
+    </RelativeLayout>
 
 </LinearLayout>

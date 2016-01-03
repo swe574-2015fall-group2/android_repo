@@ -1,5 +1,7 @@
 package swe574.boun.edu.androidproject.adapters;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,17 +9,32 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import swe574.boun.edu.androidproject.GroupTabbedActivity;
 import swe574.boun.edu.androidproject.R;
+import swe574.boun.edu.androidproject.message.App;
+import swe574.boun.edu.androidproject.model.Group;
 import swe574.boun.edu.androidproject.model.SearchResult;
+import swe574.boun.edu.androidproject.model.User;
+import swe574.boun.edu.androidproject.network.JSONRequest;
+import swe574.boun.edu.androidproject.requests.GenericErrorListener;
+import swe574.boun.edu.androidproject.requests.GetGroupResponseListener;
+import swe574.boun.edu.androidproject.tasks.OnTaskCompleted;
 
 /**
  * Created by Jongaros on 1/3/2016.
  */
 public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdapter.SearchResultsViewHolder> {
+    private User mUser;
     private SearchResult mResult;
 
-    public SearchResultsAdapter(SearchResult mResult) {
+    public SearchResultsAdapter(SearchResult mResult, User mUser) {
         this.mResult = mResult;
+        this.mUser = mUser;
     }
 
     @Override
@@ -37,8 +54,28 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final Bundle bundle = new Bundle();
                 switch (result.getType()){
                     case GROUP:
+                        bundle.putParcelable("user", mUser);
+                        JSONObject requestObject = new JSONObject();
+                        try {
+                            requestObject.accumulate("authToken", App.mAuth);
+                            requestObject.accumulate("id", result.getId());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        JSONRequest request = new JSONRequest("http://162.243.18.170:9000/v1/group/query", new GetGroupResponseListener(new OnTaskCompleted() {
+                            @Override
+                            public void onTaskCompleted(Bundle extras) {
+                                Group group = extras.getParcelable(GetGroupResponseListener.GROUP_TOKEN);
+                                bundle.putParcelable("group", group);
+                            }
+                        }), new GenericErrorListener(requestObject, null),requestObject);
+                        Volley.newRequestQueue(holder.itemView.getContext()).add(request);
+                        Intent intent = new Intent(holder.itemView.getContext(),GroupTabbedActivity.class);
+                        intent.putExtras(bundle);
+                        holder.itemView.getContext().startActivity(intent);
                         break;
                     case DISCUSSION:
                         break;

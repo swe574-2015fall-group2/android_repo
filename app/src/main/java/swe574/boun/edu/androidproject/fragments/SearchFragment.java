@@ -111,7 +111,7 @@ public class SearchFragment extends Fragment implements OnTaskCompleted, OnVolle
     public void onTaskCompleted(Bundle extras) {
         SearchResult results = extras.getParcelable(SearchResponseListener.RESULT_TOKEN);
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
-        SearchResultsAdapter adapter = new SearchResultsAdapter(results);
+        SearchResultsAdapter adapter = new SearchResultsAdapter(results, mUser);
         mSearchResultsRecyclerView.setLayoutManager(manager);
         mSearchResultsRecyclerView.setAdapter(adapter);
     }

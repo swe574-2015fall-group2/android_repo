@@ -15,7 +15,8 @@
             android:id="@+id/commentUserPictureImageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:src="@drawable/ic_icon_no_person"/>
     </LinearLayout>
 
     <RelativeLayout
@@ -45,9 +46,10 @@
             android:layout_below="@+id/commentTextView"
             android:layout_toStartOf="@+id/commentDateTextView"
             android:paddingBottom="16dp"
-            android:paddingEnd="16dp"
-            android:paddingStart="16dp"
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp"
             android:paddingTop="4dp"
+            android:maxLines="2"
             android:text="" />
 
         <TextView

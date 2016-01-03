@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -131,7 +132,7 @@ public class ViewCommunicateActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                JSONObject requestJson = new JSONObject();
+                final JSONObject requestJson = new JSONObject();
                 try {
                     requestJson.accumulate("authToken", App.mAuth);
                     requestJson.accumulate("groupId", mGroup.getmID());
@@ -184,7 +185,8 @@ public class ViewCommunicateActivity extends AppCompatActivity {
                     }
                     if (mDiscussion.getCommentList() != null) {
                         mCommentMap = new LinkedHashMap<>();
-                        final int[] requests = {mDiscussion.getCommentList().size()};
+                        final CommentListAdapter commentListAdapter = new CommentListAdapter(null, mCommentMap, ViewCommunicateActivity.this);
+                        mCommunicationCommentsListView.setAdapter(commentListAdapter);
                         for (final Comment comment : mDiscussion.getCommentList()) {
                             jsonObject = new JSONObject();
                             try {
@@ -201,7 +203,7 @@ public class ViewCommunicateActivity extends AppCompatActivity {
                                         result = result.getJSONObject("result");
                                         User user = User.createFromJSON(comment.getCreatorId(), result);
                                         mCommentMap.put(user, comment);
-                                        requests[0]--;
+                                        commentListAdapter.notifyDataSetChanged();
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -214,19 +216,13 @@ public class ViewCommunicateActivity extends AppCompatActivity {
                             }, jsonObject);
                             mRequestQueue.add(mGetCommentJSONRequest);
                         }
-                        WaitOnUITask task = new WaitOnUITask(new OnTaskCompleted() {
-                            @Override
-                            public void onTaskCompleted(Bundle extras) {
-                                CommentListAdapter commentListAdapter = new CommentListAdapter(null, mCommentMap, ViewCommunicateActivity.this);
-                                mCommunicationCommentsListView.setAdapter(commentListAdapter);
-                            }
-                        }, requests);
-                        task.execute();
                     }
                 }
                 mGetResourcesJSONRequest = new JSONRequest("http://162.243.18.170:9000/v1/resource/queryResourcesByGroup", new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Log.d("REQUEST", requestJson.toString());
+                        Log.d("RESPONSE", response);
                         ResourceQuery resourceQuery = gson.fromJson(response, ResourceQuery.class);
                         if (resourceQuery.getResult() != null) {
                             ResourceListAdapter resourceListAdapter = new ResourceListAdapter(resourceQuery.getResult(), new ListViewAdapterListener() {
@@ -270,33 +266,5 @@ public class ViewCommunicateActivity extends AppCompatActivity {
             mRequestQueue.add(mViewCommunicationJSONRequest);
         }
     }
-
-    private class WaitOnUITask extends AsyncTask<Void, Void, Void> {
-        OnTaskCompleted mListener;
-        int requests[];
-
-        public WaitOnUITask(OnTaskCompleted mListener, int[] requests) {
-            this.mListener = mListener;
-            this.requests = requests;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            while (requests[0] > 0) {
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            mListener.onTaskCompleted(null);
-        }
-    }
-
 
 }

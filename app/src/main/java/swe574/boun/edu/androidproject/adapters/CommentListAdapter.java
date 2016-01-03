@@ -84,18 +84,18 @@ public class CommentListAdapter extends BaseAdapter {
             detailsText += user.getmName() + " ";
         }
         if (user.getmSurname() != null) {
-            detailsText += user.getmSurname() + " - ";
-        }
-        if (user.getmUsername() != null) {
-            detailsText += user.getmUsername();
+            detailsText += user.getmSurname();
         }
         commentUserDetailsTextView.setText(detailsText);
 
         TextView commentDateTextView = (TextView) viewGroup.findViewById(R.id.commentDateTextView);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM HH:mm");
         commentDateTextView.setText(simpleDateFormat.format(comment.getCreationTime()));
-
-        mListener.onViewCreated(viewGroup);
+        if(mListener != null) {
+            mListener.onViewCreated(viewGroup);
+        }
         return viewGroup;
     }
+
+
 }

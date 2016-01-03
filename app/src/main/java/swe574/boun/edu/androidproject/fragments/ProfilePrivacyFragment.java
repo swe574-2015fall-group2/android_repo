@@ -32,7 +32,7 @@ public class ProfilePrivacyFragment extends Fragment {
                 if (isChecked == true) {
                     privacyText.setText("Everyone can send you messages.");
                 } else {
-                    privacyText.setText("Noone can send you messages.");
+                    privacyText.setText("No one can send you messages.");
                 }
             }
         });

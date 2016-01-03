@@ -118,10 +118,10 @@ public class HomeNavigationFragment extends HomeFragment {
                         Boolean isSuccessful = Objects.equals(object.getString("status"), "success");
                         if (isSuccessful) {
                             if (object.get("result") != null) {
-                                Object o = object.get("result");
-                                if (o instanceof JSONArray) {
+                                JSONObject o = object.getJSONObject("result");
+                                if (o.has("meetingList")) {
                                     meetings = new ArrayList<>();
-                                    JSONArray array = (JSONArray) o;
+                                    JSONArray array = o.getJSONArray("meetingList");
                                     for (int i = 0; i < array.length(); i++) {
                                         Meeting meeting = Meeting.createFromJSON(array.getJSONObject(i));
                                         meetings.add(meeting);

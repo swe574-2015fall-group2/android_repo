@@ -2,6 +2,7 @@ package swe574.boun.edu.androidproject.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +58,7 @@ public class ListMeetingAdapter extends BaseAdapter {
             meetingDate.setTime(meeting.getmDate());
 
             TextView mDay = (TextView) viewGroup.findViewById(R.id.meeting_day);
-            mDay.setText((String.valueOf(meetingDate.get(Calendar.DATE))));
+            mDay.setText((String.valueOf(meetingDate.get(Calendar.DAY_OF_MONTH))));
 
             TextView mMonth = (TextView) viewGroup.findViewById(R.id.meeting_month);
             SimpleDateFormat monthName = new SimpleDateFormat("MMM");

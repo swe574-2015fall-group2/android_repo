@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +62,7 @@ public class ListGroupAdapter extends BaseAdapter {
         final Group g = mGroups.get(position);
         TextView mName = (TextView) view.findViewById(R.id.textViewGroupName);
         TextView mDescription = (TextView) view.findViewById(R.id.textViewDescription);
+        mDescription.setMovementMethod(new ScrollingMovementMethod());
         ImageView mImage = (ImageView) view.findViewById(R.id.group_image);
 
         String name = g.getmName();

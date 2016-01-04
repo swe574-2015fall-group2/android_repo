@@ -123,7 +123,7 @@ public class ListGroupAdapter extends BaseAdapter {
         });
 
         view.setBackground(mContext.getResources().getDrawable(R.drawable.style_groupitem));
-        view.setLayoutParams(new GridView.LayoutParams(GridView.AUTO_FIT, (int) (150 + description.length() * 0.9)));
+      //  view.setLayoutParams(new GridView.LayoutParams(GridView.AUTO_FIT, (int) (150 + description.length() < 50 ? description.length() : 50 * 0.9)));
 
         return view;
     }
